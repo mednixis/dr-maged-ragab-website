@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Database Structure | Dr. Maged Ragab</title>
+    <meta name="description" content="Database structure for admin login, website editing, bookings, CRM, surgeries, reports, and audit logs.">
+    <link rel="stylesheet" href="styles.css">
+  </head><body>
+    <header class="site-header page-header" id="top">
+      <a class="brand" href="index.html" aria-label="Dr. Maged Ragab home">
+        <span class="brand-mark">MR</span>
+        <span class="en">Dr. Maged Ragab</span><span class="ar">د. ماجد رجب</span>
+      </a>
+      <nav class="main-nav" aria-label="Primary navigation"><a href="index.html" class=""><span class="en">Home</span><span class="ar">الرئيسية</span></a><a href="about.html" class=""><span class="en">About Dr. Maged</span><span class="ar">عن د. ماجد</span></a><a href="services.html" class=""><span class="en">Services</span><span class="ar">الخدمات</span></a><a href="conditions.html" class=""><span class="en">Conditions</span><span class="ar">الحالات</span></a><a href="procedures.html" class=""><span class="en">Procedures</span><span class="ar">الإجراءات</span></a><a href="international.html" class=""><span class="en">International Patients</span><span class="ar">المرضى الدوليون</span></a><a href="resources.html" class=""><span class="en">Patient Resources</span><span class="ar">إرشادات المرضى</span></a><a href="articles.html" class=""><span class="en">Articles & Insights</span><span class="ar">المقالات</span></a><a href="media.html" class=""><span class="en">Media</span><span class="ar">الإعلام</span></a><a href="booking.html" class=""><span class="en">Book Appointment</span><span class="ar">الحجز</span></a><a href="contact.html" class=""><span class="en">Contact</span><span class="ar">التواصل</span></a></nav>
+      <div class="header-tools">
+        <button class="lang-toggle" type="button" aria-label="Switch language" data-lang-toggle>العربية</button>
+        <a class="nav-action" href="booking.html"><span class="en">Book Appointment</span><span class="ar">احجز موعد</span></a>
+        <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+      </div>
+    </header><main><section class="page-hero">
+      <div class="section-kicker"><span class="en">Implementation</span><span class="ar">التنفيذ</span></div>
+      <h1><span class="en">Database & Access Structure</span><span class="ar">هيكل قاعدة البيانات والوصول</span></h1>
+      <p><span class="en">The database foundation needed for a live admin system with full ownership, role permissions, slot locking, CRM automation, and editable website content.</span><span class="ar">أساس قاعدة البيانات المطلوب لنظام إدارة مباشر بملكية كاملة وصلاحيات وإغلاق مواعيد وأتمتة CRM وتعديل محتوى الموقع.</span></p>
+    </section><section class="section database-section">
+    <div class="admin-toolbar">
+      <div>
+        <h3><span class="en">Real Backend Foundation</span><span class="ar">أساس النظام الخلفي الحقيقي</span></h3>
+        <p><span class="en">This structure is ready to be implemented in PostgreSQL/Supabase. It gives the owner full access while limiting each team member to the correct role.</span><span class="ar">هذا الهيكل جاهز للتنفيذ على PostgreSQL/Supabase. يعطي المالك وصولًا كاملًا ويحدد صلاحيات كل عضو في الفريق.</span></p>
+      </div>
+      <a class="button primary" href="database-schema.sql" download><span class="en">Download SQL Schema</span><span class="ar">تحميل ملف SQL</span></a>
+    </div>
+    <div class="database-grid"><article class="admin-card"><h4><span class="en">Admin Login & Roles</span><span class="ar">دخول الإدارة والصلاحيات</span></h4><ul><li><span class="en">admin_profiles</span><span class="ar">admin_profiles</span></li><li><span class="en">owner / mednixis_admin / secretary / doctor / content_editor</span><span class="ar">مالك / مدير Mednixis / سكرتارية / طبيب / محرر محتوى</span></li><li><span class="en">active user control</span><span class="ar">تفعيل وإيقاف المستخدمين</span></li><li><span class="en">audit trail</span><span class="ar">سجل مراجعة</span></li></ul></article><article class="admin-card"><h4><span class="en">Website Editing</span><span class="ar">تعديل الموقع</span></h4><ul><li><span class="en">content_pages</span><span class="ar">content_pages</span></li><li><span class="en">media_assets</span><span class="ar">media_assets</span></li><li><span class="en">Arabic and English text</span><span class="ar">نص عربي وإنجليزي</span></li><li><span class="en">photos, articles, services, locations</span><span class="ar">صور ومقالات وخدمات وفروع</span></li></ul></article><article class="admin-card"><h4><span class="en">Bookings & Slot Locking</span><span class="ar">الحجوزات وإغلاق المواعيد</span></h4><ul><li><span class="en">clinic_locations</span><span class="ar">clinic_locations</span></li><li><span class="en">clinic_schedules</span><span class="ar">clinic_schedules</span></li><li><span class="en">appointment_slots</span><span class="ar">appointment_slots</span></li><li><span class="en">bookings</span><span class="ar">bookings</span></li><li><span class="en">confirm_booking_and_close_slot()</span><span class="ar">confirm_booking_and_close_slot()</span></li></ul></article><article class="admin-card"><h4><span class="en">CRM Automation</span><span class="ar">أتمتة CRM</span></h4><ul><li><span class="en">crm_leads</span><span class="ar">crm_leads</span></li><li><span class="en">crm_activities</span><span class="ar">crm_activities</span></li><li><span class="en">message_jobs</span><span class="ar">message_jobs</span></li><li><span class="en">booking location message</span><span class="ar">رسالة موقع الحجز</span></li><li><span class="en">end-of-day review message</span><span class="ar">رسالة تقييم نهاية اليوم</span></li></ul></article><article class="admin-card"><h4><span class="en">Payments & Reports</span><span class="ar">الدفع والتقارير</span></h4><ul><li><span class="en">payments</span><span class="ar">payments</span></li><li><span class="en">medical_reports</span><span class="ar">medical_reports</span></li><li><span class="en">Zoom deposit tracking</span><span class="ar">متابعة إيداع Zoom</span></li><li><span class="en">private report storage</span><span class="ar">تخزين تقارير خاص</span></li></ul></article><article class="admin-card"><h4><span class="en">Surgeries</span><span class="ar">الجراحات</span></h4><ul><li><span class="en">surgeries</span><span class="ar">surgeries</span></li><li><span class="en">surgery_followups</span><span class="ar">surgery_followups</span></li><li><span class="en">date/time/place/type/patient/age/phone</span><span class="ar">التاريخ/الوقت/المكان/النوع/المريض/العمر/الهاتف</span></li><li><span class="en">recovery reminders</span><span class="ar">تذكيرات التعافي</span></li></ul></article></div>
+    <div class="admin-split">
+      <article class="admin-card highlight-card"><h4><span class="en">No Booking Clash Rule</span><span class="ar">قاعدة منع تعارض الحجوزات</span></h4><p><span class="en">When an admin confirms a booking, the backend function closes the exact clinic/date/time slot in the same database transaction. If the slot is already closed, the confirmation fails.</span><span class="ar">عند تأكيد الحجز، تغلق دالة النظام نفس العيادة/التاريخ/الوقت داخل نفس معاملة قاعدة البيانات. إذا كان الموعد مغلقًا بالفعل يفشل التأكيد.</span></p></article>
+      <article class="admin-card"><h4><span class="en">Full Access Rule</span><span class="ar">قاعدة الوصول الكامل</span></h4><p><span class="en">The owner account must be created with your official email. Developers should only be invited as temporary users and can be removed later.</span><span class="ar">يجب إنشاء حساب المالك بالبريد الرسمي الخاص بك. المطورون يتم دعوتهم كمستخدمين مؤقتين ويمكن حذفهم لاحقًا.</span></p></article>
+    </div>
+  </section></main><footer class="site-footer expanded-footer">
+      <div>
+        <strong><span class="en">Dr. Maged Ragab</span><span class="ar">د. ماجد رجب</span></strong>
+        <p><span class="en">World-class urology and men's health care led by academic excellence.</span><span class="ar">رعاية عالمية في المسالك وصحة الرجال بقيادة أكاديمية متميزة.</span></p>
+        <small><span class="en">Managed by Mednixis</span><span class="ar">تدار بواسطة Mednixis</span></small>
+      </div>
+      <div class="footer-links"><a href="about.html"><span class="en">About Dr. Maged</span><span class="ar">عن د. ماجد</span></a><a href="services.html"><span class="en">Services</span><span class="ar">الخدمات</span></a><a href="conditions.html"><span class="en">Conditions</span><span class="ar">الحالات</span></a><a href="procedures.html"><span class="en">Procedures</span><span class="ar">الإجراءات</span></a><a href="international.html"><span class="en">International Patients</span><span class="ar">المرضى الدوليون</span></a><a href="resources.html"><span class="en">Patient Resources</span><span class="ar">إرشادات المرضى</span></a><a href="articles.html"><span class="en">Articles & Insights</span><span class="ar">المقالات</span></a><a href="media.html"><span class="en">Media</span><span class="ar">الإعلام</span></a></div>
+      <div class="footer-links">
+        <a href="privacy.html"><span class="en">Privacy Policy</span><span class="ar">سياسة الخصوصية</span></a>
+        <a href="terms.html"><span class="en">Terms & Medical Disclaimer</span><span class="ar">الشروط والتنبيه الطبي</span></a>
+        <a href="contact.html"><span class="en">Contact & Locations</span><span class="ar">التواصل والفروع</span></a>
+        <a href="admin-login.html"><span class="en">Admin Login</span><span class="ar">دخول الإدارة</span></a>
+        <a href="admin.html"><span class="en">Admin / CRM Demo</span><span class="ar">تجربة الإدارة و CRM</span></a>
+        <a href="database.html"><span class="en">Database Structure</span><span class="ar">هيكل قاعدة البيانات</span></a>
+        <a href="launch.html"><span class="en">Production Launch</span><span class="ar">إطلاق الموقع</span></a>
+        <a href="backend.html"><span class="en">Backend Blueprint</span><span class="ar">تصور النظام الخلفي</span></a>
+        <a href="crm.html"><span class="en">CRM Blueprint</span><span class="ar">تصور CRM</span></a>
+      </div>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>

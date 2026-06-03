@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Private Admin & CRM | Dr. Maged Ragab</title>
+    <meta name="description" content="Private backend and CRM dashboard prototype for bookings, approvals, payments, schedules, patients, reports, and follow-up.">
+    <link rel="stylesheet" href="styles.css">
+  </head><body>
+    <header class="site-header page-header" id="top">
+      <a class="brand" href="index.html" aria-label="Dr. Maged Ragab home">
+        <span class="brand-mark">MR</span>
+        <span class="en">Dr. Maged Ragab</span><span class="ar">د. ماجد رجب</span>
+      </a>
+      <nav class="main-nav" aria-label="Primary navigation"><a href="index.html" class=""><span class="en">Home</span><span class="ar">الرئيسية</span></a><a href="about.html" class=""><span class="en">About Dr. Maged</span><span class="ar">عن د. ماجد</span></a><a href="services.html" class=""><span class="en">Services</span><span class="ar">الخدمات</span></a><a href="conditions.html" class=""><span class="en">Conditions</span><span class="ar">الحالات</span></a><a href="procedures.html" class=""><span class="en">Procedures</span><span class="ar">الإجراءات</span></a><a href="international.html" class=""><span class="en">International Patients</span><span class="ar">المرضى الدوليون</span></a><a href="resources.html" class=""><span class="en">Patient Resources</span><span class="ar">إرشادات المرضى</span></a><a href="articles.html" class=""><span class="en">Articles & Insights</span><span class="ar">المقالات</span></a><a href="media.html" class=""><span class="en">Media</span><span class="ar">الإعلام</span></a><a href="booking.html" class=""><span class="en">Book Appointment</span><span class="ar">الحجز</span></a><a href="contact.html" class=""><span class="en">Contact</span><span class="ar">التواصل</span></a></nav>
+      <div class="header-tools">
+        <button class="lang-toggle" type="button" aria-label="Switch language" data-lang-toggle>العربية</button>
+        <a class="nav-action" href="booking.html"><span class="en">Book Appointment</span><span class="ar">احجز موعد</span></a>
+        <button class="menu-button" type="button" aria-label="Open menu" aria-expanded="false">☰</button>
+      </div>
+    </header><main><section class="page-hero">
+      <div class="section-kicker"><span class="en">Private Admin</span><span class="ar">لوحة الإدارة الخاصة</span></div>
+      <h1><span class="en">Backend + CRM System</span><span class="ar">النظام الخلفي + CRM</span></h1>
+      <p><span class="en">A unified private workspace for Mednixis, clinic secretaries, and later Dr. Maged to control bookings, approvals, payments, schedules, reports, and patient follow-up.</span><span class="ar">مساحة عمل خاصة موحدة لفريق Mednixis والسكرتارية ولاحقًا د. ماجد للتحكم في الحجوزات والموافقات والدفع والجداول والتقارير والمتابعة.</span></p>
+    </section><section class="section admin-product" data-admin-app>
+    <div class="admin-login-strip">
+      <div>
+        <span class="section-kicker"><span class="en">Access Model</span><span class="ar">نظام الدخول</span></span>
+        <h2><span class="en">One private dashboard, separated by role.</span><span class="ar">لوحة خاصة واحدة بصلاحيات مختلفة.</span></h2>
+        <p><span class="en">Mednixis admin sees everything. Secretaries manage bookings and patient communication. Dr. Maged can later get a doctor-only view for approvals, reports, and notes.</span><span class="ar">مدير Mednixis يرى كل شيء. السكرتارية تدير الحجوزات والتواصل. ويمكن لاحقًا توفير عرض خاص للدكتور للموافقات والتقارير والملاحظات.</span></p>
+      </div>
+      <div class="role-switcher" aria-label="Admin roles">
+        <button class="active" type="button" data-admin-role="admin"><span class="en">Mednixis Admin</span><span class="ar">مدير Mednixis</span></button>
+        <button type="button" data-admin-role="secretary"><span class="en">Secretary</span><span class="ar">السكرتارية</span></button>
+        <button type="button" data-admin-role="doctor"><span class="en">Doctor View</span><span class="ar">عرض الطبيب</span></button>
+      </div>
+    </div>
+
+    <div class="admin-product-shell">
+      <aside class="admin-product-nav">
+        <strong>MR Admin</strong>
+        <button class="active" type="button" data-admin-tab="overview"><span class="en">Overview</span><span class="ar">نظرة عامة</span></button><button class="" type="button" data-admin-tab="appointments"><span class="en">Appointments</span><span class="ar">الحجوزات</span></button><button class="" type="button" data-admin-tab="crm"><span class="en">CRM Pipeline</span><span class="ar">مسار CRM</span></button><button class="" type="button" data-admin-tab="patients"><span class="en">Patients</span><span class="ar">المرضى</span></button><button class="" type="button" data-admin-tab="payments"><span class="en">Payments</span><span class="ar">الدفع</span></button><button class="" type="button" data-admin-tab="schedules"><span class="en">Schedules</span><span class="ar">الجداول</span></button><button class="" type="button" data-admin-tab="surgeries"><span class="en">Surgeries</span><span class="ar">الجراحات</span></button><button class="" type="button" data-admin-tab="reports"><span class="en">Reports</span><span class="ar">التقارير</span></button><button class="" type="button" data-admin-tab="settings"><span class="en">Settings</span><span class="ar">الإعدادات</span></button>
+      </aside>
+
+      <div class="admin-product-main">
+        <section class="admin-view active" data-admin-view="overview">
+          <div class="admin-toolbar">
+            <div>
+              <h3><span class="en">Operations Overview</span><span class="ar">نظرة عامة على التشغيل</span></h3>
+              <p><span class="en">Daily command center for bookings, approvals, deposits, reports, and follow-up.</span><span class="ar">مركز التحكم اليومي للحجوزات والموافقات والإيداعات والتقارير والمتابعة.</span></p>
+            </div>
+            <button class="button primary" type="button"><span class="en">Export Today</span><span class="ar">تصدير اليوم</span></button>
+          </div>
+          <div class="admin-metric-grid">
+            <div><strong>24</strong><span><span class="en">Pending bookings</span><span class="ar">حجوزات معلقة</span></span></div>
+            <div><strong>7</strong><span><span class="en">International approvals</span><span class="ar">موافقات دولية</span></span></div>
+            <div><strong>$175</strong><span><span class="en">Zoom deposits</span><span class="ar">إيداعات Zoom</span></span></div>
+            <div><strong>11</strong><span><span class="en">Follow-ups due</span><span class="ar">متابعات مستحقة</span></span></div>
+          </div>
+          <div class="admin-split">
+            <div class="admin-card"><h4><span class="en">Today Priority</span><span class="ar">أولوية اليوم</span></h4><ul><li><span class="en">Approve Zoom requests with paid deposit</span><span class="ar">قبول طلبات Zoom بعد دفع الإيداع</span></li><li><span class="en">Confirm local Kafr El Sheikh slots</span><span class="ar">تأكيد مواعيد كفر الشيخ المحلية</span></li><li><span class="en">Review uploaded reports before Zoom links</span><span class="ar">مراجعة التقارير قبل إرسال روابط Zoom</span></li><li><span class="en">Send WhatsApp reminders</span><span class="ar">إرسال تذكيرات واتساب</span></li><li><span class="en">Review surgery follow-up calls</span><span class="ar">مراجعة اتصالات متابعة الجراحات</span></li></ul></div>
+            <div class="admin-card"><h4><span class="en">System Rules</span><span class="ar">قواعد النظام</span></h4><ul><li><span class="en">When a booking is confirmed, the exact slot becomes closed</span><span class="ar">عند تأكيد الحجز يتم إغلاق نفس الموعد</span></li><li><span class="en">No second patient can choose a closed slot</span><span class="ar">لا يستطيع مريض آخر اختيار موعد مغلق</span></li><li><span class="en">CRM sends selected clinic location after confirmation</span><span class="ar">CRM يرسل موقع العيادة المختارة بعد التأكيد</span></li><li><span class="en">End-of-day review message goes to attended patients</span><span class="ar">رسالة تقييم نهاية اليوم ترسل للمرضى الذين حضروا</span></li><li><span class="en">Surgery follow-ups are scheduled by recovery time</span><span class="ar">متابعة الجراحات تحدد حسب مدة التعافي</span></li></ul></div>
+          </div>
+        </section>
+
+        <section class="admin-view" data-admin-view="appointments">
+          <div class="admin-toolbar">
+            <div><h3><span class="en">Appointment Queue</span><span class="ar">قائمة الحجوزات</span></h3><p><span class="en">Approve, confirm, reschedule, cancel, and add internal notes.</span><span class="ar">قبول وتأكيد وإعادة جدولة وإلغاء وإضافة ملاحظات داخلية.</span></p></div>
+            <input class="admin-search" type="search" placeholder="Search patient, clinic, status" data-admin-search>
+          </div>
+          <div class="admin-data-table">
+            <div class="admin-data-row admin-data-head"><span>ID</span><span>Patient</span><span>Type</span><span>Path</span><span>Date</span><span>Time</span><span>Status</span><span>Slot</span><span>Action</span></div>
+            <div class="admin-data-row" data-admin-record><span class="">MR-1042</span><span class="">Ahmed Hassan</span><span class="">Local</span><span class="">Kafr El Sheikh</span><span class="">Jun 6, 2026</span><span class="">4:20 PM</span><span class="status-pill">Pending</span><span class="slot-state "><span class="en">Open until confirmed</span><span class="ar">متاح حتى التأكيد</span></span><span class="admin-actions"><button type="button" data-admin-action="confirm"><span class="en">Confirm + Close Slot</span><span class="ar">تأكيد وإغلاق الموعد</span></button><button type="button" data-admin-action="note"><span class="en">Note</span><span class="ar">ملاحظة</span></button></span></div><div class="admin-data-row" data-admin-record><span class="">MR-1043</span><span class="">Omar Al-Khaled</span><span class="">International</span><span class="">Zoom</span><span class="">Jun 7, 2026</span><span class="">2:30 PM</span><span class="status-pill">Deposit review</span><span class="slot-state "><span class="en">Open until confirmed</span><span class="ar">متاح حتى التأكيد</span></span><span class="admin-actions"><button type="button" data-admin-action="confirm"><span class="en">Confirm + Close Slot</span><span class="ar">تأكيد وإغلاق الموعد</span></button><button type="button" data-admin-action="note"><span class="en">Note</span><span class="ar">ملاحظة</span></button></span></div><div class="admin-data-row" data-admin-record><span class="">MR-1044</span><span class="">Mona Saad</span><span class="">Local</span><span class="">New Cairo / Mivida</span><span class="">Jun 10, 2026</span><span class="">6:00 PM</span><span class="status-pill">Confirmed</span><span class="slot-state closed"><span class="en">Closed / booked</span><span class="ar">مغلق / محجوز</span></span><span class="admin-actions"><button type="button" data-admin-action="confirm"><span class="en">Confirm + Close Slot</span><span class="ar">تأكيد وإغلاق الموعد</span></button><button type="button" data-admin-action="note"><span class="en">Note</span><span class="ar">ملاحظة</span></button></span></div><div class="admin-data-row" data-admin-record><span class="">MR-1045</span><span class="">Yousef Nasser</span><span class="">International</span><span class="">Planning Egypt visit</span><span class="">Review</span><span class="">Secretary call</span><span class="status-pill">Needs approval</span><span class="slot-state "><span class="en">Open until confirmed</span><span class="ar">متاح حتى التأكيد</span></span><span class="admin-actions"><button type="button" data-admin-action="confirm"><span class="en">Confirm + Close Slot</span><span class="ar">تأكيد وإغلاق الموعد</span></button><button type="button" data-admin-action="note"><span class="en">Note</span><span class="ar">ملاحظة</span></button></span></div>
+          </div>
+          <div class="automation-flow">
+            <article><strong><span class="en">1. Patient Requests Slot</span><span class="ar">١. المريض يطلب الموعد</span></strong><p><span class="en">Slot is held as pending, but not fully closed until secretary/admin confirmation.</span><span class="ar">يظل الموعد معلقًا ولا يغلق نهائيًا إلا بعد تأكيد السكرتارية/الإدارة.</span></p></article>
+            <article><strong><span class="en">2. Admin Confirms</span><span class="ar">٢. الإدارة تؤكد</span></strong><p><span class="en">The backend writes the booking as confirmed and locks clinic + date + time in the database.</span><span class="ar">النظام يسجل الحجز كمؤكد ويغلق العيادة + التاريخ + الوقت في قاعدة البيانات.</span></p></article>
+            <article><strong><span class="en">3. CRM Sends Message</span><span class="ar">٣. CRM يرسل الرسالة</span></strong><p><span class="en">Patient receives the selected clinic location, date, time, preparation notes, and contact number.</span><span class="ar">يستلم المريض موقع العيادة المختارة والتاريخ والوقت وتعليمات التحضير ورقم التواصل.</span></p></article>
+          </div>
+        </section>
+
+        <section class="admin-view" data-admin-view="crm">
+          <div class="admin-toolbar"><div><h3><span class="en">CRM Pipeline</span><span class="ar">مسار CRM</span></h3><p><span class="en">Every lead has source, status, next action, and follow-up history.</span><span class="ar">كل عميل له مصدر وحالة وخطوة تالية وتاريخ متابعة.</span></p></div></div>
+          <div class="crm-board"><article><strong><span class="en">New Lead</span><span class="ar">New Lead</span></strong><small>Website form</small><b>5</b><div class="crm-lead">Anonymous patient<span>Male infertility - Google</span></div><div class="crm-lead">International Zoom<span>GCC - Website</span></div></article><article><strong><span class="en">Contacted</span><span class="ar">Contacted</span></strong><small>Secretary follow-up</small><b>8</b><div class="crm-lead">Anonymous patient<span>Male infertility - Google</span></div><div class="crm-lead">International Zoom<span>GCC - Website</span></div></article><article><strong><span class="en">Booked</span><span class="ar">Booked</span></strong><small>Slot selected</small><b>12</b><div class="crm-lead">Anonymous patient<span>Male infertility - Google</span></div><div class="crm-lead">International Zoom<span>GCC - Website</span></div></article><article><strong><span class="en">Approval</span><span class="ar">Approval</span></strong><small>Doctor/admin review</small><b>4</b><div class="crm-lead">Anonymous patient<span>Male infertility - Google</span></div><div class="crm-lead">International Zoom<span>GCC - Website</span></div></article><article><strong><span class="en">Confirmed</span><span class="ar">Confirmed</span></strong><small>Message sent</small><b>18</b><div class="crm-lead">Anonymous patient<span>Male infertility - Google</span></div><div class="crm-lead">International Zoom<span>GCC - Website</span></div></article><article><strong><span class="en">Follow-up</span><span class="ar">Follow-up</span></strong><small>Next action due</small><b>9</b><div class="crm-lead">Anonymous patient<span>Male infertility - Google</span></div><div class="crm-lead">International Zoom<span>GCC - Website</span></div></article></div>
+          <div class="admin-split">
+            <div class="admin-card"><h4><span class="en">Automatic Message After Booking Confirmation</span><span class="ar">رسالة تلقائية بعد تأكيد الحجز</span></h4><ul><li><span class="en">Selected clinic location and Google Maps link</span><span class="ar">موقع العيادة المختارة ورابط Google Maps</span></li><li><span class="en">Appointment date and exact time</span><span class="ar">تاريخ ووقت الموعد بدقة</span></li><li><span class="en">Doctor/clinic contact number</span><span class="ar">رقم تواصل الدكتور/العيادة</span></li><li><span class="en">What to bring before visit</span><span class="ar">ما يجب إحضاره قبل الزيارة</span></li><li><span class="en">Payment note: local pays in clinic only</span><span class="ar">تنبيه الدفع: المحلي يدفع داخل العيادة فقط</span></li></ul></div>
+            <div class="admin-card"><h4><span class="en">End-of-Day Review Follow-up</span><span class="ar">متابعة التقييم نهاية اليوم</span></h4><ul><li><span class="en">System checks patients marked as attended today</span><span class="ar">النظام يراجع المرضى المسجلين كحضور اليوم</span></li><li><span class="en">Sends WhatsApp/SMS review message at end of clinic day</span><span class="ar">يرسل رسالة تقييم واتساب/SMS في نهاية يوم العيادة</span></li><li><span class="en">Creates follow-up task if patient replies with concern</span><span class="ar">ينشئ مهمة متابعة إذا رد المريض بوجود مشكلة</span></li><li><span class="en">Tracks review status in CRM profile</span><span class="ar">يتتبع حالة التقييم داخل ملف CRM</span></li></ul></div>
+          </div>
+        </section>
+
+        <section class="admin-view" data-admin-view="patients">
+          <div class="admin-toolbar"><div><h3><span class="en">Patient Records</span><span class="ar">ملفات المرضى</span></h3><p><span class="en">Unified patient profile connected to bookings, reports, CRM source, and follow-ups.</span><span class="ar">ملف موحد مرتبط بالحجوزات والتقارير ومصدر CRM والمتابعة.</span></p></div></div>
+          <div class="patient-record-grid">
+            <article class="admin-card"><h4>Ahmed Hassan</h4><p>Local patient - clinic payment - appointment pending</p><ul><li><span class="en">Contact details</span><span class="ar">بيانات التواصل</span></li><li><span class="en">Medical concern</span><span class="ar">سبب الزيارة</span></li><li><span class="en">Booking history</span><span class="ar">تاريخ الحجوزات</span></li><li><span class="en">Uploaded reports</span><span class="ar">التقارير المرفوعة</span></li><li><span class="en">Follow-up tasks</span><span class="ar">مهام المتابعة</span></li></ul></article><article class="admin-card"><h4>Omar Al-Khaled</h4><p>International Zoom - deposit paid - reports uploaded</p><ul><li><span class="en">Contact details</span><span class="ar">بيانات التواصل</span></li><li><span class="en">Medical concern</span><span class="ar">سبب الزيارة</span></li><li><span class="en">Booking history</span><span class="ar">تاريخ الحجوزات</span></li><li><span class="en">Uploaded reports</span><span class="ar">التقارير المرفوعة</span></li><li><span class="en">Follow-up tasks</span><span class="ar">مهام المتابعة</span></li></ul></article><article class="admin-card"><h4>Mona Saad</h4><p>Local patient - clinic payment - appointment pending</p><ul><li><span class="en">Contact details</span><span class="ar">بيانات التواصل</span></li><li><span class="en">Medical concern</span><span class="ar">سبب الزيارة</span></li><li><span class="en">Booking history</span><span class="ar">تاريخ الحجوزات</span></li><li><span class="en">Uploaded reports</span><span class="ar">التقارير المرفوعة</span></li><li><span class="en">Follow-up tasks</span><span class="ar">مهام المتابعة</span></li></ul></article>
+          </div>
+        </section>
+
+        <section class="admin-view" data-admin-view="payments">
+          <div class="admin-toolbar"><div><h3><span class="en">Payment Control</span><span class="ar">إدارة الدفع</span></h3><p><span class="en">Local payments are marked in clinic. International Zoom deposits are tracked before approval.</span><span class="ar">الدفع المحلي يسجل داخل العيادة. إيداعات Zoom الدولية تتابع قبل الموافقة.</span></p></div></div>
+          <div class="admin-split">
+            <div class="admin-card highlight-card"><h4><span class="en">International Zoom Deposit</span><span class="ar">إيداع Zoom الدولي</span></h4><strong>$25 / 1250 EGP</strong><p><span class="en">Required before human approval and Zoom link.</span><span class="ar">مطلوب قبل الموافقة البشرية وإرسال رابط Zoom.</span></p><button type="button"><span class="en">Mark Paid</span><span class="ar">تحديد كمدفوع</span></button></div>
+            <div class="admin-card"><h4><span class="en">Local Clinic Payment</span><span class="ar">دفع العيادة المحلي</span></h4><strong><span class="en">No online payment</span><span class="ar">لا يوجد دفع أونلاين</span></strong><p><span class="en">Secretary marks payment after patient arrives at clinic.</span><span class="ar">تسجل السكرتارية الدفع بعد حضور المريض للعيادة.</span></p><button type="button"><span class="en">Mark Paid at Clinic</span><span class="ar">تسجيل الدفع بالعيادة</span></button></div>
+          </div>
+        </section>
+
+        <section class="admin-view" data-admin-view="schedules">
+          <div class="admin-toolbar"><div><h3><span class="en">Clinic & Zoom Schedules</span><span class="ar">جداول العيادات و Zoom</span></h3><p><span class="en">Manage days, months, extra slots, blocked dates, and Google Calendar sync.</span><span class="ar">إدارة الأيام والشهور والمواعيد الإضافية والأيام المغلقة وربط Google Calendar.</span></p></div></div>
+          <div class="schedule-admin-grid"><article class="admin-card"><h4>Kafr El Sheikh</h4><p><strong>Sat / Sun / Mon / Tue</strong></p><p>3:00 PM - 8:00 PM</p><p>15 local slots</p><small>Clinic payment only</small><div class="admin-actions"><button type="button"><span class="en">Add slot</span><span class="ar">إضافة موعد</span></button><button type="button"><span class="en">Block date</span><span class="ar">إغلاق يوم</span></button></div></article><article class="admin-card"><h4>New Cairo / Mivida</h4><p><strong>Wed / Thu</strong></p><p>3:00 PM - 8:00 PM</p><p>15 local slots</p><small>Clinic payment only</small><div class="admin-actions"><button type="button"><span class="en">Add slot</span><span class="ar">إضافة موعد</span></button><button type="button"><span class="en">Block date</span><span class="ar">إغلاق يوم</span></button></div></article><article class="admin-card"><h4>International Zoom</h4><p><strong>Sun / Tue / Thu</strong></p><p>2:00 PM - 4:00 PM</p><p>4 Zoom slots</p><small>$25 / 1250 EGP deposit</small><div class="admin-actions"><button type="button"><span class="en">Add slot</span><span class="ar">إضافة موعد</span></button><button type="button"><span class="en">Block date</span><span class="ar">إغلاق يوم</span></button></div></article></div>
+        </section>
+
+        <section class="admin-view" data-admin-view="surgeries">
+          <div class="admin-toolbar">
+            <div><h3><span class="en">Surgeries Schedule</span><span class="ar">جدول الجراحات</span></h3><p><span class="en">A private surgical sheet and calendar for operation date, time, place, type, patient details, recovery time, and follow-up reminders.</span><span class="ar">شيت وتقويم خاص للجراحات لتسجيل التاريخ والوقت والمكان والنوع وبيانات المريض ومدة التعافي وتذكيرات المتابعة.</span></p></div>
+            <button class="button primary" type="button"><span class="en">Add Surgery</span><span class="ar">إضافة جراحة</span></button>
+          </div>
+          <div class="surgery-calendar-strip">
+            <div><strong>Jun 12</strong><span>Micro-TESE<br>Tanta Hospital</span></div>
+            <div><strong>Jun 16</strong><span>Varicocele<br>New Cairo</span></div>
+            <div><strong>Planning</strong><span>Penile Prosthesis<br>Hospital coordination</span></div>
+          </div>
+          <div class="admin-data-table surgery-table">
+            <div class="admin-data-row admin-data-head"><span>ID</span><span>Type</span><span>Patient</span><span>Age</span><span>Phone</span><span>Place</span><span>Date</span><span>Time</span><span>Recovery</span><span>Follow-up</span></div>
+            <div class="admin-data-row"><span class="">SG-2101</span><span class="">Micro-TESE</span><span class="">Ahmed Hassan</span><span class="">38</span><span class="">+20 10 0000 0000</span><span class="">Tanta Hospital</span><span class="">Jun 12, 2026</span><span class="">10:30 AM</span><span class="">2-3 days</span><span class="status-pill">Follow-up booked</span></div><div class="admin-data-row"><span class="">SG-2102</span><span class="">Microsurgical Varicocele</span><span class="">Omar Samir</span><span class="">34</span><span class="">+20 11 0000 0000</span><span class="">New Cairo Hospital</span><span class="">Jun 16, 2026</span><span class="">12:00 PM</span><span class="">3-5 days</span><span class="status-pill">Call after 48 hours</span></div><div class="admin-data-row"><span class="">SG-2103</span><span class="">Penile Prosthesis</span><span class="">Private Patient</span><span class="">52</span><span class="">+966 5 0000 0000</span><span class="">Hospital coordination</span><span class="">Planning</span><span class="">Pending</span><span class="">2-4 weeks</span><span class="status-pill">Needs approval</span></div>
+          </div>
+          <div class="admin-split">
+            <div class="admin-card"><h4><span class="en">Surgery Types Library</span><span class="ar">قائمة أنواع الجراحات</span></h4><ul><li><span class="en">Micro-TESE</span><span class="ar">Micro-TESE</span></li><li><span class="en">Microsurgical varicocele removal</span><span class="ar">استئصال دوالي الخصية بالميكروسكوب</span></li><li><span class="en">Penile prosthesis implantation</span><span class="ar">زرع دعامات العضو الذكري</span></li><li><span class="en">Peyronie's correction</span><span class="ar">تصحيح مرض بيروني</span></li><li><span class="en">Rezum / Echolaser prostate procedures</span><span class="ar">إجراءات البروستاتا Rezum / Echolaser</span></li><li><span class="en">Endoscopic stone surgery</span><span class="ar">جراحة الحصوات بالمنظار</span></li></ul></div>
+            <div class="admin-card"><h4><span class="en">Surgery Follow-up Automation</span><span class="ar">أتمتة متابعة الجراحات</span></h4><ul><li><span class="en">Recovery time creates follow-up reminders</span><span class="ar">مدة التعافي تنشئ تذكيرات متابعة</span></li><li><span class="en">Secretary gets task when follow-up consultation is due</span><span class="ar">تظهر مهمة للسكرتارية عند موعد المتابعة</span></li><li><span class="en">Patient receives preparation and recovery messages</span><span class="ar">المريض يستلم رسائل التحضير والتعافي</span></li><li><span class="en">Doctor view shows post-op notes and next visit</span><span class="ar">عرض الطبيب يظهر ملاحظات ما بعد الجراحة والزيارة القادمة</span></li></ul></div>
+          </div>
+        </section>
+
+        <section class="admin-view" data-admin-view="reports">
+          <div class="admin-toolbar"><div><h3><span class="en">Medical Reports</span><span class="ar">التقارير الطبية</span></h3><p><span class="en">Secure uploads with permission control and internal review status.</span><span class="ar">رفع آمن مع صلاحيات وحالة مراجعة داخلية.</span></p></div></div>
+          <div class="admin-data-table compact">
+            <div class="admin-data-row admin-data-head"><span>Patient</span><span>Files</span><span>Status</span><span>Assigned to</span><span>Action</span></div>
+            <div class="admin-data-row"><span>Omar Al-Khaled</span><span>3 PDFs</span><span class="status-pill">Awaiting review</span><span>Doctor</span><span><button type="button">Open</button></span></div>
+            <div class="admin-data-row"><span>Yousef Nasser</span><span>2 images</span><span class="status-pill">Needs approval</span><span>Mednixis</span><span><button type="button">Open</button></span></div>
+          </div>
+        </section>
+
+        <section class="admin-view" data-admin-view="settings">
+          <div class="admin-toolbar"><div><h3><span class="en">Implementation Settings</span><span class="ar">إعدادات التنفيذ</span></h3><p><span class="en">These are the real systems needed when we connect this dashboard to the live domain.</span><span class="ar">هذه هي الأنظمة الحقيقية المطلوبة عند ربط اللوحة بالدومين المباشر.</span></p></div></div>
+          <div class="admin-split">
+            <div class="admin-card"><h4><span class="en">Backend Needed</span><span class="ar">المطلوب في الخلفية</span></h4><ul><li><span class="en">Authentication and roles</span><span class="ar">تسجيل دخول وصلاحيات</span></li><li><span class="en">PostgreSQL database</span><span class="ar">قاعدة بيانات PostgreSQL</span></li><li><span class="en">Secure report storage</span><span class="ar">تخزين آمن للتقارير</span></li><li><span class="en">Booking API with slot-locking transaction</span><span class="ar">API للحجز مع إغلاق الموعد داخل معاملة آمنة</span></li><li><span class="en">CRM automation jobs</span><span class="ar">مهام أتمتة CRM</span></li><li><span class="en">Payment gateway webhooks</span><span class="ar">ربط بوابة الدفع</span></li><li><span class="en">Google Calendar sync</span><span class="ar">ربط Google Calendar</span></li></ul></div>
+            <div class="admin-card"><h4><span class="en">Full Access & Ownership</span><span class="ar">الوصول الكامل والملكية</span></h4><ul><li><span class="en">Owner account controls domain, hosting, database, storage, and payments</span><span class="ar">حساب المالك يتحكم في الدومين والاستضافة وقاعدة البيانات والتخزين والدفع</span></li><li><span class="en">Mednixis admin can create users and assign roles</span><span class="ar">مدير Mednixis يستطيع إنشاء المستخدمين وتحديد الصلاحيات</span></li><li><span class="en">Secretary access limited to bookings, CRM, schedules, and surgery sheet</span><span class="ar">صلاحية السكرتارية محدودة بالحجوزات وCRM والجداول وشيت الجراحات</span></li><li><span class="en">Doctor access limited to approvals, reports, notes, and surgeries</span><span class="ar">صلاحية الطبيب محدودة بالموافقات والتقارير والملاحظات والجراحات</span></li><li><span class="en">Audit log records who changed each booking, slot, payment, and surgery</span><span class="ar">سجل مراجعة يوضح من عدل كل حجز وموعد ودفع وجراحة</span></li></ul></div>
+          </div>
+          <div class="admin-card"><h4><span class="en">Suggested Domains</span><span class="ar">الدومينات المقترحة</span></h4><ul><li><span class="en">Website: www.domain.com</span><span class="ar">الموقع: www.domain.com</span></li><li><span class="en">Admin: admin.domain.com</span><span class="ar">الإدارة: admin.domain.com</span></li><li><span class="en">API: api.domain.com</span><span class="ar">API: api.domain.com</span></li><li><span class="en">Storage: private protected bucket</span><span class="ar">التخزين: مساحة خاصة محمية</span></li></ul></div>
+        </section>
+      </div>
+    </div>
+  </section></main><footer class="site-footer expanded-footer">
+      <div>
+        <strong><span class="en">Dr. Maged Ragab</span><span class="ar">د. ماجد رجب</span></strong>
+        <p><span class="en">World-class urology and men's health care led by academic excellence.</span><span class="ar">رعاية عالمية في المسالك وصحة الرجال بقيادة أكاديمية متميزة.</span></p>
+        <small><span class="en">Managed by Mednixis</span><span class="ar">تدار بواسطة Mednixis</span></small>
+      </div>
+      <div class="footer-links"><a href="about.html"><span class="en">About Dr. Maged</span><span class="ar">عن د. ماجد</span></a><a href="services.html"><span class="en">Services</span><span class="ar">الخدمات</span></a><a href="conditions.html"><span class="en">Conditions</span><span class="ar">الحالات</span></a><a href="procedures.html"><span class="en">Procedures</span><span class="ar">الإجراءات</span></a><a href="international.html"><span class="en">International Patients</span><span class="ar">المرضى الدوليون</span></a><a href="resources.html"><span class="en">Patient Resources</span><span class="ar">إرشادات المرضى</span></a><a href="articles.html"><span class="en">Articles & Insights</span><span class="ar">المقالات</span></a><a href="media.html"><span class="en">Media</span><span class="ar">الإعلام</span></a></div>
+      <div class="footer-links">
+        <a href="privacy.html"><span class="en">Privacy Policy</span><span class="ar">سياسة الخصوصية</span></a>
+        <a href="terms.html"><span class="en">Terms & Medical Disclaimer</span><span class="ar">الشروط والتنبيه الطبي</span></a>
+        <a href="contact.html"><span class="en">Contact & Locations</span><span class="ar">التواصل والفروع</span></a>
+        <a href="admin-login.html"><span class="en">Admin Login</span><span class="ar">دخول الإدارة</span></a>
+        <a href="admin.html"><span class="en">Admin / CRM Demo</span><span class="ar">تجربة الإدارة و CRM</span></a>
+        <a href="database.html"><span class="en">Database Structure</span><span class="ar">هيكل قاعدة البيانات</span></a>
+        <a href="launch.html"><span class="en">Production Launch</span><span class="ar">إطلاق الموقع</span></a>
+        <a href="backend.html"><span class="en">Backend Blueprint</span><span class="ar">تصور النظام الخلفي</span></a>
+        <a href="crm.html"><span class="en">CRM Blueprint</span><span class="ar">تصور CRM</span></a>
+      </div>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>
