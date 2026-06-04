@@ -157,7 +157,7 @@ forms.forEach((form) => {
     };
 
     try {
-      const res = await fetch("https://oxmqwuewdrqnltwbfllq.supabase.co/rest/v1/bookings", {
+      const res = await fetch("https://oxmqwuewdrqnltwbfllq.supabase.co/rest/v1/booking_requests", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
