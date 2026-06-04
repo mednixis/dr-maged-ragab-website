@@ -130,19 +130,62 @@ monthSelects.forEach((select) => {
 });
 
 forms.forEach((form) => {
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
     const button = form.querySelector("button[type='submit']");
     const original = button.textContent;
-
-    button.textContent = "Request Prepared";
+    button.textContent = "Sending...";
     button.disabled = true;
 
-    window.setTimeout(() => {
-      button.textContent = original;
+    const isInternational = form.closest("#international-booking") !== null;
+    const selectedDate = form.closest(".booking-content")?.querySelector(".date-value")?.textContent || "";
+    const selectedSlot = form.closest(".booking-content")?.querySelector(".slot-card.selected")?.textContent?.trim().split("\n")[0] || "";
+    const selectedClinic = form.closest(".booking-content")?.querySelector(".choice-card.selected strong")?.textContent?.trim() || "";
+
+    const data = {
+      patient_name: form.querySelector("input[autocomplete='name']")?.value || "",
+      phone: form.querySelector("input[type='tel']")?.value || "",
+      age: form.querySelector("input[type='number']")?.value || "",
+      gender: form.querySelector("select")?.value || "",
+      concern: form.querySelector("textarea")?.value || "",
+      booking_date: selectedDate,
+      booking_slot: selectedSlot,
+      clinic: selectedClinic,
+      patient_type: isInternational ? "international" : "local",
+      status: "pending",
+      created_at: new Date().toISOString()
+    };
+
+    try {
+      const res = await fetch("https://oxmqwuewdrqnltwbfllq.supabase.co/rest/v1/bookings", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "apikey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94bXF3dWV3ZHJxbmx0d2JmbGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0NDQwNjIsImV4cCI6MjA5NjAyMDA2Mn0.9f5R67Wc9JssvgFotxiutXoybaMSeoOd_kA365mR8qY",
+          "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im94bXF3dWV3ZHJxbmx0d2JmbGxxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODA0NDQwNjIsImV4cCI6MjA5NjAyMDA2Mn0.9f5R67Wc9JssvgFotxiutXoybaMSeoOd_kA365mR8qY",
+          "Prefer": "return=minimal"
+        },
+        body: JSON.stringify(data)
+      });
+
+      if (res.ok) {
+        button.textContent = "Request Sent ✓";
+        setTimeout(() => {
+          button.textContent = original;
+          button.disabled = false;
+          form.reset();
+        }, 2000);
+      } else {
+        const err = await res.json();
+        console.error("Booking error:", err);
+        button.textContent = "Error — try again";
+        button.disabled = false;
+      }
+    } catch (e) {
+      console.error("Network error:", e);
+      button.textContent = "Error — try again";
       button.disabled = false;
-      form.reset();
-    }, 1800);
+    }
   });
 });
 
