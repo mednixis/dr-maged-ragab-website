@@ -29,7 +29,7 @@ export default async function HomePage() {
     <main>
       {/* HERO */}
       <section className="hero">
-        <img className="hero-image" src="/assets/hero-clinic.png" alt="Dr. Maged Ragab clinic" />
+        <img className="hero-image" src="/hero-clinic.png" alt="Dr. Maged Ragab clinic" />
         <div className="hero-scrim" />
         <div className="hero-content">
           <p className="eyebrow">
