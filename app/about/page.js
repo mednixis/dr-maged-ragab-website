@@ -25,27 +25,47 @@ export default async function AboutPage() {
       </div>
       <main>
         <section className="section">
-          <div className="split">
-            <div>
-              <div className="section-kicker"><span className="en">Biography</span><span className="ar">السيرة الذاتية</span></div>
-              <h2><span className="en">Professor Dr. Maged Ragab</span><span className="ar">الأستاذ الدكتور ماجد رجب</span></h2>
+          <div className="split image-split">
+            {/* Photo */}
+            <div style={{ position:"relative" }}>
+              <img
+                src="/assets/Maged photo.png"
+                alt="Professor Dr. Maged Ragab"
+                style={{
+                  width:"100%",
+                  maxWidth:"480px",
+                  display:"block",
+                  borderRadius:"4px",
+                  boxShadow:"0 24px 70px rgba(9,21,35,0.18)",
+                }}
+              />
             </div>
+            {/* Bio */}
             <div className="section-copy">
+              <div className="section-kicker"><span className="en">Biography</span><span className="ar">السيرة الذاتية</span></div>
+              <h2 style={{marginBottom:"20px"}}>
+                <span className="en">Professor Dr. Maged Ragab</span>
+                <span className="ar">الأستاذ الدكتور ماجد رجب</span>
+              </h2>
               <p>
                 <span className="en">{about.body_en || "Dr. Maged Ragab is a Professor and Head of Urology Department at Tanta University, with more than 25 years of experience in advanced urology, male infertility, and men's health. He is internationally recognized for his surgical expertise and academic contributions."}</span>
                 <span className="ar">{about.body_ar || "الأستاذ الدكتور ماجد رجب أستاذ ورئيس قسم المسالك البولية بجامعة طنطا، بخبرة تزيد عن 25 عامًا في المسالك المتقدمة وتأخر الإنجاب وصحة الرجال. معترف به دوليًا لخبرته الجراحية ومساهماته الأكاديمية."}</span>
               </p>
               <div className="stats-row">
                 {[
-                  ["25+",    "Years Experience",         "سنة خبرة"],
-                  ["10,000+","Surgeries Performed",      "عملية جراحية"],
-                  ["300+",   "International Conferences","مؤتمر دولي"],
+                  ["25+",     "Years Experience",          "سنة خبرة"],
+                  ["10,000+", "Surgeries Performed",       "عملية جراحية"],
+                  ["300+",    "International Conferences", "مؤتمر دولي"],
                 ].map(([num, enLabel, arLabel]) => (
                   <div key={num}>
                     <strong>{num}</strong>
                     <span><span className="en">{enLabel}</span><span className="ar">{arLabel}</span></span>
                   </div>
                 ))}
+              </div>
+              <div className="hero-actions" style={{marginTop:"28px"}}>
+                <Link className="button primary" href="/booking"><span className="en">Book Appointment</span><span className="ar">احجز موعد</span></Link>
+                <Link className="button ghost" href="/contact"><span className="en">Contact Us</span><span className="ar">تواصل معنا</span></Link>
               </div>
             </div>
           </div>
@@ -55,12 +75,12 @@ export default async function AboutPage() {
           <div className="section-kicker"><span className="en">Areas of Expertise</span><span className="ar">مجالات الخبرة</span></div>
           <div className="why-list six">
             {[
-              ["Urology",             "المسالك البولية"],
-              ["Male Infertility",    "تأخر الإنجاب"],
-              ["Erectile Dysfunction","ضعف الانتصاب"],
-              ["Prostate Diseases",   "أمراض البروستاتا"],
-              ["Kidney Stones",       "حصوات الكلى"],
-              ["Men's Health",        "صحة الرجال"],
+              ["Urology",              "المسالك البولية"],
+              ["Male Infertility",     "تأخر الإنجاب"],
+              ["Erectile Dysfunction", "ضعف الانتصاب"],
+              ["Prostate Diseases",    "أمراض البروستاتا"],
+              ["Kidney Stones",        "حصوات الكلى"],
+              ["Men's Health",         "صحة الرجال"],
             ].map(([en, ar], i) => (
               <div key={en}>
                 <span>0{i+1}</span>
