@@ -81,18 +81,33 @@ export default async function HomePage() {
       {/* ABOUT PREVIEW */}
       <section className="section about-section">
         <div className="split image-split">
-          <div>
-            <div className="section-kicker"><span className="en">About Preview</span><span className="ar">نبذة مختصرة</span></div>
-            <h2>
-              <span className="en">{about.title_en || "Academic Leadership. Surgical Precision. Human Care."}</span>
-              <span className="ar">{about.title_ar || "قيادة أكاديمية. دقة جراحية. رعاية إنسانية."}</span>
-            </h2>
+          <div style={{ display:"flex", flexDirection:"column", gap:"24px" }}>
+            <img
+              src="/assets/Maged photo.png"
+              alt="Professor Dr. Maged Ragab"
+              style={{ width:"100%", maxWidth:"420px", display:"block", borderRadius:"4px", boxShadow:"0 24px 70px rgba(9,21,35,0.18)" }}
+            />
+            <div>
+              <div className="section-kicker"><span className="en">About Preview</span><span className="ar">نبذة مختصرة</span></div>
+              <h2>
+                <span className="en">{about.title_en || "Academic Leadership. Surgical Precision. Human Care."}</span>
+                <span className="ar">{about.title_ar || "قيادة أكاديمية. دقة جراحية. رعاية إنسانية."}</span>
+              </h2>
+            </div>
           </div>
           <div className="section-copy">
             <p>
               <span className="en">{about.body_en || "Dr. Maged Ragab is a Professor and Head of Urology Department at Tanta University, with more than 25 years of experience in advanced urology, male infertility, and men's health."}</span>
               <span className="ar">{about.body_ar || "الأستاذ الدكتور ماجد رجب أستاذ ورئيس قسم المسالك البولية بجامعة طنطا، بخبرة تزيد عن 25 عامًا في المسالك المتقدمة وتأخر الإنجاب وصحة الرجال."}</span>
             </p>
+            <div className="stats-row" style={{marginBottom:"24px"}}>
+              {[["25+","Years Experience","سنة خبرة"],["10,000+","Surgeries","عملية جراحية"],["300+","Conferences","مؤتمر دولي"]].map(([num,enL,arL])=>(
+                <div key={num}>
+                  <strong>{num}</strong>
+                  <span><span className="en">{enL}</span><span className="ar">{arL}</span></span>
+                </div>
+              ))}
+            </div>
             <div className="hero-actions">
               <Link className="button primary" href="/about"><span className="en">Read More About Dr. Maged</span><span className="ar">اقرأ المزيد عن د. ماجد</span></Link>
             </div>
