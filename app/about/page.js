@@ -21,7 +21,7 @@ export default async function AboutPage() {
           <span className="en">{about.title_en || "Academic Leadership. Surgical Precision. Human Care."}</span>
           <span className="ar">{about.title_ar || "قيادة أكاديمية. دقة جراحية. رعاية إنسانية."}</span>
         </h1>
-        <p><span className="en">Professor of Urology & Andrology — Tanta University Hospital</span><span className="ar">أستاذ المسالك البولية وطب الذكورة — مستشفى جامعة طنطا</span></p>
+        <p><span className="en">Professor of Urology & Andrology — Head of Urology Department, Tanta University Hospital</span><span className="ar">أستاذ المسالك البولية وطب الذكورة — رئيس قسم المسالك البولية، مستشفى جامعة طنطا</span></p>
       </div>
       <main>
 
