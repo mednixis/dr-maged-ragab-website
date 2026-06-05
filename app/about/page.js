@@ -29,7 +29,7 @@ export default async function AboutPage() {
             {/* Photo */}
             <div style={{ position:"relative" }}>
               <img
-                src="/assets/Maged%20photo.png"
+                src="/Maged%20photo.png"
                 alt="Professor Dr. Maged Ragab"
                 style={{
                   width:"100%",
