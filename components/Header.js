@@ -5,10 +5,8 @@ import { usePathname } from "next/navigation";
 
 const navLinks = [
   { href: "/",              en: "Home",                  ar: "الرئيسية" },
-  { href: "/about",         en: "About Dr. Maged",       ar: "عن د. ماجد" },
+  { href: "/about",         en: "About",                 ar: "عن الدكتور" },
   { href: "/services",      en: "Services",              ar: "الخدمات" },
-  { href: "/conditions",    en: "Conditions",            ar: "الحالات" },
-  { href: "/procedures",    en: "Procedures",            ar: "الإجراءات" },
   { href: "/international", en: "International Patients",ar: "المرضى الدوليون" },
   { href: "/resources",     en: "Patient Resources",     ar: "إرشادات المرضى" },
   { href: "/articles",      en: "Articles & Insights",   ar: "المقالات" },
@@ -19,9 +17,9 @@ const navLinks = [
 
 export default function Header({ isPage = false }) {
   const pathname  = usePathname();
-  const [scrolled, setScrolled]   = useState(false);
-  const [menuOpen, setMenuOpen]   = useState(false);
-  const [lang, setLang]           = useState("en");
+  const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [lang, setLang]         = useState("en");
 
   useEffect(() => {
     const saved = localStorage.getItem("lang") || "en";
