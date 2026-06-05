@@ -1,6 +1,15 @@
 import Header from "../../components/Header.js";
 import Link from "next/link";
 export const metadata = { title: "International Patients | Dr. Maged Ragab" };
+
+const COUNTRIES = [
+  "Saudi Arabia","United Arab Emirates","Kuwait","Qatar","Bahrain","Oman",
+  "Jordan","Lebanon","Syria","Iraq","Libya","Tunisia","Algeria","Morocco",
+  "Sudan","Yemen","United Kingdom","United States","Canada","Australia",
+  "Germany","France","Italy","Spain","Netherlands","Belgium","Sweden",
+  "Switzerland","Austria","Other"
+];
+
 export default function InternationalPage() {
   return (
     <>
@@ -16,11 +25,11 @@ export default function InternationalPage() {
             <article className="feature-card">
               <h3><span className="en">How It Works</span><span className="ar">كيف يعمل</span></h3>
               <ul>
-                <li><span className="en">Book a dedicated Zoom consultation slot</span><span className="ar">احجز موعد Zoom مخصص</span></li>
+                <li><span className="en">Submit your consultation request online</span><span className="ar">أرسل طلب استشارتك أونلاين</span></li>
                 <li><span className="en">Upload your reports and test results</span><span className="ar">ارفع تقاريرك ونتائج الفحوصات</span></li>
                 <li><span className="en">50% deposit required to secure the slot</span><span className="ar">مطلوب إيداع 50% لتأكيد الموعد</span></li>
-                <li><span className="en">Human review before final confirmation</span><span className="ar">مراجعة بشرية قبل التأكيد النهائي</span></li>
-                <li><span className="en">WhatsApp or email confirmation</span><span className="ar">تأكيد عبر واتساب أو البريد</span></li>
+                <li><span className="en">Clinic team reviews and confirms via WhatsApp</span><span className="ar">فريق العيادة يراجع ويؤكد عبر واتساب</span></li>
+                <li><span className="en">Zoom consultation at your confirmed time</span><span className="ar">استشارة Zoom في الوقت المؤكد</span></li>
               </ul>
             </article>
             <article className="feature-card">
