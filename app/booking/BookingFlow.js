@@ -357,7 +357,12 @@ export default function BookingFlow({ clinics }) {
                 </label>
                 <label>
                   <span><span className="en">Country</span><span className="ar">الدولة</span></span>
-                  <input value={form.country} onChange={e=>setForm(p=>({...p,country:e.target.value}))} placeholder="e.g. Saudi Arabia" />
+                  <select value={form.country} onChange={e=>setForm(p=>({...p,country:e.target.value}))} required>
+                    <option value="">Select country / اختر الدولة</option>
+                    {["Saudi Arabia","United Arab Emirates","Kuwait","Qatar","Bahrain","Oman","Jordan","Lebanon","Syria","Iraq","Libya","Tunisia","Algeria","Morocco","Sudan","Yemen","United Kingdom","United States","Canada","Australia","Germany","France","Italy","Spain","Netherlands","Belgium","Sweden","Switzerland","Austria","Other"].map(c=>(
+                      <option key={c} value={c}>{c}</option>
+                    ))}
+                  </select>
                 </label>
               </>
             )}
