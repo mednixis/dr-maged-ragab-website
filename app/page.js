@@ -83,7 +83,7 @@ export default async function HomePage() {
         <div className="split image-split">
           <div style={{ display:"flex", flexDirection:"column", gap:"24px" }}>
             <img
-              src="/assets/Maged photo.png"
+              src="/assets/Maged%20photo.png"
               alt="Professor Dr. Maged Ragab"
               style={{ width:"100%", maxWidth:"420px", display:"block", borderRadius:"4px", boxShadow:"0 24px 70px rgba(9,21,35,0.18)" }}
             />
