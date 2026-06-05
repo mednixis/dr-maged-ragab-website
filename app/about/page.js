@@ -17,7 +17,10 @@ export default async function AboutPage() {
       <Header isPage />
       <div className="page-hero">
         <p className="eyebrow"><span className="en">About</span><span className="ar">عن الدكتور</span></p>
-        <h1><span className="en">{about.title_en || "Academic Leadership. Surgical Precision. Human Care."}</span><span className="ar">{about.title_ar || "قيادة أكاديمية. دقة جراحية. رعاية إنسانية."}</span></h1>
+        <h1>
+          <span className="en">{about.title_en || "Academic Leadership. Surgical Precision. Human Care."}</span>
+          <span className="ar">{about.title_ar || "قيادة أكاديمية. دقة جراحية. رعاية إنسانية."}</span>
+        </h1>
         <p><span className="en">Professor & Head of Urology Department, Tanta University</span><span className="ar">أستاذ ورئيس قسم المسالك البولية - جامعة طنطا</span></p>
       </div>
       <main>
@@ -28,9 +31,16 @@ export default async function AboutPage() {
               <h2><span className="en">Professor Dr. Maged Ragab</span><span className="ar">الأستاذ الدكتور ماجد رجب</span></h2>
             </div>
             <div className="section-copy">
-              <p><span className="en">{about.body_en || "Dr. Maged Ragab is a Professor and Head of Urology Department at Tanta University, with more than 25 years of experience in advanced urology, male infertility, and men's health. He is internationally recognized for his surgical expertise and academic contributions."}</span><span className="ar">{about.body_ar || "الأستاذ الدكتور ماجد رجب أستاذ ورئيس قسم المسالك البولية بجامعة طنطا، بخبرة تزيد عن 25 عامًا في المسالك المتقدمة وتأخر الإنجاب وصحة الرجال. معترف به دوليًا لخبرته الجراحية ومساهماته الأكاديمية."}</span></p>
+              <p>
+                <span className="en">{about.body_en || "Dr. Maged Ragab is a Professor and Head of Urology Department at Tanta University, with more than 25 years of experience in advanced urology, male infertility, and men's health. He is internationally recognized for his surgical expertise and academic contributions."}</span>
+                <span className="ar">{about.body_ar || "الأستاذ الدكتور ماجد رجب أستاذ ورئيس قسم المسالك البولية بجامعة طنطا، بخبرة تزيد عن 25 عامًا في المسالك المتقدمة وتأخر الإنجاب وصحة الرجال. معترف به دوليًا لخبرته الجراحية ومساهماته الأكاديمية."}</span>
+              </p>
               <div className="stats-row">
-                {[["25+","en","Years Experience","ar","سنة خبرة"],["1000+","en","Surgeries Performed","ar","عملية جراحية"],["50+","en","International Conferences","ar","مؤتمر دولي"]].map(([num,,enLabel,,arLabel]) => (
+                {[
+                  ["25+",    "Years Experience",         "سنة خبرة"],
+                  ["10,000+","Surgeries Performed",      "عملية جراحية"],
+                  ["300+",   "International Conferences","مؤتمر دولي"],
+                ].map(([num, enLabel, arLabel]) => (
                   <div key={num}>
                     <strong>{num}</strong>
                     <span><span className="en">{enLabel}</span><span className="ar">{arLabel}</span></span>
@@ -40,12 +50,17 @@ export default async function AboutPage() {
             </div>
           </div>
         </section>
+
         <section className="section why-section">
           <div className="section-kicker"><span className="en">Areas of Expertise</span><span className="ar">مجالات الخبرة</span></div>
           <div className="why-list six">
             {[
-              ["Urology","المسالك البولية"],["Male Infertility","تأخر الإنجاب"],["Erectile Dysfunction","ضعف الانتصاب"],
-              ["Prostate Diseases","أمراض البروستاتا"],["Kidney Stones","حصوات الكلى"],["Men's Health","صحة الرجال"],
+              ["Urology",             "المسالك البولية"],
+              ["Male Infertility",    "تأخر الإنجاب"],
+              ["Erectile Dysfunction","ضعف الانتصاب"],
+              ["Prostate Diseases",   "أمراض البروستاتا"],
+              ["Kidney Stones",       "حصوات الكلى"],
+              ["Men's Health",        "صحة الرجال"],
             ].map(([en, ar], i) => (
               <div key={en}>
                 <span>0{i+1}</span>
@@ -54,6 +69,7 @@ export default async function AboutPage() {
             ))}
           </div>
         </section>
+
         <section className="section final-cta">
           <h2><span className="en">Book a Consultation</span><span className="ar">احجز استشارة</span></h2>
           <div className="hero-actions">
