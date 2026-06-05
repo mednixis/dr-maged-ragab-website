@@ -22,9 +22,9 @@ const CATEGORIES = [
 ];
 
 const PROCEDURES = {
-  10: ["Micro-TESE / sperm retrieval techniques","Microsurgical subinguinal varicocelectomy","Male infertility evaluation and treatment","Non-obstructive azoospermia management","Erectile dysfunction management","Premature ejaculation treatment","Regenerative therapy for ED"],
+  10: ["Micro-TESE / sperm retrieval techniques","Microsurgical subinguinal varicocelectomy","Varicocele treatment","Male infertility evaluation and treatment","Non-obstructive azoospermia management","Erectile dysfunction management","Penile prosthesis implantation","Peyronie's disease treatment","Premature ejaculation treatment","Regenerative therapy for ED"],
   20: ["Ureteroscopy","Flexible ureteroscopy","Retrograde intrarenal surgery","PCNL / percutaneous nephrolithotomy","Mini-percutaneous antegrade ureteroscopic lithotripsy","ESWL / shock wave lithotripsy","Laparoscopic ureterolithotomy","Medical expulsive therapy for ureteric stones"],
-  30: ["TURP / transurethral resection of prostate","TUNA / transurethral needle ablation of prostate","Prostate cancer early detection: PSA density, transition zone biopsy","Laparoscopic radical prostatectomy"],
+  30: ["TURP / transurethral resection of prostate","TUNA / transurethral needle ablation of prostate","Rezum water vapor therapy","Echolaser technology","Prostate cancer early detection: PSA density, transition zone biopsy","Laparoscopic radical prostatectomy"],
   40: ["Urethroplasty","Lingual mucosal graft urethroplasty","Buccal mucosal graft urethroplasty","Female urethral reconstruction"],
   50: ["Laparoscopic cyst decortication","Laparoscopic partial nephrectomy","Laparoscopic nephrectomy","Laparoscopic radical prostatectomy","Laparoscopic ureteroureterostomy","Laparoscopic renal cryoablation"],
   60: ["Urodynamics","Posterior / percutaneous tibial nerve stimulation","Treatment of overactive bladder / detrusor overactivity","Painful bladder syndrome / interstitial cystitis","Nocturnal enuresis management","Female stress urinary incontinence surgery / sling procedures"],
