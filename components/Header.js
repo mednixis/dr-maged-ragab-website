@@ -5,21 +5,20 @@ import { usePathname } from "next/navigation";
 
 const navLinks = [
   { href: "/",              en: "Home",                  ar: "الرئيسية" },
-  { href: "/about",         en: "About",                 ar: "عن الدكتور" },
+  { href: "/about",         en: "About Dr. Maged",       ar: "عن د. ماجد" },
   { href: "/services",      en: "Services",              ar: "الخدمات" },
   { href: "/international", en: "International Patients",ar: "المرضى الدوليون" },
-  { href: "/resources",     en: "Patient Resources",     ar: "إرشادات المرضى" },
-  { href: "/articles",      en: "Articles & Insights",   ar: "المقالات" },
   { href: "/media",         en: "Media",                 ar: "الإعلام" },
+  { href: "/faqs",          en: "FAQs",                  ar: "الأسئلة الشائعة" },
   { href: "/booking",       en: "Book Appointment",      ar: "الحجز" },
   { href: "/contact",       en: "Contact",               ar: "التواصل" },
 ];
 
 export default function Header({ isPage = false }) {
   const pathname  = usePathname();
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [lang, setLang]         = useState("en");
+  const [scrolled, setScrolled]   = useState(false);
+  const [menuOpen, setMenuOpen]   = useState(false);
+  const [lang, setLang]           = useState("en");
 
   useEffect(() => {
     const saved = localStorage.getItem("lang") || "en";
@@ -52,7 +51,7 @@ export default function Header({ isPage = false }) {
   return (
     <header className={cls} id="top">
       <Link className="brand" href="/" aria-label="Dr. Maged Ragab home">
-        <img src="/Transparent_LOGO.svg" alt="Dr. Maged Ragab logo" style={{height:"44px",width:"auto",display:"block"}} />
+        <span className="brand-mark">MR</span>
         <span className="en">Dr. Maged Ragab</span>
         <span className="ar">د. ماجد رجب</span>
       </Link>
