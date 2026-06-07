@@ -230,3 +230,9 @@ body.lang-ar .slot-card { text-align: right; }
   .about-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
   .about-grid img { max-width: 280px !important; margin: 0 auto; }
 }
+
+/* â”€â”€ ABOUT PAGE PHOTO COL â”€â”€ */
+@media (max-width: 768px) {
+  .about-photo-col { position: static !important; top: auto !important; }
+  .about-photo-col img { max-width: 240px !important; margin: 0 auto; display: block; }
+}
