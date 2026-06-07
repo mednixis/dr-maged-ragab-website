@@ -16,7 +16,7 @@ export default function AboutPage() {
 
       <main>
         <section className="section" style={{paddingTop:"60px"}}>
-          <div style={{display:"grid", gridTemplateColumns:"300px 1fr", gap:"48px", alignItems:"start", maxWidth:"1100px", margin:"0 auto"}}>
+          <div style={{display:"grid", gridTemplateColumns:"min(300px, 100%) 1fr", gap:"48px", alignItems:"start", maxWidth:"1100px", margin:"0 auto"}} className="about-grid">
 
             {/* Left column — photo + card */}
             <div style={{position:"sticky", top:"100px"}}>
