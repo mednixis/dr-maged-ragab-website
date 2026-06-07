@@ -19,7 +19,7 @@ export default function AboutPage() {
           <div style={{display:"grid", gridTemplateColumns:"min(300px, 100%) 1fr", gap:"48px", alignItems:"start", maxWidth:"1100px", margin:"0 auto"}} className="about-grid">
 
             {/* Left column — photo + card */}
-            <div style={{position:"sticky", top:"100px"}}>
+            <div style={{position:"sticky", top:"100px"}} className="about-photo-col">
               <img src="/Maged%20photo.png" alt="Professor Dr. Maged Ragab"
                 style={{width:"100%", borderRadius:"16px", boxShadow:"0 8px 32px rgba(7,21,37,0.15)", display:"block"}} />
               <div style={{marginTop:"20px", padding:"20px", background:"var(--navy)", borderRadius:"12px", color:"#fff"}}>
