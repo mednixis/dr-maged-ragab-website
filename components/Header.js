@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 
 const navLinks = [
   { href: "/",              en: "Home",                  ar: "الرئيسية" },
-  { href: "/about",         en: "About Dr. Maged",       ar: "عن د. ماجد" },
+  { href: "/about",         en: "About",                 ar: "عن الدكتور" },
   { href: "/services",      en: "Services",              ar: "الخدمات" },
   { href: "/international", en: "International Patients",ar: "المرضى الدوليون" },
   { href: "/media",         en: "Media",                 ar: "الإعلام" },
