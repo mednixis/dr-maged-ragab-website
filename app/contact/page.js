@@ -1,3 +1,4 @@
+export const revalidate = 0;
 import Header from "../../components/Header.js";
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
