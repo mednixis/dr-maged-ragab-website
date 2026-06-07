@@ -57,7 +57,8 @@ export default function Header({ isPage = false }) {
       </Link>
       <nav className="main-nav" aria-label="Primary navigation">
         {navLinks.map(l => (
-          <Link key={l.href} href={l.href} className={pathname === l.href ? "active" : ""}>
+          <Link key={l.href} href={l.href} className={pathname === l.href ? "active" : ""}
+            onClick={() => setMenuOpen(false)}>
             <span className="en">{l.en}</span>
             <span className="ar">{l.ar}</span>
           </Link>
