@@ -14,11 +14,11 @@ html { scroll-behavior: smooth; }
 body { margin: 0; font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); background: var(--white); }
 a { color: inherit; text-decoration: none; }
 button, input, textarea, select { font: inherit; }
-.site-header { position: fixed; z-index: 20; top: 0; left: 0; right: 0; display: flex; align-items: center; gap: 28px; min-height: 76px; padding: 0 clamp(20px, 4vw, 58px); color: var(--white); transition: background 180ms ease, box-shadow 180ms ease; }
+.site-header { position: fixed; z-index: 20; top: 0; left: 0; right: 0; display: flex; align-items: center; gap: 12px; min-height: 76px; padding: 0 clamp(12px, 2.5vw, 40px); color: var(--white); transition: background 180ms ease, box-shadow 180ms ease; }
 .site-header.scrolled, .site-header.menu-open { color: var(--ink); background: rgba(255,255,255,0.94); box-shadow: 0 1px 28px rgba(8,18,30,0.08); backdrop-filter: blur(18px); }
 .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; white-space: nowrap; }
 .brand-mark { display: grid; width: 40px; height: 40px; place-items: center; border: 1px solid rgba(185,155,98,0.85); color: var(--gold); font-size: 13px; }
-.main-nav { display: flex; align-items: center; gap: 14px; margin-left: auto; color: currentColor; font-size: 13px; }
+.main-nav { display: flex; align-items: center; gap: 10px; margin-left: auto; color: currentColor; font-size: 12px; letter-spacing: -0.01em; }
 .nav-action { padding: 11px 18px; border: 1px solid rgba(185,155,98,0.9); color: currentColor; font-size: 13px; }
 .menu-button { display: none; width: 42px; height: 42px; border: 1px solid currentColor; color: currentColor; background: transparent; cursor: pointer; }
 .hero { position: relative; min-height: 92vh; display: grid; align-items: center; overflow: hidden; color: var(--white); background: var(--navy); }
@@ -223,4 +223,10 @@ body.lang-ar .slot-card { text-align: right; }
   .stats-row { grid-template-columns: 1fr; }
   .compact-grid { grid-template-columns: 1fr 1fr; }
   .booking-options { grid-template-columns: 1fr; }
+}
+
+/* â”€â”€ ABOUT PAGE RESPONSIVE â”€â”€ */
+@media (max-width: 768px) {
+  .about-grid { grid-template-columns: 1fr !important; gap: 24px !important; }
+  .about-grid img { max-width: 280px !important; margin: 0 auto; }
 }
