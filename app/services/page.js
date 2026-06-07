@@ -28,7 +28,7 @@ const SERVICES = [
       ["Penile Prosthesis Implantation", "زراعة دعامات القضيب"],
       ["Peyronie's Disease Management", "علاج مرض بيروني (انحناء القضيب)"],
       ["Premature Ejaculation Treatment", "علاج سرعة القذف"],
-      ["Low Testosterone / Hypogonadism", "نقص التستوستيرون / قصور الغدد التناسلية"],
+      ["Testosterone Replacement Therapy (TRT)", "علاج الاستبدال بالتستوستيرون (TRT)"],
       ["Sexual Health Counselling", "استشارات الصحة الجنسية"],
     ],
   },
