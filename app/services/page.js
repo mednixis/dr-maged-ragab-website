@@ -2,6 +2,7 @@ import Link from "next/link";
 import Header from "../../components/Header.js";
 import { createClient } from "@supabase/supabase-js";
 
+export const revalidate = 0;
 export const metadata = { title: "Services | Dr. Maged Ragab" };
 
 async function getServices() {
@@ -10,30 +11,18 @@ async function getServices() {
   return data || [];
 }
 
-const CATEGORIES = [
-  { sort: 10, label_en: "Male Infertility & Andrology", label_ar: "تأخر الإنجاب وطب الذكورة", range: [10,19] },
-  { sort: 20, label_en: "Endourology & Kidney Stones",  label_ar: "التنظير البولي وحصوات الكلى", range: [20,29] },
-  { sort: 30, label_en: "Prostate & BPH",               label_ar: "البروستاتا وتضخمها", range: [30,39] },
-  { sort: 40, label_en: "Urethral Reconstruction",       label_ar: "إعادة بناء الإحليل", range: [40,49] },
-  { sort: 50, label_en: "Laparoscopic / Minimally Invasive Urology", label_ar: "جراحة المسالك بالمنظار", range: [50,59] },
-  { sort: 60, label_en: "Bladder & Urinary Problems",    label_ar: "مشاكل المثانة والمسالك", range: [60,69] },
-  { sort: 70, label_en: "Pediatric & Congenital Urology",label_ar: "المسالك البولية للأطفال", range: [70,79] },
-  { sort: 80, label_en: "Kidney & Upper Tract Surgery",  label_ar: "جراحة الكلى والمسالك العلوية", range: [80,89] },
+const defaultServices = [
+  { id:"1", name_en:"Male Infertility", name_ar:"تأخر الإنجاب عند الرجال", description_en:"Comprehensive evaluation and treatment of male infertility causes.", description_ar:"تقييم شامل وعلاج أسباب تأخر الإنجاب عند الرجال.", icon:"🔬" },
+  { id:"2", name_en:"Azoospermia", name_ar:"انعدام الحيوانات المنوية", description_en:"Diagnosis and surgical management of azoospermia including Micro-TESE.", description_ar:"تشخيص وإدارة جراحية لانعدام الحيوانات المنوية بما في ذلك Micro-TESE.", icon:"🧬" },
+  { id:"3", name_en:"Erectile Dysfunction", name_ar:"ضعف الانتصاب", description_en:"Advanced treatment options for erectile dysfunction including penile prosthesis.", description_ar:"خيارات علاج متقدمة لضعف الانتصاب بما في ذلك الدعامات.", icon:"💊" },
+  { id:"4", name_en:"Prostate Diseases", name_ar:"أمراض البروستاتا", description_en:"Medical and surgical management of BPH and prostate conditions including Rezum.", description_ar:"الإدارة الطبية والجراحية لتضخم البروستاتا والحالات الأخرى بما في ذلك Rezum.", icon:"🏥" },
+  { id:"5", name_en:"Kidney Stones", name_ar:"حصوات الكلى", description_en:"Minimally invasive stone management using modern endoscopic techniques.", description_ar:"إدارة الحصوات بأقل تدخل جراحي باستخدام تقنيات التنظير الحديثة.", icon:"⚕️" },
+  { id:"6", name_en:"Men's Health", name_ar:"صحة الرجال", description_en:"Comprehensive men's health care with a confidential, respectful approach.", description_ar:"رعاية شاملة لصحة الرجال بنهج سري ومحترم.", icon:"👨‍⚕️" },
 ];
 
-const PROCEDURES = {
-  10: ["Micro-TESE / sperm retrieval techniques","Microsurgical subinguinal varicocelectomy","Varicocele treatment","Male infertility evaluation and treatment","Non-obstructive azoospermia management","Erectile dysfunction management","Penile prosthesis implantation","Peyronie's disease treatment","Premature ejaculation treatment","Regenerative therapy for ED"],
-  20: ["Ureteroscopy","Flexible ureteroscopy","Retrograde intrarenal surgery","PCNL / percutaneous nephrolithotomy","Mini-percutaneous antegrade ureteroscopic lithotripsy","ESWL / shock wave lithotripsy","Laparoscopic ureterolithotomy","Medical expulsive therapy for ureteric stones"],
-  30: ["TURP / transurethral resection of prostate","TUNA / transurethral needle ablation of prostate","Rezum water vapor therapy","Echolaser technology","Prostate cancer early detection: PSA density, transition zone biopsy","Laparoscopic radical prostatectomy"],
-  40: ["Urethroplasty","Lingual mucosal graft urethroplasty","Buccal mucosal graft urethroplasty","Female urethral reconstruction"],
-  50: ["Laparoscopic cyst decortication","Laparoscopic partial nephrectomy","Laparoscopic nephrectomy","Laparoscopic radical prostatectomy","Laparoscopic ureteroureterostomy","Laparoscopic renal cryoablation"],
-  60: ["Urodynamics","Posterior / percutaneous tibial nerve stimulation","Treatment of overactive bladder / detrusor overactivity","Painful bladder syndrome / interstitial cystitis","Nocturnal enuresis management","Female stress urinary incontinence surgery / sling procedures"],
-  70: ["Hypospadias repair complications","Distal and mid-penile hypospadias repair","Vesicoureteric reflux treatment","Pediatric incontinence"],
-  80: ["Endopyelotomy for UPJ obstruction","Ureteric reimplantation","Renal stone surgery","Large/staghorn kidney stone management"],
-};
-
 export default async function ServicesPage() {
-  const services = await getServices();
+  const dbServices = await getServices();
+  const services = dbServices.length > 0 ? dbServices : defaultServices;
 
   return (
     <>
@@ -44,42 +33,17 @@ export default async function ServicesPage() {
         <p><span className="en">Comprehensive care led by academic expertise and surgical precision.</span><span className="ar">رعاية شاملة بقيادة الخبرة الأكاديمية والدقة الجراحية.</span></p>
       </div>
       <main>
-        {CATEGORIES.map(cat => {
-          const catServices = services.filter(s => s.sort_order >= cat.range[0] && s.sort_order <= cat.range[1]);
-          const mainService = catServices[0];
-          const procs = PROCEDURES[cat.range[0]] || [];
-          if (!mainService) return null;
-          return (
-            <section key={cat.sort} className="section" style={{borderBottom:"1px solid var(--line)",paddingBottom:"64px"}}>
-              <div className="section-kicker">
-                <span className="en">{mainService.icon} {cat.label_en}</span>
-                <span className="ar">{mainService.icon} {cat.label_ar}</span>
+        <section className="section">
+          <div className="service-grid">
+            {services.map(svc => (
+              <div key={svc.id} className="service-card">
+                {svc.icon && <div className="service-icon">{svc.icon}</div>}
+                <h3><span className="en">{svc.name_en}</span><span className="ar">{svc.name_ar}</span></h3>
+                <p><span className="en">{svc.description_en}</span><span className="ar">{svc.description_ar}</span></p>
               </div>
-              <div className="split" style={{gap:"clamp(24px,4vw,60px)"}}>
-                <div>
-                  <h2 style={{fontSize:"clamp(24px,3vw,38px)"}}>
-                    <span className="en">{mainService.name_en}</span>
-                    <span className="ar">{mainService.name_ar}</span>
-                  </h2>
-                  <p style={{color:"var(--muted)",lineHeight:"1.7",marginTop:"16px",fontSize:"17px"}}>
-                    <span className="en">{mainService.description_en}</span>
-                    <span className="ar">{mainService.description_ar}</span>
-                  </p>
-                </div>
-                <div>
-                  <p style={{fontSize:"12px",fontWeight:"800",textTransform:"uppercase",letterSpacing:"0.5px",color:"var(--gold)",marginBottom:"14px"}}>
-                    <span className="en">Procedures & Treatments</span>
-                    <span className="ar">الإجراءات والعلاجات</span>
-                  </p>
-                  <ul style={{margin:0,padding:"0 0 0 18px",display:"grid",gap:"8px",color:"var(--muted)",lineHeight:"1.6"}}>
-                    {procs.map(p => <li key={p}>{p}</li>)}
-                  </ul>
-                </div>
-              </div>
-            </section>
-          );
-        })}
-
+            ))}
+          </div>
+        </section>
         <section className="section final-cta">
           <h2><span className="en">Book a Consultation</span><span className="ar">احجز استشارة</span></h2>
           <div className="hero-actions">
