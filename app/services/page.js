@@ -2,80 +2,116 @@ export const revalidate = 0;
 import Link from "next/link";
 import Header from "../../components/Header.js";
 import Footer from "../../components/Footer.js";
-import { createClient } from "@supabase/supabase-js";
 
 export const metadata = { title: "Services | Dr. Maged Ragab" };
 
-async function getServices() {
-  try {
-    const supabase = createClient(process.env.NEXT_PUBLIC_SUPABASE_URL, process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
-    const { data } = await supabase.from("services").select("*").eq("active", true).order("sort_order");
-    return data || [];
-  } catch { return []; }
-}
-
-const CATEGORIES = [
+const SERVICES = [
   {
     title_en: "Male Infertility & Reproductive Health",
     title_ar: "العقم عند الرجال وصحة الإنجاب",
     icon: "🔬",
-    procedures_en: ["Male Infertility Evaluation","Azoospermia (Micro-TESE)","Varicocele Surgery","Semen Analysis & Treatment","Hormonal Assessment & Therapy"],
-    procedures_ar: ["تقييم العقم عند الرجال","انعدام الحيوانات المنوية (Micro-TESE)","جراحة الدوالي","تحليل السائل المنوي والعلاج","التقييم الهرموني والعلاج"],
+    procedures: [
+      ["Male Infertility Evaluation & Treatment", "تقييم وعلاج العقم عند الرجال"],
+      ["Azoospermia — Micro-TESE (Microsurgical Sperm Retrieval)", "انعدام الحيوانات المنوية — Micro-TESE"],
+      ["Varicocele Surgery (Open & Microsurgical)", "جراحة الدوالي (مفتوحة ودقيقة)"],
+      ["Semen Analysis & Advanced Sperm Testing", "تحليل السائل المنوي والفحوصات المتقدمة"],
+      ["Hormonal Assessment & Therapy", "التقييم الهرموني والعلاج"],
+      ["Oncofertility & Sperm Banking", "الخصوبة الورمية وبنك الحيوانات المنوية"],
+    ],
   },
   {
     title_en: "Erectile Dysfunction & Sexual Medicine",
     title_ar: "ضعف الانتصاب والطب الجنسي",
     icon: "💊",
-    procedures_en: ["Erectile Dysfunction Treatment","Penile Prosthesis Implantation","Peyronie's Disease Management","Premature Ejaculation Treatment","Sexual Health Counselling"],
-    procedures_ar: ["علاج ضعف الانتصاب","زراعة دعامات القضيب","علاج مرض بيروني","علاج سرعة القذف","استشارات الصحة الجنسية"],
+    procedures: [
+      ["Erectile Dysfunction — Diagnosis & Treatment", "تشخيص وعلاج ضعف الانتصاب"],
+      ["Penile Prosthesis Implantation", "زراعة دعامات القضيب"],
+      ["Peyronie's Disease Management", "علاج مرض بيروني (انحناء القضيب)"],
+      ["Premature Ejaculation Treatment", "علاج سرعة القذف"],
+      ["Low Testosterone / Hypogonadism", "نقص التستوستيرون / قصور الغدد التناسلية"],
+      ["Sexual Health Counselling", "استشارات الصحة الجنسية"],
+    ],
   },
   {
     title_en: "Prostate Diseases",
     title_ar: "أمراض البروستاتا",
     icon: "🏥",
-    procedures_en: ["Benign Prostatic Hyperplasia (BPH)","Rezum Steam Therapy","Echolaser Prostate Treatment","Prostatitis Management","PSA Screening & Diagnosis"],
-    procedures_ar: ["تضخم البروستاتا الحميد","علاج الريزوم بالبخار","علاج البروستاتا بالإيكو ليزر","علاج التهاب البروستاتا","فحص PSA والتشخيص"],
+    procedures: [
+      ["Benign Prostatic Hyperplasia (BPH)", "تضخم البروستاتا الحميد"],
+      ["Rezum Steam Therapy for BPH", "علاج الريزوم بالبخار لتضخم البروستاتا"],
+      ["Echolaser Prostate Treatment", "علاج البروستاتا بالإيكو ليزر"],
+      ["Prostatitis (Acute & Chronic)", "التهاب البروستاتا الحاد والمزمن"],
+      ["PSA Screening & Prostate Cancer Diagnosis", "فحص PSA وتشخيص سرطان البروستاتا"],
+      ["TURP & Minimally Invasive Prostate Surgery", "استئصال البروستاتا بالمنظار والجراحة الأقل توغلاً"],
+    ],
   },
   {
-    title_en: "Kidney & Urinary Stones",
+    title_en: "Kidney & Urinary Tract Stones",
     title_ar: "حصوات الكلى والمسالك البولية",
     icon: "⚕️",
-    procedures_en: ["Kidney Stone Management","Ureteroscopy (URS)","PCNL (Percutaneous Surgery)","ESWL (Shock Wave Lithotripsy)","Ureteral Stenting"],
-    procedures_ar: ["علاج حصوات الكلى","تنظير الحالب","جراحة عبر الجلد (PCNL)","تفتيت الحصوات بالموجات الصوتية","تركيب دعامة الحالب"],
+    procedures: [
+      ["Kidney Stone Diagnosis & Management", "تشخيص وعلاج حصوات الكلى"],
+      ["Flexible Ureteroscopy (RIRS)", "تنظير الحالب المرن"],
+      ["PCNL (Percutaneous Nephrolithotomy)", "استخراج الحصوات عبر الجلد (PCNL)"],
+      ["ESWL (Shock Wave Lithotripsy)", "تفتيت الحصوات بالموجات الصوتية"],
+      ["Ureteral Stenting (Double J)", "تركيب دعامة الحالب (Double J)"],
+      ["Stone Prevention & Metabolic Workup", "الوقاية من الحصوات والتقييم الأيضي"],
+    ],
   },
   {
     title_en: "Bladder Diseases",
     title_ar: "أمراض المثانة",
     icon: "💧",
-    procedures_en: ["Overactive Bladder","Urinary Incontinence","Bladder Cancer Screening","Cystoscopy","Interstitial Cystitis"],
-    procedures_ar: ["المثانة النشطة","سلس البول","فحص سرطان المثانة","تنظير المثانة","التهاب المثانة الخلالي"],
+    procedures: [
+      ["Overactive Bladder (OAB)", "المثانة فرطة النشاط"],
+      ["Urinary Incontinence", "سلس البول"],
+      ["Bladder Cancer — Screening & TURBT", "سرطان المثانة — الفحص والاستئصال بالمنظار"],
+      ["Cystoscopy & Bladder Biopsy", "تنظير المثانة والخزعة"],
+      ["Interstitial Cystitis", "التهاب المثانة الخلالي"],
+      ["Neurogenic Bladder", "المثانة العصبية"],
+    ],
   },
   {
     title_en: "Urinary Tract Infections",
     title_ar: "التهابات المسالك البولية",
     icon: "🔵",
-    procedures_en: ["UTI Diagnosis & Treatment","Recurrent UTI Management","Kidney Infection (Pyelonephritis)","Prostate Infection Treatment","Sexually Transmitted Infections"],
-    procedures_ar: ["تشخيص وعلاج التهابات المسالك","إدارة التهابات المسالك المتكررة","التهاب الكلى (التهاب الحويضة)","علاج التهاب البروستاتا","الأمراض المنقولة جنسياً"],
+    procedures: [
+      ["UTI Diagnosis & Treatment", "تشخيص وعلاج التهابات المسالك البولية"],
+      ["Recurrent UTI Management", "إدارة التهابات المسالك المتكررة"],
+      ["Kidney Infection (Pyelonephritis)", "التهاب الكلى (التهاب الحويضة والكلية)"],
+      ["Epididymo-orchitis", "التهاب البربخ والخصية"],
+      ["Sexually Transmitted Infections (STIs)", "الأمراض المنقولة جنسياً"],
+    ],
   },
   {
     title_en: "Scrotal & Testicular Conditions",
     title_ar: "أمراض الصفن والخصية",
     icon: "🩺",
-    procedures_en: ["Varicocele Repair","Hydrocele Surgery","Epididymal Cyst Removal","Testicular Torsion","Orchitis Management"],
-    procedures_ar: ["علاج دوالي الخصية","جراحة القيلة المائية","إزالة كيس البربخ","التواء الخصية","إدارة التهاب الخصية"],
+    procedures: [
+      ["Varicocele Repair", "إصلاح دوالي الخصية"],
+      ["Hydrocele Surgery", "جراحة القيلة المائية"],
+      ["Epididymal Cyst Removal", "إزالة كيس البربخ"],
+      ["Testicular Torsion", "التواء الخصية"],
+      ["Undescended Testis (Orchidopexy)", "الخصية المعلقة (نزول الخصية)"],
+      ["Testicular Cancer Screening", "فحص سرطان الخصية"],
+    ],
   },
   {
-    title_en: "Advanced & Minimally Invasive Surgery",
-    title_ar: "الجراحة المتقدمة والأقل توغلاً",
+    title_en: "Endourology & Minimally Invasive Surgery",
+    title_ar: "الجراحة التنظيرية والأقل توغلاً",
     icon: "🔆",
-    procedures_en: ["Laparoscopic Urology","Endoscopic Surgery","Circumcision (Adults & Children)","Urethral Stricture Treatment","Penile Surgery"],
-    procedures_ar: ["جراحة المسالك بالمنظار","الجراحة التنظيرية","الختان (بالغين وأطفال)","علاج تضيق الإحليل","جراحة القضيب"],
+    procedures: [
+      ["Laparoscopic Urology", "جراحة المسالك البولية بالمنظار"],
+      ["Urethral Stricture & Urethroplasty", "تضيق الإحليل وإعادة بنائه"],
+      ["Circumcision (Adults & Children)", "الختان (بالغين وأطفال)"],
+      ["Flexible Cystoscopy", "تنظير المثانة المرن"],
+      ["Retrograde Intrarenal Surgery (RIRS)", "جراحة الكلى التراجعية داخل الكلية"],
+      ["Penile Surgery", "جراحة القضيب"],
+    ],
   },
 ];
 
-export default async function ServicesPage() {
-  const dbServices = await getServices();
-
+export default function ServicesPage() {
   return (
     <>
       <Header isPage />
@@ -86,47 +122,34 @@ export default async function ServicesPage() {
       </div>
 
       <main>
-        {/* Dynamic services from Supabase if available, else show full categories */}
-        {dbServices.length > 0 ? (
-          <section className="section">
-            <div className="service-grid">
-              {dbServices.map(svc => (
-                <div key={svc.id} className="service-card">
-                  {svc.icon && <div className="service-icon">{svc.icon}</div>}
-                  <h3><span className="en">{svc.name_en}</span><span className="ar">{svc.name_ar}</span></h3>
-                  <p><span className="en">{svc.description_en}</span><span className="ar">{svc.description_ar}</span></p>
+        <section className="section">
+          <div style={{display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(320px, 1fr))", gap:"24px", maxWidth:"1200px", margin:"0 auto"}}>
+            {SERVICES.map((svc, i) => (
+              <div key={i} style={{background:"#fff", border:"1px solid #e8eaec", borderRadius:"16px", padding:"28px", boxShadow:"0 2px 12px rgba(7,21,37,0.06)", display:"flex", flexDirection:"column"}}>
+                {/* Header */}
+                <div style={{display:"flex", alignItems:"center", gap:"12px", marginBottom:"20px", paddingBottom:"16px", borderBottom:"2px solid #f0f2f4"}}>
+                  <span style={{fontSize:"32px", lineHeight:1}}>{svc.icon}</span>
+                  <h3 style={{margin:0, fontSize:"15px", color:"var(--navy)", fontWeight:"700", lineHeight:"1.4"}}>
+                    <span className="en">{svc.title_en}</span>
+                    <span className="ar">{svc.title_ar}</span>
+                  </h3>
                 </div>
-              ))}
-            </div>
-          </section>
-        ) : (
-          <section className="section">
-            <div style={{display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(340px, 1fr))", gap:"28px", maxWidth:"1200px", margin:"0 auto"}}>
-              {CATEGORIES.map((cat, i) => (
-                <div key={i} style={{background:"#fff", border:"1px solid #e8eaec", borderRadius:"16px", padding:"28px", boxShadow:"0 2px 12px rgba(7,21,37,0.06)"}}>
-                  <div style={{display:"flex", alignItems:"center", gap:"12px", marginBottom:"16px"}}>
-                    <span style={{fontSize:"28px"}}>{cat.icon}</span>
-                    <h3 style={{margin:0, fontSize:"16px", color:"var(--navy)", fontWeight:"700"}}>
-                      <span className="en">{cat.title_en}</span>
-                      <span className="ar">{cat.title_ar}</span>
-                    </h3>
-                  </div>
-                  <ul style={{listStyle:"none", padding:0, margin:0}}>
-                    {cat.procedures_en.map((proc, j) => (
-                      <li key={j} style={{display:"flex", alignItems:"center", gap:"8px", padding:"6px 0", borderBottom: j < cat.procedures_en.length-1 ? "1px solid #f0f2f4" : "none"}}>
-                        <span style={{color:"var(--gold)", fontSize:"12px", fontWeight:"700"}}>◆</span>
-                        <span style={{fontSize:"14px", color:"var(--ink)"}}>
-                          <span className="en">{proc}</span>
-                          <span className="ar">{cat.procedures_ar[j]}</span>
-                        </span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </section>
-        )}
+                {/* Procedures list */}
+                <ul style={{listStyle:"none", padding:0, margin:0, flex:1}}>
+                  {svc.procedures.map(([en, ar], j) => (
+                    <li key={j} style={{display:"flex", alignItems:"flex-start", gap:"10px", padding:"7px 0", borderBottom: j < svc.procedures.length - 1 ? "1px solid #f6f8fa" : "none"}}>
+                      <span style={{color:"var(--gold)", fontSize:"10px", fontWeight:"700", marginTop:"5px", flexShrink:0}}>◆</span>
+                      <span style={{fontSize:"14px", color:"var(--ink)", lineHeight:"1.5"}}>
+                        <span className="en">{en}</span>
+                        <span className="ar">{ar}</span>
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
 
         <section className="section final-cta">
           <h2><span className="en">Book a Consultation</span><span className="ar">احجز استشارة</span></h2>
