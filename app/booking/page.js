@@ -1,3 +1,4 @@
+export const revalidate = 0;
 import Header from "../../components/Header.js";
 import BookingFlow from "./BookingFlow.js";
 import { createClient } from "@supabase/supabase-js";
