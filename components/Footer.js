@@ -37,8 +37,7 @@ export default function Footer() {
           <span className="en">© 2026 Dr. Maged Ragab. All rights reserved.</span>
           <span className="ar">© 2026 د. ماجد رجب. جميع الحقوق محفوظة.</span>
         </p>
-        <a href="https://mednixis.com" target="_blank" rel="noopener noreferrer"
-          style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
+        <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
           <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", letterSpacing: "0.5px" }}>
             <span className="en">Powered & Managed by</span>
             <span className="ar">بتقنية وإدارة</span>
@@ -51,7 +50,7 @@ export default function Footer() {
             fontWeight: "800",
             letterSpacing: "1px",
           }}>MEDNIXIS</span>
-        </a>
+        </span>
       </div>
     </footer>
   );
