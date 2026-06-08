@@ -1,6 +1,6 @@
 export const revalidate = 0;
 import Header from "../../components/Header.js";
-import Footer from "../../components/Footer.js";
+
 
 export const metadata = { title: "About Dr. Maged Ragab | Professor of Urology & Andrology" };
 
@@ -155,7 +155,7 @@ export default function AboutPage() {
           </div>
         </section>
       </main>
-      <Footer />
+      
     </>
   );
 }
