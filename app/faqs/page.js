@@ -1,6 +1,6 @@
 export const revalidate = 0;
 import Header from "../../components/Header.js";
-import Footer from "../../components/Footer.js";
+
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 
@@ -51,7 +51,7 @@ export default async function FaqsPage() {
           </div>
         </section>
       </main>
-      <Footer />
+      
     </>
   );
 }
