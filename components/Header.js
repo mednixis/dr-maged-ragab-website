@@ -51,7 +51,7 @@ export default function Header({ isPage = false }) {
   return (
     <header className={cls} id="top">
       <Link className="brand" href="/" aria-label="Dr. Maged Ragab home">
-        <span className="brand-mark">MR</span>
+        <img src="/Transparent_LOGO.svg" alt="Dr. Maged Ragab" style={{height:"52px", width:"auto", display:"block"}} />
         <span className="en">Dr. Maged Ragab</span>
         <span className="ar">د. ماجد رجب</span>
       </Link>
