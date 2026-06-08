@@ -1,7 +1,7 @@
 export const revalidate = 0;
 import Link from "next/link";
 import Header from "../../components/Header.js";
-import Footer from "../../components/Footer.js";
+
 
 export const metadata = { title: "Services | Dr. Maged Ragab" };
 
@@ -159,7 +159,7 @@ export default function ServicesPage() {
           </div>
         </section>
       </main>
-      <Footer />
+      
     </>
   );
 }
