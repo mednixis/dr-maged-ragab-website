@@ -5,6 +5,12 @@ import { supabase } from "../../lib/supabase.js";
 const KAFR_DAYS  = [0,1,2,6]; // Sun Mon Tue Sat
 const MIVIDA_DAYS = [3,4];    // Wed Thu
 
+const COUNTRIES = [
+  "Egypt","Saudi Arabia","UAE","Kuwait","Qatar","Bahrain","Oman","Jordan","Lebanon","Libya",
+  "Sudan","Iraq","Syria","Yemen","Morocco","Tunisia","Algeria","Palestine","USA","UK",
+  "Canada","Germany","France","Italy","Spain","Australia","Netherlands","Belgium","Sweden","Switzerland"
+];
+
 function getAllowedDays(clinicName) {
   const n = (clinicName || "").toLowerCase();
   if (n.includes("kafr") || n.includes("sheikh")) return KAFR_DAYS;
@@ -16,11 +22,100 @@ function getDaysInMonth(year, month) {
   return new Date(year, month + 1, 0).getDate();
 }
 
+function InternationalForm({ onBack }) {
+  const [form, setForm] = useState({ name:"", phone:"", whatsapp:"", email:"", country:"Egypt", notes:"" });
+  const [submitting, setSubmitting] = useState(false);
+  const [done, setDone] = useState(false);
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    setSubmitting(true);
+    await supabase.from("booking_requests").insert({
+      patient_name: form.name,
+      phone: form.phone,
+      whatsapp: form.whatsapp,
+      email: form.email,
+      clinic: "International / Online",
+      booking_date: null,
+      booking_slot: "Online Zoom Consultation",
+      patient_type: "international",
+      notes: `Country: ${form.country}. ${form.notes}`,
+      status: "pending",
+    });
+    setDone(true);
+    setSubmitting(false);
+  }
+
+  if (done) return (
+    <div style={{ textAlign:"center", padding:"40px 20px" }}>
+      <div style={{ fontSize:"48px", marginBottom:"16px" }}>✅</div>
+      <h2 style={{ color:"var(--navy)" }}>
+        <span className="en">Request Received!</span>
+        <span className="ar">تم استلام طلبك!</span>
+      </h2>
+      <p style={{ color:"var(--muted)" }}>
+        <span className="en">We will contact you within 24 hours to schedule your online consultation.</span>
+        <span className="ar">سنتواصل معك خلال 24 ساعة لتحديد موعد استشارتك الإلكترونية.</span>
+      </p>
+    </div>
+  );
+
+  return (
+    <div>
+      <button onClick={onBack} style={{ background:"none", border:"none", color:"var(--gold)", cursor:"pointer", fontSize:"14px", marginBottom:"20px", padding:0 }}>
+        ← <span className="en">Back</span><span className="ar">رجوع</span>
+      </button>
+      <h2 style={{ color:"var(--navy)", marginBottom:"8px" }}>
+        <span className="en">International Consultation Request</span>
+        <span className="ar">طلب استشارة دولية</span>
+      </h2>
+      <p style={{ color:"var(--muted)", marginBottom:"24px", fontSize:"14px" }}>
+        <span className="en">Fill in your details and we will arrange a Zoom consultation with Professor Ragab.</span>
+        <span className="ar">أدخل بياناتك وسنرتب لك استشارة عبر Zoom مع الأستاذ الدكتور ماجد رجب.</span>
+      </p>
+      <form className="booking-form" onSubmit={handleSubmit}>
+        <label>
+          <span>Full Name / الاسم الكامل <span style={{color:"#e53e3e"}}>*</span></span>
+          <input required value={form.name} onChange={e=>setForm(p=>({...p,name:e.target.value}))} placeholder="Your full name / اسمك الكامل" />
+        </label>
+        <label>
+          <span>Phone / الهاتف <span style={{color:"#e53e3e"}}>*</span></span>
+          <input required value={form.phone} onChange={e=>setForm(p=>({...p,phone:e.target.value}))} placeholder="+20xxxxxxxxx" />
+        </label>
+        <label>
+          <span>WhatsApp <span style={{color:"#e53e3e"}}>*</span></span>
+          <input required value={form.whatsapp} onChange={e=>setForm(p=>({...p,whatsapp:e.target.value}))} placeholder="+20xxxxxxxxx" />
+        </label>
+        <label>
+          <span>Email / البريد الإلكتروني <span style={{color:"#e53e3e"}}>*</span></span>
+          <input required type="email" value={form.email} onChange={e=>setForm(p=>({...p,email:e.target.value}))} placeholder="your@email.com" />
+        </label>
+        <label>
+          <span>Country / الدولة <span style={{color:"#e53e3e"}}>*</span></span>
+          <select required value={form.country} onChange={e=>setForm(p=>({...p,country:e.target.value}))}>
+            {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
+          </select>
+        </label>
+        <label style={{gridColumn:"1/-1"}}>
+          <span>Medical Summary / ملخص الحالة</span>
+          <textarea rows={3} value={form.notes} onChange={e=>setForm(p=>({...p,notes:e.target.value}))} placeholder="Brief description of your condition / وصف مختصر لحالتك" />
+        </label>
+        <div className="hero-actions" style={{gridColumn:"1/-1"}}>
+          <button type="submit" className="button primary" disabled={submitting}>
+            {submitting ? "Sending… / جاري الإرسال…" : "Send Request / إرسال الطلب"}
+          </button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
 export default function BookingFlow({ clinics }) {
   const today = new Date();
   today.setHours(0,0,0,0);
 
-  const [step, setStep]             = useState(1); // 1=clinic, 2=date, 3=slot, 4=form, 5=done
+  const [patientType, setPatientType] = useState(""); // "" = not chosen yet
+  const [step, setStep]             = useState(1);
   const [clinicId, setClinicId]     = useState("");
   const [year, setYear]             = useState(today.getFullYear());
   const [month, setMonth]           = useState(today.getMonth());
@@ -33,6 +128,49 @@ export default function BookingFlow({ clinics }) {
 
   const clinic      = clinics.find(c => c.id === clinicId);
   const allowedDays = getAllowedDays(clinic?.name_en || "");
+
+  // Show patient type selection first
+  if (!patientType) return (
+    <div style={{ textAlign:"center", padding:"40px 20px" }}>
+      <h2 style={{ color:"var(--navy)", marginBottom:"8px" }}>
+        <span className="en">How would you like to consult?</span>
+        <span className="ar">كيف تريد الاستشارة؟</span>
+      </h2>
+      <p style={{ color:"var(--muted)", marginBottom:"32px", fontSize:"15px" }}>
+        <span className="en">Choose your patient type to get started.</span>
+        <span className="ar">اختر نوع المريض للبدء.</span>
+      </p>
+      <div className="choice-grid" style={{ maxWidth:"500px", margin:"0 auto" }}>
+        <button className="choice-card" onClick={() => setPatientType("local")}
+          style={{ padding:"28px 20px", cursor:"pointer", textAlign:"center" }}>
+          <div style={{ fontSize:"36px", marginBottom:"12px" }}>🏥</div>
+          <strong style={{ display:"block", color:"var(--navy)", fontSize:"16px", marginBottom:"6px" }}>
+            <span className="en">Local Patient</span><span className="ar">مريض محلي</span>
+          </strong>
+          <span style={{ color:"var(--muted)", fontSize:"13px" }}>
+            <span className="en">Book a clinic appointment in Egypt</span>
+            <span className="ar">احجز موعداً في إحدى العيادات</span>
+          </span>
+        </button>
+        <button className="choice-card" onClick={() => setPatientType("international")}
+          style={{ padding:"28px 20px", cursor:"pointer", textAlign:"center" }}>
+          <div style={{ fontSize:"36px", marginBottom:"12px" }}>🌍</div>
+          <strong style={{ display:"block", color:"var(--navy)", fontSize:"16px", marginBottom:"6px" }}>
+            <span className="en">International Patient</span><span className="ar">مريض دولي</span>
+          </strong>
+          <span style={{ color:"var(--muted)", fontSize:"13px" }}>
+            <span className="en">Online Zoom consultation from anywhere</span>
+            <span className="ar">استشارة عبر Zoom من أي مكان</span>
+          </span>
+        </button>
+      </div>
+    </div>
+  );
+
+  // International flow
+  if (patientType === "international") return (
+    <InternationalForm onBack={() => setPatientType("")} />
+  );
   const todayStr    = today.toISOString().split("T")[0];
 
   // fetch open slots when date selected
