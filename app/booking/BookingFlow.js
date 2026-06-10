@@ -62,7 +62,7 @@ export default function BookingFlow({ clinics }) {
     if (!selSlot) return;
     setSubmitting(true);
     await supabase.from("appointment_slots").update({ status:"held" }).eq("id", selSlot.id);
-    await supabase.from("booking_requests").insert({
+    const { data: bookingData } = await supabase.from("booking_requests").insert({
       patient_name: localForm.name,
       phone:        localForm.phone,
       whatsapp:     localForm.whatsapp,
@@ -74,7 +74,17 @@ export default function BookingFlow({ clinics }) {
       notes:        localForm.notes,
       status:       "pending",
       slot_id:      selSlot.id,
-    });
+    }).select().single();
+
+    // Upload files if any
+    if (localForm.files && localForm.files.length > 0 && bookingData?.id) {
+      for (const file of Array.from(localForm.files)) {
+        const ext = file.name.split(".").pop();
+        const path = `${bookingData.id}/${Date.now()}-${file.name}`;
+        await supabase.storage.from("patient-reports").upload(path, file, { upsert: true });
+      }
+    }
+
     setSubmitting(false);
     setStep(5);
   }
@@ -83,7 +93,7 @@ export default function BookingFlow({ clinics }) {
   async function handleIntlSubmit(e) {
     e.preventDefault();
     setSubmitting(true);
-    await supabase.from("booking_requests").insert({
+    const { data: bookingData } = await supabase.from("booking_requests").insert({
       patient_name: intlForm.name,
       phone:        intlForm.phone,
       whatsapp:     intlForm.whatsapp,
@@ -94,7 +104,16 @@ export default function BookingFlow({ clinics }) {
       patient_type: "international",
       notes:        `Country: ${intlForm.country}. ${intlForm.notes}`,
       status:       "pending",
-    });
+    }).select().single();
+
+    // Upload files if any
+    if (intlForm.files && intlForm.files.length > 0 && bookingData?.id) {
+      for (const file of Array.from(intlForm.files)) {
+        const path = `${bookingData.id}/${Date.now()}-${file.name}`;
+        await supabase.storage.from("patient-reports").upload(path, file, { upsert: true });
+      }
+    }
+
     setSubmitting(false);
     setIntlDone(true);
   }
@@ -191,6 +210,13 @@ export default function BookingFlow({ clinics }) {
           <label style={{gridColumn:"1/-1"}}>
             <span>Medical Summary / ملخص الحالة</span>
             <textarea rows={3} value={intlForm.notes} onChange={e=>setIntlForm(p=>({...p,notes:e.target.value}))} placeholder="Brief description of your condition" />
+          </label>
+          <label style={{gridColumn:"1/-1"}}>
+            <span>Attach Medical Reports / إرفاق التقارير الطبية <span style={{color:"var(--muted)",fontSize:"12px",fontWeight:"400"}}>(optional / اختياري)</span></span>
+            <input type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+              onChange={e=>setIntlForm(p=>({...p,files:e.target.files}))}
+              style={{padding:"8px",border:"1px dashed var(--line)",borderRadius:"6px",background:"#f6f8fa",cursor:"pointer"}} />
+            <span style={{fontSize:"11px",color:"var(--muted)"}}>PDF, JPG, PNG, DOC accepted — max 10MB each</span>
           </label>
           <label className="consent" style={{gridColumn:"1/-1"}}>
             <input type="checkbox" required />
@@ -351,6 +377,13 @@ export default function BookingFlow({ clinics }) {
             <label style={{gridColumn:"1/-1"}}>
               <span>Notes / ملاحظات</span>
               <textarea rows={3} value={localForm.notes} onChange={e=>setLocalForm(p=>({...p,notes:e.target.value}))} placeholder="Optional notes / ملاحظات اختيارية" />
+            </label>
+            <label style={{gridColumn:"1/-1"}}>
+              <span>Attach Medical Reports / إرفاق التقارير الطبية <span style={{color:"var(--muted)",fontSize:"12px",fontWeight:"400"}}>(optional / اختياري)</span></span>
+              <input type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
+                onChange={e=>setLocalForm(p=>({...p,files:e.target.files}))}
+                style={{padding:"8px",border:"1px dashed var(--line)",borderRadius:"6px",background:"#f6f8fa",cursor:"pointer"}} />
+              <span style={{fontSize:"11px",color:"var(--muted)"}}>PDF, JPG, PNG, DOC accepted — max 10MB each</span>
             </label>
             <label className="consent" style={{gridColumn:"1/-1"}}>
               <input type="checkbox" required />
