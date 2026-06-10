@@ -133,6 +133,11 @@ export default function BookingFlow({ clinics }) {
   const clinic      = clinics.find(c => c.id === clinicId);
   const allowedDays = getAllowedDays(clinic?.name_en || "");
 
+  const daysInMonth = getDaysInMonth(year, month);
+  const firstDow    = new Date(year, month, 1).getDay();
+  const DAYS        = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+  const MONTHS      = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
   // Show patient type selection first
   if (!patientType) return (
     <div style={{ textAlign:"center", padding:"40px 20px" }}>
@@ -218,11 +223,6 @@ export default function BookingFlow({ clinics }) {
     setSubmitting(false);
     setStep(5);
   }
-
-  const daysInMonth = getDaysInMonth(year, month);
-  const firstDow    = new Date(year, month, 1).getDay();
-  const DAYS        = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
-  const MONTHS      = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
   return (
     <div style={{maxWidth:"860px",margin:"0 auto"}}>
