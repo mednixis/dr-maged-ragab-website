@@ -301,12 +301,19 @@ export default function BookingFlow({ clinics }) {
           <p style={{color:"var(--muted)",fontSize:"13px",marginBottom:"16px"}}>{selDate}</p>
           {loading ? <p><span className="en">Loading slots…</span><span className="ar">جاري التحميل…</span></p> :
            slots.length === 0 ? <p style={{color:"var(--muted)"}}><span className="en">No available slots for this date.</span><span className="ar">لا توجد مواعيد متاحة لهذا اليوم.</span></p> : (
-            <div className="choice-grid">
+            <div style={{display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(120px, 1fr))", gap:"8px", marginBottom:"24px"}}>
               {slots.map(s => (
-                <button key={s.id} className={`choice-card ${selSlot?.id===s.id?"selected":""}`}
+                <button key={s.id}
                   onClick={() => setSelSlot(s)}
-                  style={{padding:"12px",textAlign:"center",cursor:"pointer"}}>
-                  {s.start_time?.slice(0,5)} – {s.end_time?.slice(0,5)}
+                  style={{
+                    padding:"10px 8px", textAlign:"center", borderRadius:"8px", fontSize:"13px",
+                    border: selSlot?.id===s.id ? "2px solid var(--gold)" : "1px solid #e8eaec",
+                    background: selSlot?.id===s.id ? "var(--gold)" : "#fff",
+                    color: selSlot?.id===s.id ? "#fff" : "var(--navy)",
+                    cursor:"pointer", fontWeight: selSlot?.id===s.id ? "700" : "400",
+                    transition:"all 0.15s ease",
+                  }}>
+                  {s.start_time?.slice(0,5)}
                 </button>
               ))}
             </div>
