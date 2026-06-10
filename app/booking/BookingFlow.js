@@ -100,6 +100,10 @@ function InternationalForm({ onBack }) {
           <span>Medical Summary / ملخص الحالة</span>
           <textarea rows={3} value={form.notes} onChange={e=>setForm(p=>({...p,notes:e.target.value}))} placeholder="Brief description of your condition / وصف مختصر لحالتك" />
         </label>
+        <label className="consent" style={{gridColumn:"1/-1"}}>
+          <input type="checkbox" required />
+          <span>I confirm my details are correct and agree to the clinic's policies. / أؤكد صحة بياناتي وأوافق على سياسات العيادة.</span>
+        </label>
         <div className="hero-actions" style={{gridColumn:"1/-1"}}>
           <button type="submit" className="button primary" disabled={submitting}>
             {submitting ? "Sending… / جاري الإرسال…" : "Send Request / إرسال الطلب"}
