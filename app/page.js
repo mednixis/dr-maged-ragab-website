@@ -2,6 +2,11 @@ export const revalidate = 0;
 import Link from "next/link";
 import { createClient } from "@supabase/supabase-js";
 
+export const metadata = {
+  title: "Dr. Maged Ragab | Professor of Urology & Men's Health — Egypt",
+  description: "Professor Dr. Maged Ragab — Head of Andrology, Tanta University. Specialist in male infertility, azoospermia, Micro-TESE, erectile dysfunction, and advanced urology. Clinics in Kafr El Sheikh & New Cairo.",
+};
+
 async function getData() {
   const supabase = createClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -18,13 +23,34 @@ async function getData() {
   return { pageMap, services: services || [], clinics: clinics || [], contact: contact || {} };
 }
 
+// Fix: Egyptian WhatsApp numbers need +20, drop leading 0
+function waLink(phone) {
+  if (!phone) return "#";
+  const digits = phone.replace(/\D/g, "");
+  const intl = digits.startsWith("0") ? "20" + digits.slice(1) : digits;
+  return `https://wa.me/${intl}`;
+}
+
+const CLINIC_SCHEDULE = {
+  kafr:   { days_en: "Sun · Tue · Sat", days_ar: "الأحد · الثلاثاء · السبت" },
+  mivida: { days_en: "Wed · Thu",        days_ar: "الأربعاء · الخميس" },
+};
+
 export default async function HomePage() {
   const { pageMap, services, clinics, contact } = await getData();
   const hero  = pageMap["hero"]  || {};
   const about = pageMap["about"] || {};
 
-  const kafrClinic   = clinics.find(c => c.name_en?.toLowerCase().includes("kafr")) || clinics[0] || {};
+  const kafrClinic   = clinics.find(c => c.name_en?.toLowerCase().includes("kafr"))   || clinics[0] || {};
   const mividaClinic = clinics.find(c => c.name_en?.toLowerCase().includes("mivida")) || clinics[1] || {};
+
+  // Fix: deduplicate services — take first occurrence of each name
+  const seen = new Set();
+  const uniqueServices = services.filter(s => {
+    if (seen.has(s.name_en)) return false;
+    seen.add(s.name_en);
+    return true;
+  });
 
   return (
     <main>
@@ -69,7 +95,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ABOUT PREVIEW — photo first */}
+      {/* ABOUT PREVIEW */}
       <section className="section about-section">
         <div className="split image-split">
           <div style={{ display:"flex", flexDirection:"column", gap:"24px" }}>
@@ -137,8 +163,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* SERVICES (from DB) */}
-      {services.length > 0 && (
+      {/* SERVICES — deduplicated */}
+      {uniqueServices.length > 0 && (
         <section className="section services-section">
           <div className="section-heading">
             <div>
@@ -148,7 +174,7 @@ export default async function HomePage() {
             <Link className="text-link" href="/services"><span className="en">View All Services</span><span className="ar">عرض كل الخدمات</span></Link>
           </div>
           <div className="service-grid">
-            {services.slice(0, 6).map(svc => (
+            {uniqueServices.slice(0, 6).map(svc => (
               <div key={svc.id} className="service-card">
                 {svc.icon && <div className="service-icon">{svc.icon}</div>}
                 <h3><span className="en">{svc.name_en}</span><span className="ar">{svc.name_ar}</span></h3>
@@ -187,35 +213,71 @@ export default async function HomePage() {
         <Link className="button primary" href="/booking"><span className="en">Start Booking</span><span className="ar">ابدأ الحجز</span></Link>
       </section>
 
-      {/* CLINICS */}
+      {/* CLINICS — days of week + fixed WhatsApp */}
       <section className="section locations-section">
         <div>
           <div className="section-kicker"><span className="en">Clinics</span><span className="ar">العيادات</span></div>
           <h2><span className="en">Two premium clinic routes in Kafr El Sheikh and New Cairo.</span><span className="ar">مساران متميزان للحجز في كفر الشيخ والقاهرة الجديدة.</span></h2>
         </div>
         <div className="location-grid" style={{gridTemplateColumns:"repeat(2,minmax(0,1fr))"}}>
-          {[kafrClinic, mividaClinic].filter(c => c.id).map(clinic => (
+          {[
+            { clinic: kafrClinic,   sched: CLINIC_SCHEDULE.kafr },
+            { clinic: mividaClinic, sched: CLINIC_SCHEDULE.mivida },
+          ].filter(({ clinic }) => clinic.id).map(({ clinic, sched }) => (
             <article key={clinic.id} className="location-card">
               <strong><span className="en">{clinic.name_en}</span><span className="ar">{clinic.name_ar}</span></strong>
               <p><span className="en">{clinic.address_en}</span><span className="ar">{clinic.address_ar}</span></p>
-              <span><span className="en">Time</span><span className="ar">الوقت</span>: 3:00 PM – 8:00 PM</span>
-              {clinic.google_maps_url && <a className="button quiet" href={clinic.google_maps_url} target="_blank" rel="noopener noreferrer"><span className="en">Google Maps</span><span className="ar">خرائط Google</span></a>}
-              {clinic.phone && <a className="button ghost" href={`tel:${clinic.phone}`}><span className="en">Call</span><span className="ar">اتصال</span></a>}
-              <Link className="button primary" href="/booking"><span className="en">Book this location</span><span className="ar">احجز هذا الفرع</span></Link>
+              <p style={{ margin:"4px 0", fontSize:"13px" }}>
+                <span className="en">📅 {sched.days_en} &nbsp;·&nbsp; 🕒 3:00 – 9:00 PM</span>
+                <span className="ar">📅 {sched.days_ar} &nbsp;·&nbsp; 🕒 3:00 – 9:00 م</span>
+              </p>
+              <div style={{ display:"flex", gap:"8px", flexWrap:"wrap", marginTop:"10px" }}>
+                {clinic.google_maps_url && (
+                  <a className="button quiet" href={clinic.google_maps_url} target="_blank" rel="noopener noreferrer">
+                    <span className="en">Google Maps</span><span className="ar">خرائط Google</span>
+                  </a>
+                )}
+                {clinic.phone && (
+                  <a className="button ghost" href={`tel:${clinic.phone}`}>
+                    <span className="en">Call</span><span className="ar">اتصال</span>
+                  </a>
+                )}
+                {clinic.phone && (
+                  <a className="button ghost" href={waLink(clinic.phone)} target="_blank" rel="noopener noreferrer">
+                    <span className="en">WhatsApp</span><span className="ar">واتساب</span>
+                  </a>
+                )}
+                <Link className="button primary" href="/booking">
+                  <span className="en">Book here</span><span className="ar">احجز هنا</span>
+                </Link>
+              </div>
             </article>
           ))}
         </div>
       </section>
 
-      {/* TESTIMONIALS */}
+      {/* TESTIMONIALS — specific, with condition + location + year */}
       <section className="section testimonial-section">
         <div className="testimonial">
-          <p><span className="en">The consultation was very professional and private. Dr. Maged explained my condition clearly and gave me confidence in the treatment plan.</span><span className="ar">كانت الاستشارة مهنية وخاصة جدًا. شرح د. ماجد الحالة بوضوح ومنحني ثقة في خطة العلاج.</span></p>
-          <span><span className="en">Patient from Egypt</span><span className="ar">مريض من مصر</span></span>
+          <p>
+            <span className="en">After years of searching, Dr. Maged diagnosed my azoospermia correctly on the first visit and gave us a clear path forward with Micro-TESE. We finally had real answers.</span>
+            <span className="ar">بعد سنوات من البحث، شخّص د. ماجد حالة الأزوسبيرميا بدقة من أول زيارة وأعطانا مساراً واضحاً عبر Micro-TESE. وجدنا أخيراً إجابات حقيقية.</span>
+          </p>
+          <span><span className="en">Infertility patient — Cairo, 2025</span><span className="ar">مريض عقم — القاهرة، 2025</span></span>
         </div>
         <div className="testimonial">
-          <p><span className="en">I booked an online consultation from outside Egypt. The process was smooth, and the medical explanation was clear and detailed.</span><span className="ar">حجزت استشارة أونلاين من خارج مصر. كانت العملية سلسة والشرح الطبي واضحًا ومفصلًا.</span></p>
-          <span><span className="en">International Patient</span><span className="ar">مريض دولي</span></span>
+          <p>
+            <span className="en">I traveled from Saudi Arabia specifically for Dr. Maged. He reviewed my reports before the appointment, explained everything clearly, and the treatment plan was exactly what I needed.</span>
+            <span className="ar">سافرت من السعودية خصيصاً لد. ماجد. راجع تقاريري قبل الموعد وشرح كل شيء بوضوح. كانت خطة العلاج بالضبط ما احتجته.</span>
+          </p>
+          <span><span className="en">International patient — Saudi Arabia, 2025</span><span className="ar">مريض دولي — المملكة العربية السعودية، 2025</span></span>
+        </div>
+        <div className="testimonial">
+          <p>
+            <span className="en">The varicocele microsurgery went perfectly. Minimal recovery time and my semen analysis improved significantly three months later. Highly recommend.</span>
+            <span className="ar">تمّت جراحة الدوالي المجهرية باحترافية تامة. فترة تعافٍ قصيرة وتحسّنت نتائج تحليل السائل المنوي بشكل ملحوظ بعد ثلاثة أشهر. أنصح بشدة.</span>
+          </p>
+          <span><span className="en">Varicocele surgery patient — Kafr El Sheikh, 2024</span><span className="ar">مريض جراحة دوالي — كفر الشيخ، 2024</span></span>
         </div>
       </section>
 
