@@ -24,7 +24,6 @@ function getDaysInMonth(y,m) { return new Date(y,m+1,0).getDate(); }
 export default function BookingFlow({ clinics }) {
   const today = new Date(); today.setHours(0,0,0,0);
 
-  // ALL hooks at top - no conditionals before hooks
   const [patientType, setPatientType] = useState("");
   const [step,        setStep]        = useState(1);
   const [clinicId,    setClinicId]    = useState("");
@@ -35,8 +34,8 @@ export default function BookingFlow({ clinics }) {
   const [selSlot,     setSelSlot]     = useState(null);
   const [loading,     setLoading]     = useState(false);
   const [submitting,  setSubmitting]  = useState(false);
-  const [localForm,   setLocalForm]   = useState({ name:"", phone:"", whatsapp:"", email:"", notes:"" });
-  const [intlForm,    setIntlForm]    = useState({ name:"", phone:"", whatsapp:"", email:"", country:"Egypt", notes:"" });
+  const [localForm,   setLocalForm]   = useState({ name:"", phone:"", whatsapp:"", sameAsPhone:true, email:"", notes:"" });
+  const [intlForm,    setIntlForm]    = useState({ name:"", phone:"", whatsapp:"", sameAsPhone:true, email:"", country:"Egypt", notes:"" });
   const [intlDone,    setIntlDone]    = useState(false);
 
   const clinic      = clinics.find(c => c.id === clinicId);
@@ -56,17 +55,22 @@ export default function BookingFlow({ clinics }) {
       .then(({ data }) => { setSlots(data||[]); setLoading(false); });
   }, [selDate, clinicId]);
 
+  function waFallback() {
+    return "https://wa.me/201039310401";
+  }
+
   // ── LOCAL SUBMIT ──
   async function handleLocalSubmit(e) {
     e.preventDefault();
     if (!selSlot) return;
     setSubmitting(true);
+    const whatsapp = localForm.sameAsPhone ? localForm.phone : localForm.whatsapp;
     await supabase.from("appointment_slots").update({ status:"held" }).eq("id", selSlot.id);
     const { data: bookingData } = await supabase.from("booking_requests").insert({
       patient_name: localForm.name,
       phone:        localForm.phone,
-      whatsapp:     localForm.whatsapp,
-      email:        localForm.email,
+      whatsapp,
+      email:        localForm.email || null,
       clinic:       clinic?.name_en,
       booking_date: selDate,
       booking_slot: `${selSlot.start_time?.slice(0,5)} – ${selSlot.end_time?.slice(0,5)}`,
@@ -76,10 +80,8 @@ export default function BookingFlow({ clinics }) {
       slot_id:      selSlot.id,
     }).select().single();
 
-    // Upload files if any
     if (localForm.files && localForm.files.length > 0 && bookingData?.id) {
       for (const file of Array.from(localForm.files)) {
-        const ext = file.name.split(".").pop();
         const path = `${bookingData.id}/${Date.now()}-${file.name}`;
         await supabase.storage.from("patient-reports").upload(path, file, { upsert: true });
       }
@@ -93,11 +95,12 @@ export default function BookingFlow({ clinics }) {
   async function handleIntlSubmit(e) {
     e.preventDefault();
     setSubmitting(true);
+    const whatsapp = intlForm.sameAsPhone ? intlForm.phone : intlForm.whatsapp;
     const { data: bookingData } = await supabase.from("booking_requests").insert({
       patient_name: intlForm.name,
       phone:        intlForm.phone,
-      whatsapp:     intlForm.whatsapp,
-      email:        intlForm.email,
+      whatsapp,
+      email:        intlForm.email || null,
       clinic:       "International / Online",
       booking_date: null,
       booking_slot: "Online Zoom Consultation",
@@ -106,7 +109,6 @@ export default function BookingFlow({ clinics }) {
       status:       "pending",
     }).select().single();
 
-    // Upload files if any
     if (intlForm.files && intlForm.files.length > 0 && bookingData?.id) {
       for (const file of Array.from(intlForm.files)) {
         const path = `${bookingData.id}/${Date.now()}-${file.name}`;
@@ -168,6 +170,11 @@ export default function BookingFlow({ clinics }) {
           <span className="en">We will contact you within 24 hours to schedule your online consultation.</span>
           <span className="ar">سنتواصل معك خلال 24 ساعة لتحديد موعد استشارتك الإلكترونية.</span>
         </p>
+        <div style={{marginTop:"24px",padding:"16px",background:"#f6f8fa",borderRadius:"10px",display:"inline-block",textAlign:"left"}}>
+          <p style={{margin:"0 0 6px",fontSize:"14px"}}><strong>👤 {intlForm.name}</strong></p>
+          <p style={{margin:"0 0 6px",fontSize:"14px"}}>📞 {intlForm.phone}</p>
+          <p style={{margin:0,fontSize:"14px"}}>🌍 {intlForm.country}</p>
+        </div>
       </div>
     );
     return (
@@ -193,13 +200,21 @@ export default function BookingFlow({ clinics }) {
             <span>Phone / الهاتف <span style={{color:"#e53e3e"}}>*</span></span>
             <input required value={intlForm.phone} onChange={e=>setIntlForm(p=>({...p,phone:e.target.value}))} placeholder="+20xxxxxxxxx" />
           </label>
-          <label>
-            <span>WhatsApp <span style={{color:"#e53e3e"}}>*</span></span>
-            <input required value={intlForm.whatsapp} onChange={e=>setIntlForm(p=>({...p,whatsapp:e.target.value}))} placeholder="+20xxxxxxxxx" />
+          <label style={{gridColumn:"1/-1"}}>
+            <span className="consent" style={{display:"flex",alignItems:"center",gap:"8px",fontWeight:"400",fontSize:"13px"}}>
+              <input type="checkbox" checked={intlForm.sameAsPhone} onChange={e=>setIntlForm(p=>({...p,sameAsPhone:e.target.checked}))} />
+              WhatsApp number is the same as phone above / رقم الواتساب نفس رقم الهاتف
+            </span>
           </label>
+          {!intlForm.sameAsPhone && (
+            <label>
+              <span>WhatsApp <span style={{color:"#e53e3e"}}>*</span></span>
+              <input required value={intlForm.whatsapp} onChange={e=>setIntlForm(p=>({...p,whatsapp:e.target.value}))} placeholder="+20xxxxxxxxx" />
+            </label>
+          )}
           <label>
-            <span>Email <span style={{color:"#e53e3e"}}>*</span></span>
-            <input required type="email" value={intlForm.email} onChange={e=>setIntlForm(p=>({...p,email:e.target.value}))} placeholder="your@email.com" />
+            <span>Email <span style={{color:"var(--muted)",fontSize:"12px",fontWeight:"400"}}>(optional / اختياري)</span></span>
+            <input type="email" value={intlForm.email} onChange={e=>setIntlForm(p=>({...p,email:e.target.value}))} placeholder="your@email.com" />
           </label>
           <label>
             <span>Country / الدولة <span style={{color:"#e53e3e"}}>*</span></span>
@@ -208,8 +223,8 @@ export default function BookingFlow({ clinics }) {
             </select>
           </label>
           <label style={{gridColumn:"1/-1"}}>
-            <span>Medical Summary / ملخص الحالة</span>
-            <textarea rows={3} value={intlForm.notes} onChange={e=>setIntlForm(p=>({...p,notes:e.target.value}))} placeholder="Brief description of your condition" />
+            <span>Medical Summary / ملخص الحالة <span style={{color:"#e53e3e"}}>*</span></span>
+            <textarea required rows={3} value={intlForm.notes} onChange={e=>setIntlForm(p=>({...p,notes:e.target.value}))} placeholder="Brief description of your condition" />
           </label>
           <label style={{gridColumn:"1/-1"}}>
             <span>Attach Medical Reports / إرفاق التقارير الطبية <span style={{color:"var(--muted)",fontSize:"12px",fontWeight:"400"}}>(optional / اختياري)</span></span>
@@ -283,13 +298,11 @@ export default function BookingFlow({ clinics }) {
             <span className="en">Available days: {allowedDays.map(d=>DAYS[d]).join(", ")}</span>
             <span className="ar">الأيام المتاحة: {allowedDays.map(d=>DAYS[d]).join("، ")}</span>
           </p>
-          {/* Month nav */}
           <div style={{display:"flex",alignItems:"center",gap:"16px",marginBottom:"16px"}}>
             <button className="button ghost" onClick={() => { if(month===0){setMonth(11);setYear(y=>y-1);}else setMonth(m=>m-1); }}>←</button>
             <strong>{MONTHS[month]} {year}</strong>
             <button className="button ghost" onClick={() => { if(month===11){setMonth(0);setYear(y=>y+1);}else setMonth(m=>m+1); }}>→</button>
           </div>
-          {/* Calendar */}
           <div style={{display:"grid",gridTemplateColumns:"repeat(7,1fr)",gap:"4px",marginBottom:"24px"}}>
             {DAYS.map(d => <div key={d} style={{textAlign:"center",fontSize:"11px",fontWeight:"700",color:"var(--muted)",padding:"4px"}}>{d}</div>)}
             {Array.from({length:firstDow}).map((_,i) => <div key={"e"+i}/>)}
@@ -320,29 +333,43 @@ export default function BookingFlow({ clinics }) {
         </div>
       )}
 
-      {/* Step 3 — Slot */}
+      {/* Step 3 — Slot — now a dropdown */}
       {step === 3 && (
         <div>
           <h2><span className="en">Select a Time Slot</span><span className="ar">اختر الموعد</span></h2>
           <p style={{color:"var(--muted)",fontSize:"13px",marginBottom:"16px"}}>{selDate}</p>
           {loading ? <p><span className="en">Loading slots…</span><span className="ar">جاري التحميل…</span></p> :
-           slots.length === 0 ? <p style={{color:"var(--muted)"}}><span className="en">No available slots for this date.</span><span className="ar">لا توجد مواعيد متاحة لهذا اليوم.</span></p> : (
-            <div style={{display:"grid", gridTemplateColumns:"repeat(auto-fill, minmax(120px, 1fr))", gap:"8px", marginBottom:"24px"}}>
-              {slots.map(s => (
-                <button key={s.id}
-                  onClick={() => setSelSlot(s)}
-                  style={{
-                    padding:"10px 8px", textAlign:"center", borderRadius:"8px", fontSize:"13px",
-                    border: selSlot?.id===s.id ? "2px solid var(--gold)" : "1px solid #e8eaec",
-                    background: selSlot?.id===s.id ? "var(--gold)" : "#fff",
-                    color: selSlot?.id===s.id ? "#fff" : "var(--navy)",
-                    cursor:"pointer", fontWeight: selSlot?.id===s.id ? "700" : "400",
-                    transition:"all 0.15s ease",
-                  }}>
-                  {s.start_time?.slice(0,5)}
-                </button>
-              ))}
+           slots.length === 0 ? (
+            <div style={{padding:"24px",background:"#f6f8fa",borderRadius:"10px",textAlign:"center",marginBottom:"24px"}}>
+              <p style={{color:"var(--muted)",margin:"0 0 12px"}}>
+                <span className="en">No available slots for this date.</span>
+                <span className="ar">لا توجد مواعيد متاحة لهذا اليوم.</span>
+              </p>
+              <a className="button primary" href={waFallback()} target="_blank" rel="noopener noreferrer">
+                <span className="en">💬 Ask us on WhatsApp</span><span className="ar">💬 تواصل معنا عبر واتساب</span>
+              </a>
             </div>
+          ) : (
+            <label style={{display:"block",marginBottom:"24px"}}>
+              <span style={{display:"block",fontSize:"13px",fontWeight:"700",color:"var(--navy)",marginBottom:"8px"}}>
+                <span className="en">Available Time Slots</span><span className="ar">المواعيد المتاحة</span>
+              </span>
+              <select
+                value={selSlot?.id || ""}
+                onChange={e => setSelSlot(slots.find(s => s.id === e.target.value) || null)}
+                style={{
+                  width:"100%", padding:"12px 14px", borderRadius:"8px", border:"1px solid #e8eaec",
+                  fontSize:"15px", color:"var(--navy)", background:"#fff", cursor:"pointer",
+                }}
+              >
+                <option value="">— Select a time —</option>
+                {slots.map(s => (
+                  <option key={s.id} value={s.id}>
+                    {s.start_time?.slice(0,5)} – {s.end_time?.slice(0,5)}
+                  </option>
+                ))}
+              </select>
+            </label>
           )}
           <div className="hero-actions" style={{marginTop:"24px"}}>
             <button className="button ghost" onClick={() => setStep(2)}>← <span className="en">Back</span><span className="ar">رجوع</span></button>
@@ -366,17 +393,25 @@ export default function BookingFlow({ clinics }) {
               <span>Phone / الهاتف <span style={{color:"#e53e3e"}}>*</span></span>
               <input required value={localForm.phone} onChange={e=>setLocalForm(p=>({...p,phone:e.target.value}))} placeholder="01xxxxxxxxx" />
             </label>
-            <label>
-              <span>WhatsApp <span style={{color:"#e53e3e"}}>*</span></span>
-              <input required value={localForm.whatsapp} onChange={e=>setLocalForm(p=>({...p,whatsapp:e.target.value}))} placeholder="01xxxxxxxxx" />
+            <label style={{gridColumn:"1/-1"}}>
+              <span className="consent" style={{display:"flex",alignItems:"center",gap:"8px",fontWeight:"400",fontSize:"13px"}}>
+                <input type="checkbox" checked={localForm.sameAsPhone} onChange={e=>setLocalForm(p=>({...p,sameAsPhone:e.target.checked}))} />
+                WhatsApp number is the same as phone above / رقم الواتساب نفس رقم الهاتف
+              </span>
             </label>
+            {!localForm.sameAsPhone && (
+              <label>
+                <span>WhatsApp <span style={{color:"#e53e3e"}}>*</span></span>
+                <input required value={localForm.whatsapp} onChange={e=>setLocalForm(p=>({...p,whatsapp:e.target.value}))} placeholder="01xxxxxxxxx" />
+              </label>
+            )}
             <label>
-              <span>Email <span style={{color:"#e53e3e"}}>*</span></span>
-              <input required type="email" value={localForm.email} onChange={e=>setLocalForm(p=>({...p,email:e.target.value}))} placeholder="your@email.com" />
+              <span>Email <span style={{color:"var(--muted)",fontSize:"12px",fontWeight:"400"}}>(optional / اختياري)</span></span>
+              <input type="email" value={localForm.email} onChange={e=>setLocalForm(p=>({...p,email:e.target.value}))} placeholder="your@email.com" />
             </label>
             <label style={{gridColumn:"1/-1"}}>
-              <span>Notes / ملاحظات</span>
-              <textarea rows={3} value={localForm.notes} onChange={e=>setLocalForm(p=>({...p,notes:e.target.value}))} placeholder="Optional notes / ملاحظات اختيارية" />
+              <span>Notes / ملاحظات <span style={{color:"#e53e3e"}}>*</span></span>
+              <textarea required rows={3} value={localForm.notes} onChange={e=>setLocalForm(p=>({...p,notes:e.target.value}))} placeholder="Briefly describe your reason for visit / صف سبب الزيارة باختصار" />
             </label>
             <label style={{gridColumn:"1/-1"}}>
               <span>Attach Medical Reports / إرفاق التقارير الطبية <span style={{color:"var(--muted)",fontSize:"12px",fontWeight:"400"}}>(optional / اختياري)</span></span>
@@ -412,6 +447,8 @@ export default function BookingFlow({ clinics }) {
             <span className="ar">سنؤكد موعدك قريباً. ستصلك رسالة تأكيد بمجرد الموافقة.</span>
           </p>
           <div style={{marginTop:"24px",padding:"16px",background:"#f6f8fa",borderRadius:"10px",display:"inline-block",textAlign:"left"}}>
+            <p style={{margin:"0 0 6px",fontSize:"14px"}}><strong>👤 {localForm.name}</strong></p>
+            <p style={{margin:"0 0 6px",fontSize:"14px"}}>📞 {localForm.phone}</p>
             <p style={{margin:"0 0 6px",fontSize:"14px"}}><strong>📍 {clinic?.name_en}</strong></p>
             <p style={{margin:"0 0 6px",fontSize:"14px"}}>📅 {selDate}</p>
             <p style={{margin:0,fontSize:"14px"}}>⏰ {selSlot?.start_time?.slice(0,5)} – {selSlot?.end_time?.slice(0,5)}</p>
