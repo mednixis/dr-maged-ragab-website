@@ -88,6 +88,10 @@ export default function BookingFlow({ clinics }) {
     }
 
     setSubmitting(false);
+    // Meta Pixel: track a successful local booking as a Lead conversion
+    if (bookingData?.id && typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "Lead", { content_name: "Local Booking", content_category: "local" });
+    }
     setStep(5);
   }
 
@@ -117,6 +121,10 @@ export default function BookingFlow({ clinics }) {
     }
 
     setSubmitting(false);
+    // Meta Pixel: track a successful international booking as a Lead conversion
+    if (bookingData?.id && typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "Lead", { content_name: "International Booking", content_category: "international" });
+    }
     setIntlDone(true);
   }
 
