@@ -1,6 +1,7 @@
 import "./globals.css";
 import Header from "../components/Header.js";
 import Footer from "../components/Footer.js";
+import MetaPixel from "../components/MetaPixel.js";
 
 export const metadata = {
   title: "Dr. Maged Ragab | Urology & Men's Health Authority",
@@ -11,6 +12,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+        <MetaPixel />
         <Header />
         {children}
         <Footer />
