@@ -6,6 +6,13 @@ import MetaPixel from "../components/MetaPixel.js";
 export const metadata = {
   title: "Dr. Maged Ragab | Urology & Men's Health Authority",
   description: "Professor Dr. Maged Ragab — advanced urology, male infertility, and men's health care. Kafr El Sheikh & New Cairo clinics.",
+  icons: {
+    icon: [
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
 };
 
 export default function RootLayout({ children }) {
