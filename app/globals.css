@@ -253,3 +253,27 @@ body.lang-ar .slot-card { text-align: right; }
   .about-photo-col { position: static !important; top: auto !important; }
   .about-photo-col img { max-width: 240px !important; margin: 0 auto; display: block; }
 }
+
+/* ── HOMEPAGE RESTRUCTURE ── */
+.hero-note { margin-top: 22px; margin-bottom: 0; color: var(--stone); font-size: 14px; }
+.group-more { display: inline-block; margin-top: 18px; }
+.feature-card { display: flex; flex-direction: column; }
+.feature-card .group-more { margin-top: auto; padding-top: 18px; }
+.about-points { display: grid; gap: 10px; margin: 0 0 24px; padding-left: 18px; color: var(--muted); line-height: 1.6; }
+.locations-section h2 { margin-bottom: 14px; }
+.testimonial-section { grid-template-columns: repeat(2, minmax(0,1fr)); }
+
+/* RTL for the new blocks */
+body.lang-ar .about-points { padding-left: 0; padding-right: 18px; }
+body.lang-ar .hero-note { text-align: right; }
+body.lang-ar .condition-grid .feature-card ul { padding-left: 0; padding-right: 18px; }
+body.lang-ar .location-card,
+body.lang-ar .feature-card,
+body.lang-ar .testimonial { text-align: right; }
+body.lang-ar .section-heading { flex-direction: row-reverse; }
+
+@media (max-width: 768px) {
+  .testimonial-section { grid-template-columns: 1fr; }
+  .about-points { padding-left: 16px; }
+  body.lang-ar .about-points { padding-left: 0; padding-right: 16px; }
+}
