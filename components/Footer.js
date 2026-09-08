@@ -10,7 +10,13 @@ export default function Footer() {
       <div className="footer-links">
         <Link href="/about"><span className="en">About Dr. Maged</span><span className="ar">عن د. ماجد</span></Link>
         <Link href="/services"><span className="en">Services</span><span className="ar">الخدمات</span></Link>
+        <Link href="/conditions"><span className="en">Conditions</span><span className="ar">الحالات</span></Link>
+        <Link href="/procedures"><span className="en">Procedures</span><span className="ar">الإجراءات</span></Link>
         <Link href="/international"><span className="en">International Patients</span><span className="ar">المرضى الدوليون</span></Link>
+      </div>
+      <div className="footer-links">
+        <Link href="/articles"><span className="en">Articles</span><span className="ar">المقالات</span></Link>
+        <Link href="/resources"><span className="en">Patient Resources</span><span className="ar">موارد المرضى</span></Link>
         <Link href="/media"><span className="en">Media</span><span className="ar">الإعلام</span></Link>
         <Link href="/faqs"><span className="en">FAQs</span><span className="ar">الأسئلة الشائعة</span></Link>
       </div>
