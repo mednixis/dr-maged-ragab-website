@@ -3,15 +3,13 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+// Trimmed to 4 items. "Book Appointment" is the separate button in .header-tools,
+// so it is no longer repeated here. Everything removed now lives in the footer.
 const navLinks = [
-  { href: "/",              en: "Home",                  ar: "الرئيسية" },
-  { href: "/about",         en: "About",                 ar: "عن الدكتور" },
-  { href: "/services",      en: "Services",              ar: "الخدمات" },
-  { href: "/international", en: "International Patients",ar: "المرضى الدوليون" },
-  { href: "/media",         en: "Media",                 ar: "الإعلام" },
-  { href: "/faqs",          en: "FAQs",                  ar: "الأسئلة الشائعة" },
-  { href: "/booking",       en: "Book Appointment",      ar: "الحجز" },
-  { href: "/contact",       en: "Contact",               ar: "التواصل" },
+  { href: "/#treat",   en: "What We Treat", ar: "ما نعالجه" },
+  { href: "/#clinics", en: "Clinics",       ar: "العيادات" },
+  { href: "/about",    en: "About",         ar: "عن الدكتور" },
+  { href: "/contact",  en: "Contact",       ar: "التواصل" },
 ];
 
 export default function Header({ isPage = false }) {
