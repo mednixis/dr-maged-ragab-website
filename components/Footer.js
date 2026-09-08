@@ -24,7 +24,7 @@ export default function Footer() {
       {/* Mednixis credit bar */}
       <div style={{
         gridColumn: "1 / -1",
-        borderTop: "1px solid rgba(255,255,255,0.08)",
+        borderTop: "1px solid rgba(200,184,163,0.14)",
         marginTop: "24px",
         paddingTop: "20px",
         display: "flex",
@@ -33,17 +33,17 @@ export default function Footer() {
         flexWrap: "wrap",
         gap: "12px",
       }}>
-        <p style={{ margin: 0, fontSize: "12px", color: "rgba(255,255,255,0.35)" }}>
+        <p style={{ margin: 0, fontSize: "12px", color: "rgba(200,184,163,0.50)" }}>
           <span className="en">© 2026 Dr. Maged Ragab. All rights reserved.</span>
           <span className="ar">© 2026 د. ماجد رجب. جميع الحقوق محفوظة.</span>
         </p>
         <span style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span style={{ fontSize: "11px", color: "rgba(255,255,255,0.35)", letterSpacing: "0.5px" }}>
+          <span style={{ fontSize: "11px", color: "rgba(200,184,163,0.50)", letterSpacing: "0.5px" }}>
             <span className="en">Powered & Managed by</span>
             <span className="ar">بتقنية وإدارة</span>
           </span>
           <span style={{
-            background: "linear-gradient(135deg, #b99b62, #d4b896)",
+            background: "linear-gradient(135deg, #B96F46, #C7865B)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             fontSize: "14px",

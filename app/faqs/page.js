@@ -28,12 +28,12 @@ export default async function FaqsPage() {
         <section className="section">
           <div style={{maxWidth:"800px",margin:"0 auto",display:"flex",flexDirection:"column",gap:"16px"}}>
             {faqs.map(faq => (
-              <details key={faq.id} style={{background:"#fff",border:"1px solid #e8eaec",borderRadius:"12px",overflow:"hidden",boxShadow:"0 2px 8px rgba(7,21,37,0.05)"}}>
+              <details key={faq.id} style={{background:"var(--white)",border:"1px solid var(--line)",borderRadius:"12px",overflow:"hidden",boxShadow:"0 2px 8px rgba(55,7,13,0.06)"}}>
                 <summary style={{padding:"20px 24px",cursor:"pointer",fontWeight:"700",fontSize:"15px",color:"var(--navy)",display:"flex",justifyContent:"space-between",alignItems:"center",listStyle:"none",userSelect:"none"}}>
                   <span><span className="en">{faq.question_en}</span><span className="ar">{faq.question_ar}</span></span>
                   <span style={{color:"var(--gold)",fontSize:"20px",fontWeight:"400",flexShrink:0,marginLeft:"16px"}}>+</span>
                 </summary>
-                <div style={{padding:"0 24px 20px",borderTop:"1px solid #f0f2f4"}}>
+                <div style={{padding:"0 24px 20px",borderTop:"1px solid var(--line)"}}>
                   <p style={{margin:"16px 0 0",fontSize:"15px",lineHeight:"1.8",color:"var(--ink)"}}>
                     <span className="en">{faq.answer_en}</span>
                     <span className="ar">{faq.answer_ar}</span>

@@ -178,7 +178,7 @@ export default function BookingFlow({ clinics }) {
           <span className="en">We will contact you within 24 hours to schedule your online consultation.</span>
           <span className="ar">سنتواصل معك خلال 24 ساعة لتحديد موعد استشارتك الإلكترونية.</span>
         </p>
-        <div style={{marginTop:"24px",padding:"16px",background:"#f6f8fa",borderRadius:"10px",display:"inline-block",textAlign:"left"}}>
+        <div style={{marginTop:"24px",padding:"16px",background:"#F5EDE3",borderRadius:"10px",display:"inline-block",textAlign:"left"}}>
           <p style={{margin:"0 0 6px",fontSize:"14px"}}><strong>👤 {intlForm.name}</strong></p>
           <p style={{margin:"0 0 6px",fontSize:"14px"}}>📞 {intlForm.phone}</p>
           <p style={{margin:0,fontSize:"14px"}}>🌍 {intlForm.country}</p>
@@ -201,11 +201,11 @@ export default function BookingFlow({ clinics }) {
         </p>
         <form className="booking-form" onSubmit={handleIntlSubmit}>
           <label>
-            <span>Full Name / الاسم الكامل <span style={{color:"#e53e3e"}}>*</span></span>
+            <span>Full Name / الاسم الكامل <span style={{color:"#B02A37"}}>*</span></span>
             <input required value={intlForm.name} onChange={e=>setIntlForm(p=>({...p,name:e.target.value}))} placeholder="Your full name" />
           </label>
           <label>
-            <span>Phone / الهاتف <span style={{color:"#e53e3e"}}>*</span></span>
+            <span>Phone / الهاتف <span style={{color:"#B02A37"}}>*</span></span>
             <input required value={intlForm.phone} onChange={e=>setIntlForm(p=>({...p,phone:e.target.value}))} placeholder="+20xxxxxxxxx" />
           </label>
           <label style={{gridColumn:"1/-1"}}>
@@ -216,7 +216,7 @@ export default function BookingFlow({ clinics }) {
           </label>
           {!intlForm.sameAsPhone && (
             <label>
-              <span>WhatsApp <span style={{color:"#e53e3e"}}>*</span></span>
+              <span>WhatsApp <span style={{color:"#B02A37"}}>*</span></span>
               <input required value={intlForm.whatsapp} onChange={e=>setIntlForm(p=>({...p,whatsapp:e.target.value}))} placeholder="+20xxxxxxxxx" />
             </label>
           )}
@@ -225,20 +225,20 @@ export default function BookingFlow({ clinics }) {
             <input type="email" value={intlForm.email} onChange={e=>setIntlForm(p=>({...p,email:e.target.value}))} placeholder="your@email.com" />
           </label>
           <label>
-            <span>Country / الدولة <span style={{color:"#e53e3e"}}>*</span></span>
+            <span>Country / الدولة <span style={{color:"#B02A37"}}>*</span></span>
             <select required value={intlForm.country} onChange={e=>setIntlForm(p=>({...p,country:e.target.value}))}>
               {COUNTRIES.map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </label>
           <label style={{gridColumn:"1/-1"}}>
-            <span>Medical Summary / ملخص الحالة <span style={{color:"#e53e3e"}}>*</span></span>
+            <span>Medical Summary / ملخص الحالة <span style={{color:"#B02A37"}}>*</span></span>
             <textarea required rows={3} value={intlForm.notes} onChange={e=>setIntlForm(p=>({...p,notes:e.target.value}))} placeholder="Brief description of your condition" />
           </label>
           <label style={{gridColumn:"1/-1"}}>
             <span>Attach Medical Reports / إرفاق التقارير الطبية <span style={{color:"var(--muted)",fontSize:"12px",fontWeight:"400"}}>(optional / اختياري)</span></span>
             <input type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
               onChange={e=>setIntlForm(p=>({...p,files:e.target.files}))}
-              style={{padding:"8px",border:"1px dashed var(--line)",borderRadius:"6px",background:"#f6f8fa",cursor:"pointer"}} />
+              style={{padding:"8px",border:"1px dashed var(--line)",borderRadius:"6px",background:"#F5EDE3",cursor:"pointer"}} />
             <span style={{fontSize:"11px",color:"var(--muted)"}}>PDF, JPG, PNG, DOC accepted — max 10MB each</span>
           </label>
           <label className="consent" style={{gridColumn:"1/-1"}}>
@@ -265,8 +265,8 @@ export default function BookingFlow({ clinics }) {
           <div key={n} style={{display:"flex",alignItems:"center",gap:"6px",fontSize:"13px",fontWeight:"700",
             color: parseInt(n) <= step ? "var(--gold)" : "var(--muted)"}}>
             <span style={{width:"24px",height:"24px",borderRadius:"50%",display:"flex",alignItems:"center",justifyContent:"center",
-              background: parseInt(n) <= step ? "var(--gold)" : "#e8eaec",
-              color: parseInt(n) <= step ? "#fff" : "var(--muted)", fontSize:"12px"}}>{n}</span>
+              background: parseInt(n) <= step ? "var(--gold)" : "var(--line)",
+              color: parseInt(n) <= step ? "var(--white)" : "var(--muted)", fontSize:"12px"}}>{n}</span>
             {label}
             {parseInt(n) < 5 && <span style={{color:"var(--line)"}}>→</span>}
           </div>
@@ -326,9 +326,9 @@ export default function BookingFlow({ clinics }) {
                   onClick={() => { setSelDate(dateStr); setStep(3); }}
                   style={{
                     padding:"8px 4px", textAlign:"center", borderRadius:"6px", fontSize:"13px",
-                    border: selected ? "2px solid var(--gold)" : "1px solid #e8eaec",
-                    background: selected ? "var(--gold)" : allowed&&!past ? "#fff" : "#f6f8fa",
-                    color: selected ? "#fff" : allowed&&!past ? "var(--navy)" : "#ccc",
+                    border: selected ? "2px solid var(--gold)" : "1px solid var(--line)",
+                    background: selected ? "var(--gold)" : allowed&&!past ? "var(--white)" : "#F5EDE3",
+                    color: selected ? "var(--white)" : allowed&&!past ? "var(--navy)" : "#B8ABA0",
                     cursor: allowed&&!past ? "pointer" : "not-allowed",
                     fontWeight: selected ? "700" : "400",
                   }}>{d}</button>
@@ -348,7 +348,7 @@ export default function BookingFlow({ clinics }) {
           <p style={{color:"var(--muted)",fontSize:"13px",marginBottom:"16px"}}>{selDate}</p>
           {loading ? <p><span className="en">Loading slots…</span><span className="ar">جاري التحميل…</span></p> :
            slots.length === 0 ? (
-            <div style={{padding:"24px",background:"#f6f8fa",borderRadius:"10px",textAlign:"center",marginBottom:"24px"}}>
+            <div style={{padding:"24px",background:"#F5EDE3",borderRadius:"10px",textAlign:"center",marginBottom:"24px"}}>
               <p style={{color:"var(--muted)",margin:"0 0 12px"}}>
                 <span className="en">No available slots for this date.</span>
                 <span className="ar">لا توجد مواعيد متاحة لهذا اليوم.</span>
@@ -366,8 +366,8 @@ export default function BookingFlow({ clinics }) {
                 value={selSlot?.id || ""}
                 onChange={e => setSelSlot(slots.find(s => s.id === e.target.value) || null)}
                 style={{
-                  width:"100%", padding:"12px 14px", borderRadius:"8px", border:"1px solid #e8eaec",
-                  fontSize:"15px", color:"var(--navy)", background:"#fff", cursor:"pointer",
+                  width:"100%", padding:"12px 14px", borderRadius:"8px", border:"1px solid var(--line)",
+                  fontSize:"15px", color:"var(--navy)", background:"var(--white)", cursor:"pointer",
                 }}
               >
                 <option value="">— Select a time —</option>
@@ -394,11 +394,11 @@ export default function BookingFlow({ clinics }) {
           <h2><span className="en">Your Details</span><span className="ar">بياناتك</span></h2>
           <form className="booking-form" onSubmit={handleLocalSubmit}>
             <label>
-              <span>Full Name / الاسم الكامل <span style={{color:"#e53e3e"}}>*</span></span>
+              <span>Full Name / الاسم الكامل <span style={{color:"#B02A37"}}>*</span></span>
               <input required value={localForm.name} onChange={e=>setLocalForm(p=>({...p,name:e.target.value}))} placeholder="Your full name / اسمك الكامل" />
             </label>
             <label>
-              <span>Phone / الهاتف <span style={{color:"#e53e3e"}}>*</span></span>
+              <span>Phone / الهاتف <span style={{color:"#B02A37"}}>*</span></span>
               <input required value={localForm.phone} onChange={e=>setLocalForm(p=>({...p,phone:e.target.value}))} placeholder="01xxxxxxxxx" />
             </label>
             <label style={{gridColumn:"1/-1"}}>
@@ -409,7 +409,7 @@ export default function BookingFlow({ clinics }) {
             </label>
             {!localForm.sameAsPhone && (
               <label>
-                <span>WhatsApp <span style={{color:"#e53e3e"}}>*</span></span>
+                <span>WhatsApp <span style={{color:"#B02A37"}}>*</span></span>
                 <input required value={localForm.whatsapp} onChange={e=>setLocalForm(p=>({...p,whatsapp:e.target.value}))} placeholder="01xxxxxxxxx" />
               </label>
             )}
@@ -418,14 +418,14 @@ export default function BookingFlow({ clinics }) {
               <input type="email" value={localForm.email} onChange={e=>setLocalForm(p=>({...p,email:e.target.value}))} placeholder="your@email.com" />
             </label>
             <label style={{gridColumn:"1/-1"}}>
-              <span>Notes / ملاحظات <span style={{color:"#e53e3e"}}>*</span></span>
+              <span>Notes / ملاحظات <span style={{color:"#B02A37"}}>*</span></span>
               <textarea required rows={3} value={localForm.notes} onChange={e=>setLocalForm(p=>({...p,notes:e.target.value}))} placeholder="Briefly describe your reason for visit / صف سبب الزيارة باختصار" />
             </label>
             <label style={{gridColumn:"1/-1"}}>
               <span>Attach Medical Reports / إرفاق التقارير الطبية <span style={{color:"var(--muted)",fontSize:"12px",fontWeight:"400"}}>(optional / اختياري)</span></span>
               <input type="file" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx"
                 onChange={e=>setLocalForm(p=>({...p,files:e.target.files}))}
-                style={{padding:"8px",border:"1px dashed var(--line)",borderRadius:"6px",background:"#f6f8fa",cursor:"pointer"}} />
+                style={{padding:"8px",border:"1px dashed var(--line)",borderRadius:"6px",background:"#F5EDE3",cursor:"pointer"}} />
               <span style={{fontSize:"11px",color:"var(--muted)"}}>PDF, JPG, PNG, DOC accepted — max 10MB each</span>
             </label>
             <label className="consent" style={{gridColumn:"1/-1"}}>
@@ -454,7 +454,7 @@ export default function BookingFlow({ clinics }) {
             <span className="en">We will confirm your appointment shortly. You will receive a confirmation email once approved.</span>
             <span className="ar">سنؤكد موعدك قريباً. ستصلك رسالة تأكيد بمجرد الموافقة.</span>
           </p>
-          <div style={{marginTop:"24px",padding:"16px",background:"#f6f8fa",borderRadius:"10px",display:"inline-block",textAlign:"left"}}>
+          <div style={{marginTop:"24px",padding:"16px",background:"#F5EDE3",borderRadius:"10px",display:"inline-block",textAlign:"left"}}>
             <p style={{margin:"0 0 6px",fontSize:"14px"}}><strong>👤 {localForm.name}</strong></p>
             <p style={{margin:"0 0 6px",fontSize:"14px"}}>📞 {localForm.phone}</p>
             <p style={{margin:"0 0 6px",fontSize:"14px"}}><strong>📍 {clinic?.name_en}</strong></p>

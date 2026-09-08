@@ -21,8 +21,8 @@ export default function AboutPage() {
             {/* Left column — photo + card */}
             <div style={{position:"sticky", top:"100px"}} className="about-photo-col">
               <img src="/Maged%20photo.png" alt="Professor Dr. Maged Ragab"
-                style={{width:"100%", borderRadius:"16px", boxShadow:"0 8px 32px rgba(7,21,37,0.15)", display:"block"}} />
-              <div style={{marginTop:"20px", padding:"20px", background:"var(--navy)", borderRadius:"12px", color:"#fff"}}>
+                style={{width:"100%", borderRadius:"16px", boxShadow:"0 8px 32px rgba(55,7,13,0.18)", display:"block"}} />
+              <div style={{marginTop:"20px", padding:"20px", background:"var(--navy)", borderRadius:"12px", color:"var(--white)"}}>
                 <p style={{margin:"0 0 12px", fontSize:"11px", fontWeight:"700", textTransform:"uppercase", letterSpacing:"1px", opacity:0.6}}>Position</p>
                 <p style={{margin:"0 0 16px", fontSize:"14px", fontWeight:"700", lineHeight:"1.5"}}>Professor of Urology & Andrology, Tanta University</p>
                 <p style={{margin:"0 0 12px", fontSize:"11px", fontWeight:"700", textTransform:"uppercase", letterSpacing:"1px", opacity:0.6}}>Role</p>
@@ -61,7 +61,7 @@ export default function AboutPage() {
                   ["Active contributor to Egyptian male infertility & urological guideline committees","مساهم فعّال في لجان إرشادات العقم الذكوري والمسالك البولية المصرية"],
                   ["Teaching urology to medical students since 1998","تدريس علم المسالك البولية لطلاب الطب منذ عام 1998"],
                 ].map(([en,ar],i) => (
-                  <li key={i} style={{display:"flex", gap:"12px", marginBottom:"10px", padding:"12px 16px", background:"#f6f8fa", borderRadius:"8px", borderLeft:"3px solid var(--gold)"}}>
+                  <li key={i} style={{display:"flex", gap:"12px", marginBottom:"10px", padding:"12px 16px", background:"#F5EDE3", borderRadius:"8px", borderLeft:"3px solid var(--gold)"}}>
                     <span style={{color:"var(--gold)", fontWeight:"700"}}>◆</span>
                     <span style={{fontSize:"14px"}}><span className="en" style={{color:"var(--navy)", fontWeight:"600"}}>{en}</span><span className="ar" style={{color:"var(--navy)", fontWeight:"600"}}>{ar}</span></span>
                   </li>
@@ -85,7 +85,7 @@ export default function AboutPage() {
                   ["Penile Prosthesis Implantation","زراعة دعامات القضيب"],
                   ["Peyronie's Disease","مرض بيروني"],
                 ].map(([en,ar],i) => (
-                  <div key={i} style={{padding:"10px 14px", background:"var(--navy)", borderRadius:"8px", color:"#fff"}}>
+                  <div key={i} style={{padding:"10px 14px", background:"var(--navy)", borderRadius:"8px", color:"var(--white)"}}>
                     <span className="en" style={{fontSize:"13px", fontWeight:"600"}}>{en}</span>
                     <span className="ar" style={{fontSize:"13px", fontWeight:"600"}}>{ar}</span>
                   </div>
@@ -103,7 +103,7 @@ export default function AboutPage() {
                   ["International conferences — USA, Spain, UAE, Egypt","مؤتمرات دولية — الولايات المتحدة، إسبانيا، الإمارات، مصر"],
                   ["Live Surgery Workshops & Teaching Courses in Egypt","ورش عمل الجراحة المباشرة والدورات التعليمية في مصر"],
                 ].map(([en,ar],i) => (
-                  <li key={i} style={{display:"flex", gap:"12px", marginBottom:"10px", padding:"12px 16px", background:"#f6f8fa", borderRadius:"8px", borderLeft:"3px solid var(--navy)"}}>
+                  <li key={i} style={{display:"flex", gap:"12px", marginBottom:"10px", padding:"12px 16px", background:"#F5EDE3", borderRadius:"8px", borderLeft:"3px solid var(--navy)"}}>
                     <span style={{fontSize:"16px"}}>🌍</span>
                     <span style={{fontSize:"14px"}}><span className="en" style={{color:"var(--navy)", fontWeight:"600"}}>{en}</span><span className="ar" style={{color:"var(--navy)", fontWeight:"600"}}>{ar}</span></span>
                   </li>
@@ -123,7 +123,7 @@ export default function AboutPage() {
                   ["MESSM (Middle East Sexual Medicine)","MESSM للطب الجنسي في الشرق الأوسط"],
                   ["Global Andrology Forum","المنتدى العالمي للأندرولوجيا"],
                 ].map(([en,ar],i) => (
-                  <div key={i} style={{padding:"10px 14px", background:"#f6f8fa", borderRadius:"8px", border:"1px solid #e8eaec"}}>
+                  <div key={i} style={{padding:"10px 14px", background:"#F5EDE3", borderRadius:"8px", border:"1px solid var(--line)"}}>
                     <span className="en" style={{fontSize:"13px", fontWeight:"600", color:"var(--navy)"}}>{en}</span>
                     <span className="ar" style={{fontSize:"13px", fontWeight:"600", color:"var(--navy)"}}>{ar}</span>
                   </div>

@@ -125,9 +125,9 @@ export default function ServicesPage() {
         <section className="section">
           <div style={{display:"grid", gridTemplateColumns:"repeat(auto-fit, minmax(320px, 1fr))", gap:"24px", maxWidth:"1200px", margin:"0 auto"}}>
             {SERVICES.map((svc, i) => (
-              <div key={i} style={{background:"#fff", border:"1px solid #e8eaec", borderRadius:"16px", padding:"28px", boxShadow:"0 2px 12px rgba(7,21,37,0.06)", display:"flex", flexDirection:"column"}}>
+              <div key={i} style={{background:"var(--white)", border:"1px solid var(--line)", borderRadius:"16px", padding:"28px", boxShadow:"0 2px 12px rgba(55,7,13,0.07)", display:"flex", flexDirection:"column"}}>
                 {/* Header */}
-                <div style={{display:"flex", alignItems:"center", gap:"12px", marginBottom:"20px", paddingBottom:"16px", borderBottom:"2px solid #f0f2f4"}}>
+                <div style={{display:"flex", alignItems:"center", gap:"12px", marginBottom:"20px", paddingBottom:"16px", borderBottom:"2px solid var(--line)"}}>
                   <span style={{fontSize:"32px", lineHeight:1}}>{svc.icon}</span>
                   <h3 style={{margin:0, fontSize:"15px", color:"var(--navy)", fontWeight:"700", lineHeight:"1.4"}}>
                     <span className="en">{svc.title_en}</span>
@@ -137,7 +137,7 @@ export default function ServicesPage() {
                 {/* Procedures list */}
                 <ul style={{listStyle:"none", padding:0, margin:0, flex:1}}>
                   {svc.procedures.map(([en, ar], j) => (
-                    <li key={j} style={{display:"flex", alignItems:"flex-start", gap:"10px", padding:"7px 0", borderBottom: j < svc.procedures.length - 1 ? "1px solid #f6f8fa" : "none"}}>
+                    <li key={j} style={{display:"flex", alignItems:"flex-start", gap:"10px", padding:"7px 0", borderBottom: j < svc.procedures.length - 1 ? "1px solid var(--line)" : "none"}}>
                       <span style={{color:"var(--gold)", fontSize:"10px", fontWeight:"700", marginTop:"5px", flexShrink:0}}>◆</span>
                       <span style={{fontSize:"14px", color:"var(--ink)", lineHeight:"1.5"}}>
                         <span className="en">{en}</span>

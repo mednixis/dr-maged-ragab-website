@@ -102,7 +102,7 @@ export default async function HomePage() {
             <img
               src="/Maged%20photo.png"
               alt="Professor Dr. Maged Ragab"
-              style={{ width:"100%", maxWidth:"420px", display:"block", borderRadius:"4px", boxShadow:"0 24px 70px rgba(9,21,35,0.18)" }}
+              style={{ width:"100%", maxWidth:"420px", display:"block", borderRadius:"4px", boxShadow:"0 24px 70px rgba(55,7,13,0.20)" }}
             />
             <div>
               <div className="section-kicker"><span className="en">About Dr. Maged</span><span className="ar">عن د. ماجد</span></div>
