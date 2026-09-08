@@ -146,7 +146,7 @@ export default async function HomePage() {
       </section>
 
       {/* 3 · CLINICS — moved up from position 8 */}
-      <section className="section locations-section">
+      <section className="section locations-section" id="clinics">
         <div>
           <h2><span className="en">Where to Find Us</span><span className="ar">أين تجدنا</span></h2>
           {/* NEW COPY — please review the Arabic */}
