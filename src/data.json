@@ -1,0 +1,679 @@
+{
+  "CONDITIONS": [
+    [
+      "تأخّر الإنجاب",
+      "Male infertility"
+    ],
+    [
+      "انعدام الحيوانات المنوية",
+      "Azoospermia"
+    ],
+    [
+      "دوالي الخصية",
+      "Varicocele"
+    ],
+    [
+      "ضعف الانتصاب",
+      "Erectile dysfunction"
+    ],
+    [
+      "مرض بيروني",
+      "Peyronie’s disease"
+    ],
+    [
+      "تضخم البروستاتا",
+      "BPH / prostate enlargement"
+    ],
+    [
+      "حصوات الكلى",
+      "Kidney stones"
+    ],
+    [
+      "الخلل الجنسي",
+      "Sexual dysfunction"
+    ],
+    [
+      "مشاكل المسالك البولية",
+      "Urinary tract problems"
+    ]
+  ],
+  "SERVICES": [
+    {
+      "id": "fertility",
+      "icon": "spark",
+      "ar": "العقم عند الرجال وصحة الإنجاب",
+      "en": "Male infertility & reproductive health",
+      "items": [
+        [
+          "تقييم وعلاج العقم عند الرجال",
+          "Male infertility evaluation & treatment"
+        ],
+        [
+          "انعدام الحيوانات المنوية — Micro-TESE",
+          "Azoospermia — Micro-TESE (microsurgical sperm retrieval)"
+        ],
+        [
+          "الاستئصال المجهري لدوالي الخصية",
+          "Microsurgical varicocelectomy"
+        ],
+        [
+          "تحليل السائل المنوي والفحوصات المتقدمة",
+          "Semen analysis & advanced sperm testing"
+        ],
+        [
+          "التقييم الهرموني والعلاج",
+          "Hormonal assessment & therapy"
+        ],
+        [
+          "الخصوبة الورمية وبنك الحيوانات المنوية",
+          "Oncofertility & sperm banking"
+        ]
+      ]
+    },
+    {
+      "id": "sexual",
+      "icon": "male",
+      "ar": "ضعف الانتصاب والطب الجنسي",
+      "en": "Erectile dysfunction & sexual medicine",
+      "items": [
+        [
+          "تشخيص وعلاج ضعف الانتصاب",
+          "Erectile dysfunction — diagnosis & treatment"
+        ],
+        [
+          "زراعة دعامات القضيب",
+          "Penile prosthesis implantation"
+        ],
+        [
+          "علاج مرض بيروني (انحناء القضيب)",
+          "Peyronie’s disease management"
+        ],
+        [
+          "علاج سرعة القذف",
+          "Premature ejaculation treatment"
+        ],
+        [
+          "علاج الاستبدال بالتستوستيرون (TRT)",
+          "Testosterone replacement therapy (TRT)"
+        ],
+        [
+          "استشارات الصحة الجنسية",
+          "Sexual health counselling"
+        ]
+      ]
+    },
+    {
+      "id": "prostate",
+      "icon": "organ",
+      "ar": "أمراض البروستاتا",
+      "en": "Prostate diseases",
+      "items": [
+        [
+          "تضخم البروستاتا الحميد",
+          "Benign prostatic hyperplasia (BPH)"
+        ],
+        [
+          "علاج الريزوم بالبخار لتضخم البروستاتا",
+          "Rezum steam therapy for BPH"
+        ],
+        [
+          "علاج البروستاتا بالإيكو ليزر",
+          "Echolaser prostate treatment"
+        ],
+        [
+          "التهاب البروستاتا الحاد والمزمن",
+          "Prostatitis (acute & chronic)"
+        ],
+        [
+          "فحص PSA وتشخيص سرطان البروستاتا",
+          "PSA screening & prostate cancer diagnosis"
+        ],
+        [
+          "استئصال البروستاتا بالمنظار والجراحة الأقل توغلاً",
+          "TURP & minimally invasive prostate surgery"
+        ]
+      ]
+    },
+    {
+      "id": "stones",
+      "icon": "stone",
+      "ar": "حصوات الكلى والمسالك البولية",
+      "en": "Kidney & urinary tract stones",
+      "items": [
+        [
+          "تشخيص وعلاج حصوات الكلى",
+          "Kidney stone diagnosis & management"
+        ],
+        [
+          "تنظير الحالب المرن",
+          "Flexible ureteroscopy (RIRS)"
+        ],
+        [
+          "استخراج الحصوات عبر الجلد (PCNL)",
+          "PCNL (percutaneous nephrolithotomy)"
+        ],
+        [
+          "تفتيت الحصوات بالموجات الصوتية",
+          "ESWL (shock wave lithotripsy)"
+        ],
+        [
+          "تركيب دعامة الحالب (Double J)",
+          "Ureteral stenting (Double J)"
+        ],
+        [
+          "الوقاية من الحصوات والتقييم الأيضي",
+          "Stone prevention & metabolic workup"
+        ]
+      ]
+    },
+    {
+      "id": "bladder",
+      "icon": "drop",
+      "ar": "أمراض المثانة",
+      "en": "Bladder diseases",
+      "items": [
+        [
+          "المثانة فرطة النشاط",
+          "Overactive bladder (OAB)"
+        ],
+        [
+          "سلس البول",
+          "Urinary incontinence"
+        ],
+        [
+          "سرطان المثانة — الفحص والاستئصال بالمنظار",
+          "Bladder cancer — screening & TURBT"
+        ],
+        [
+          "تنظير المثانة والخزعة",
+          "Cystoscopy & bladder biopsy"
+        ],
+        [
+          "التهاب المثانة الخلالي",
+          "Interstitial cystitis"
+        ],
+        [
+          "المثانة العصبية",
+          "Neurogenic bladder"
+        ]
+      ]
+    },
+    {
+      "id": "infection",
+      "icon": "shield",
+      "ar": "التهابات المسالك البولية",
+      "en": "Urinary tract infections",
+      "items": [
+        [
+          "تشخيص وعلاج التهابات المسالك البولية",
+          "UTI diagnosis & treatment"
+        ],
+        [
+          "إدارة التهابات المسالك المتكررة",
+          "Recurrent UTI management"
+        ],
+        [
+          "التهاب الكلى (التهاب الحويضة والكلية)",
+          "Kidney infection (pyelonephritis)"
+        ],
+        [
+          "التهاب البربخ والخصية",
+          "Epididymo-orchitis"
+        ],
+        [
+          "الأمراض المنقولة جنسياً",
+          "Sexually transmitted infections (STIs)"
+        ]
+      ]
+    },
+    {
+      "id": "scrotal",
+      "icon": "circle",
+      "ar": "أمراض الصفن والخصية",
+      "en": "Scrotal & testicular conditions",
+      "items": [
+        [
+          "الاستئصال المجهري لدوالي الخصية",
+          "Microsurgical varicocelectomy"
+        ],
+        [
+          "إزالة التعصيب المجهري للحبل المنوي لعلاج ألم الخصية المزمن",
+          "Microsurgical denervation of the spermatic cord for chronic testicular pain"
+        ],
+        [
+          "جراحة القيلة المائية",
+          "Hydrocele surgery"
+        ],
+        [
+          "إزالة كيس البربخ",
+          "Epididymal cyst removal"
+        ],
+        [
+          "التواء الخصية",
+          "Testicular torsion"
+        ],
+        [
+          "الخصية المعلقة (نزول الخصية)",
+          "Undescended testis (orchidopexy)"
+        ],
+        [
+          "فحص سرطان الخصية",
+          "Testicular cancer screening"
+        ]
+      ]
+    },
+    {
+      "id": "endo",
+      "icon": "scope",
+      "ar": "الجراحة التنظيرية والأقل توغلاً",
+      "en": "Endourology & minimally invasive surgery",
+      "items": [
+        [
+          "جراحة المسالك البولية بالمنظار",
+          "Laparoscopic urology"
+        ],
+        [
+          "تضيق الإحليل وإعادة بنائه",
+          "Urethral stricture & urethroplasty"
+        ],
+        [
+          "تنظير المثانة المرن",
+          "Flexible cystoscopy"
+        ],
+        [
+          "جراحة الكلى التراجعية داخل الكلية",
+          "Retrograde intrarenal surgery (RIRS)"
+        ],
+        [
+          "جراحة القضيب",
+          "Penile surgery"
+        ]
+      ]
+    }
+  ],
+  "PROCEDURES": [
+    [
+      "Micro-TESE",
+      "Micro-TESE",
+      "استخراج الحيوانات المنوية المجهري من الخصية لحالات انعدامها، تحت التكبير الجراحي.",
+      "Microscopic testicular sperm extraction for azoospermia, under surgical magnification."
+    ],
+    [
+      "زرع دعامات العضو الذكري",
+      "Penile prosthesis implantation",
+      "زرع جراحي لحالات ضعف الانتصاب التي لا تستجيب للأدوية.",
+      "Surgical implantation for erectile dysfunction unresponsive to medication."
+    ],
+    [
+      "الاستئصال المجهري لدوالي الخصية",
+      "Microsurgical varicocelectomy",
+      "ربط دوالي الخصية بالجراحة المجهرية تحت التكبير — أدقّ من الجراحة المفتوحة، وأقل في نسب الانتكاس والمضاعفات.",
+      "Varicocele ligation performed microsurgically under magnification — more precise than open surgery, with lower recurrence and complication rates.",
+      1
+    ],
+    [
+      "إزالة التعصيب المجهري للحبل المنوي",
+      "Microsurgical denervation of the spermatic cord",
+      "علاج جراحي مجهري لألم الخصية المزمن الذي لم يستجب للعلاج الدوائي.",
+      "Microsurgical treatment for chronic testicular pain that has not responded to medication.",
+      1
+    ],
+    [
+      "تقنية Rezum",
+      "Rezum technology",
+      "علاج بخار الماء لتضخم البروستاتا — أقل تدخلًا وبدون شق جراحي.",
+      "Water-vapour therapy for BPH — minimally invasive, with no surgical incision."
+    ],
+    [
+      "تقنية Echolaser",
+      "Echolaser technology",
+      "علاج بتوجيه الليزر لحالات البروستاتا.",
+      "Laser-guided treatment for prostate conditions."
+    ],
+    [
+      "مناظير المسالك البولية",
+      "Endoscopic urology",
+      "إجراءات بالكاميرا لحصوات الكلى والتضيقات.",
+      "Camera-guided procedures for kidney stones and strictures."
+    ],
+    [
+      "خزعة البروستاتا",
+      "TRUS biopsy",
+      "خزعة البروستاتا بتوجيه الموجات فوق الصوتية للتشخيص.",
+      "Ultrasound-guided prostate biopsy for diagnosis."
+    ]
+  ],
+  "LOGBOOK": [
+    [
+      "ربط دوالي الخصية عبر الفتحة الأربية",
+      "Inguinal ligation of varicocele",
+      140
+    ],
+    [
+      "تفتيت حصوات الحالب/الكلى بالمنظار الصلب",
+      "Rigid ureteroscopic stone fragmentation",
+      135
+    ],
+    [
+      "تنظير المثانة واستئصال ورم بالمنظار",
+      "Cystoscopy & transurethral resection of bladder lesion",
+      54
+    ],
+    [
+      "تركيب دعامة الحالب بالمنظار",
+      "Cystoscopic insertion of ureteric stent",
+      47
+    ],
+    [
+      "استخراج حصوة الحالب دون تفتيت",
+      "Ureteroscopic extraction of calculus",
+      31
+    ],
+    [
+      "استئصال البروستاتا بالمنظار (TURP)",
+      "TURP — monopolar or bipolar",
+      26
+    ],
+    [
+      "تفتيت حصوة المثانة بالمنظار",
+      "Endoscopic destruction of bladder stone",
+      25
+    ],
+    [
+      "شق الإحليل البصري",
+      "Optical urethrotomy",
+      25
+    ],
+    [
+      "تفتيت حصوة الحالب بالليزر",
+      "Ureteroscopic lithotripsy of ureteric calculus",
+      21
+    ],
+    [
+      "رأب حوض الكلى (Anderson–Hynes)",
+      "Anderson–Hynes pyeloplasty",
+      19
+    ],
+    [
+      "إزالة دعامة الحالب بالمنظار",
+      "Cystoscopic removal of ureteric stent",
+      19
+    ],
+    [
+      "استخراج حصوة حوض الكلى",
+      "Pyelolithotomy",
+      19
+    ],
+    [
+      "تنظير المثانة مع أخذ عيّنة",
+      "Diagnostic cystoscopy & bladder biopsy",
+      18
+    ],
+    [
+      "تفتيت حصوات الكلى عبر الجلد (PCNL)",
+      "Percutaneous nephrolithotomy",
+      18
+    ],
+    [
+      "استئصال كلية بسيط",
+      "Simple nephrectomy",
+      10
+    ],
+    [
+      "تثبيت الخصية المعلّقة",
+      "Orchidopexy",
+      9
+    ]
+  ],
+  "TIMELINE": [
+    [
+      "2018 — الآن",
+      "2018 — present",
+      "أستاذ المسالك البولية",
+      "Professor of Urology",
+      "مستشفى جامعة طنطا",
+      "Tanta University Hospital"
+    ],
+    [
+      "2011 — 2018",
+      "2011 — 2018",
+      "أستاذ مساعد المسالك البولية",
+      "Associate Professor of Urology",
+      "مستشفى جامعة طنطا",
+      "Tanta University Hospital"
+    ],
+    [
+      "2005 — 2011",
+      "2005 — 2011",
+      "مدرّس المسالك البولية",
+      "Lecturer of Urology",
+      "مستشفى جامعة طنطا",
+      "Tanta University Hospital"
+    ],
+    [
+      "2001 — 2002",
+      "2001 — 2002",
+      "زميل بحث في المناظير وجراحة المنظار",
+      "Research Fellow, Endourology & Laparoscopy",
+      "جامعة واشنطن، الولايات المتحدة — تحت إشراف د. رالف كلايمان ود. شاندرو سوندارام",
+      "Washington University, USA — under Dr Ralph Clayman and Dr Chandru Sundaram"
+    ],
+    [
+      "1998 — 2005",
+      "1998 — 2005",
+      "مدرّس مساعد المسالك البولية",
+      "Assistant Lecturer of Urology",
+      "مستشفى جامعة طنطا",
+      "Tanta University Hospital"
+    ],
+    [
+      "1995 — 1998",
+      "1995 — 1998",
+      "طبيب مقيم بالمسالك البولية",
+      "Urology Resident",
+      "مستشفى جامعة طنطا",
+      "Tanta University Hospital"
+    ]
+  ],
+  "CVBLOCKS": [
+    [
+      "المؤهلات العلمية",
+      "Qualifications",
+      [
+        [
+          "دكتوراه في المسالك البولية — جامعة طنطا، 2005",
+          "MD in Urology — Tanta University, 2005"
+        ],
+        [
+          "ماجستير المسالك البولية بتقدير جيد جدًا مع مرتبة الشرف — 1998",
+          "MSc in Urology, Very Good with Honours — 1998"
+        ],
+        [
+          "بكالوريوس الطب والجراحة بتقدير ممتاز مع مرتبة الشرف — 1993",
+          "MBChB, Excellent with Honours — 1993"
+        ]
+      ]
+    ],
+    [
+      "التخصّص الدقيق",
+      "Subspecialty focus",
+      [
+        [
+          "تأخّر الإنجاب عند الرجال والأندرولوجيا",
+          "Male infertility and andrology"
+        ],
+        [
+          "الجراحة المجهرية واستخلاص الحيوانات المنوية",
+          "Microsurgery and sperm retrieval (Micro-TESE)"
+        ],
+        [
+          "جراحة الدوالي وإعادة بناء الخصوبة",
+          "Varicocele surgery and fertility reconstruction"
+        ],
+        [
+          "المناظير وجراحة الحصوات الأقل توغلاً",
+          "Endourology and minimally invasive stone surgery"
+        ],
+        [
+          "تنظير الحالب المرن وPCNL وRIRS",
+          "Flexible ureteroscopy, PCNL and RIRS"
+        ],
+        [
+          "إعادة بناء الإحليل",
+          "Urethral reconstruction and urethroplasty"
+        ]
+      ]
+    ],
+    [
+      "العضويات الدولية",
+      "International memberships",
+      [
+        [
+          "الجمعية الأمريكية للمسالك البولية (AUA)",
+          "American Urological Association (AUA)"
+        ],
+        [
+          "الجمعية الأوروبية للمسالك البولية (EAU/EUA)",
+          "European Association of Urology (EAU/EUA)"
+        ],
+        [
+          "ISSM · ESSM · Global Andrology Forum",
+          "ISSM · ESSM · Global Andrology Forum"
+        ],
+        [
+          "عضو لجنة جمعية الشرق الأوسط للطب الجنسي (MESSM)",
+          "Committee member, Middle East Society of Sexual Medicine (MESSM)"
+        ]
+      ]
+    ],
+    [
+      "المناصب واللجان",
+      "Posts & committees",
+      [
+        [
+          "سكرتير قسم ضعف الانتصاب — الجمعية المصرية للمسالك البولية",
+          "Secretary, ED section — Egyptian Urological Association"
+        ],
+        [
+          "نائب رئيس لجنة الإرشادات المصرية — قسم تأخّر الإنجاب",
+          "Vice chairman, Egyptian Urological Guidelines — male infertility"
+        ],
+        [
+          "رئيس وحدة الأندرولوجيا — مستشفى جامعة طنطا",
+          "Head of the Andrology Unit — Tanta University Hospital"
+        ],
+        [
+          "تدريس المسالك البولية لطلاب الطب منذ 1998",
+          "Teaching urology to medical students since 1998"
+        ]
+      ]
+    ],
+    [
+      "الرسائل العلمية",
+      "Theses",
+      [
+        [
+          "ماجستير: تقييم كثافة PSA للمنطقة الانتقالية وخزعتها في الكشف المبكر عن سرطان البروستاتا",
+          "MSc: PSA density of the transition zone and transition-zone biopsy in early detection of prostate cancer"
+        ],
+        [
+          "دكتوراه: تقييم شق حوض الكلى بالمنظار في علاج انسداد الوصل الحوضي الحالبي",
+          "PhD: Endopyelotomy in the treatment of ureteropelvic junction obstruction"
+        ]
+      ]
+    ],
+    [
+      "النشر والمراجعة العلمية",
+      "Publishing & peer review",
+      [
+        [
+          "فصل في كتاب: Oral Mucosa Graft — An Ideal Substitute for Urethroplasty (InTech, 2011)",
+          "Book chapter: Oral Mucosa Graft — An Ideal Substitute for Urethroplasty (InTech, 2011)"
+        ],
+        [
+          "مُحكّم بمجلة Neurourology and Urodynamics",
+          "Reviewer, Neurourology and Urodynamics"
+        ],
+        [
+          "مُحكّم بمجلة UroToday International Journal",
+          "Reviewer, UroToday International Journal"
+        ],
+        [
+          "مشاركات ومحاضرات في مؤتمرات بالولايات المتحدة وإسبانيا والإمارات ومصر",
+          "Presentations at conferences in the USA, Spain, the UAE and Egypt"
+        ]
+      ]
+    ]
+  ],
+  "CLINICS": [
+    {
+      "id": "kfs",
+      "ar": "عيادة كفر الشيخ",
+      "en": "Kafr El Sheikh Clinic",
+      "areaAr": "كفر الشيخ، مصر",
+      "areaEn": "Kafr El Sheikh, Egypt",
+      "daysAr": "الأحد · الثلاثاء · السبت",
+      "daysEn": "Sun · Tue · Sat",
+      "hoursAr": "3:00 – 9:00 مساءً",
+      "hoursEn": "3:00 – 9:00 PM",
+      "wd": [
+        0,
+        2,
+        6
+      ]
+    },
+    {
+      "id": "mvd",
+      "ar": "عيادة ميفيدا",
+      "en": "Mivida Clinic",
+      "areaAr": "ميفيدا، القاهرة الجديدة",
+      "areaEn": "Mivida, New Cairo",
+      "daysAr": "الأربعاء · الخميس",
+      "daysEn": "Wed · Thu",
+      "hoursAr": "3:00 – 9:00 مساءً",
+      "hoursEn": "3:00 – 9:00 PM",
+      "wd": [
+        3,
+        4
+      ]
+    }
+  ],
+  "FAQ": [
+    [
+      "كم تبلغ تكلفة الكشف؟",
+      "What does the consultation cost?",
+      "يُذكر سعر الكشف بوضوح في رسالة التأكيد قبل الزيارة، ويُدفع في العيادة نقدًا أو بالبطاقة. لا توجد أي مدفوعات إلكترونية.",
+      "The fee is stated clearly in your confirmation message before the visit, and paid at the clinic in cash or by card. There are no online payments."
+    ],
+    [
+      "متى يصلني التأكيد؟",
+      "When will I get confirmation?",
+      "خلال ساعتين كحد أقصى في مواعيد العمل، عبر واتساب على الرقم الذي تُدخله. إن لم يصلك، اتصل بنا مباشرة.",
+      "Within two hours during working hours, by WhatsApp to the number you enter. If it doesn’t arrive, call us directly."
+    ],
+    [
+      "هل الزيارة سرّية؟",
+      "Is the visit confidential?",
+      "نعم. بياناتك لا تُشارك مع أي جهة، ولا يظهر اسم التخصّص في أي رسالة تصلك. سبب الزيارة اختياري ولن يُطلب منك.",
+      "Yes. Your details are never shared, and no specialty name appears in any message you receive. Reason for visit is optional and will not be asked."
+    ],
+    [
+      "ماذا أُحضر معي؟",
+      "What should I bring?",
+      "التحاليل والتقارير السابقة إن وُجدت. ويمكنك إحضارها في الزيارة مباشرة — لا حاجة لرفع أي ملفات الآن.",
+      "Previous tests and reports, if you have them. You can simply bring them to the visit — nothing needs uploading now."
+    ],
+    [
+      "هل يمكنني تغيير الموعد؟",
+      "Can I change my appointment?",
+      "نعم. رُدّ على رسالة التأكيد على واتساب وسنعيد الجدولة في أقرب موعد متاح.",
+      "Yes. Reply to your confirmation message on WhatsApp and we’ll reschedule you at the earliest available slot."
+    ],
+    [
+      "هل تستقبلون مرضى من خارج مصر؟",
+      "Do you see patients from outside Egypt?",
+      "نعم، ويصل إلينا مرضى من دول الخليج. راسلنا على واتساب قبل السفر لتنسيق الموعد والتحاليل المطلوبة.",
+      "Yes — patients travel to us from across the Gulf. Message us on WhatsApp before travelling so we can coordinate timing and any tests needed."
+    ]
+  ]
+}
