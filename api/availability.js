@@ -57,7 +57,8 @@ module.exports = async function handler(req, res) {
   }
 
   const SUPABASE_URL = process.env.SUPABASE_URL;
-  const SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+  const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ||
+                      process.env.SUPABASE_SERVICE_KEY;
   const clinicId = CLINIC_ID[clinic];
 
   if (!SUPABASE_URL || !SERVICE_KEY || !clinicId) {

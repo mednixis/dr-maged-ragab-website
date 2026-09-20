@@ -12,7 +12,8 @@
  *
  * Required environment variables (Vercel → Settings → Environment Variables):
  *   SUPABASE_URL              https://oxmqwuewdrqnltwbfllq.supabase.co
- *   SUPABASE_SERVICE_KEY      service_role key — SERVER ONLY, never in the browser
+ *   SUPABASE_SERVICE_ROLE_KEY service_role key — SERVER ONLY, never in the browser
+ *                             (SUPABASE_SERVICE_KEY is accepted too)
  *   CLINIC_KFS_ID             clinics.id for Kafr El Sheikh
  *   CLINIC_MVD_ID             clinics.id for Mivida
  *   RESEND_API_KEY            from resend.com
@@ -112,7 +113,8 @@ module.exports = async function handler(req, res) {
   }
 
   const SUPABASE_URL = process.env.SUPABASE_URL;
-  const SERVICE_KEY = process.env.SUPABASE_SERVICE_KEY;
+  const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ||
+                      process.env.SUPABASE_SERVICE_KEY;
   if (!SUPABASE_URL || !SERVICE_KEY || !c.id) {
     console.error('booking: Supabase or clinic id environment variables are missing');
     return bad(res, 500, 'not_configured',
