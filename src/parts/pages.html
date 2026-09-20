@@ -323,6 +323,8 @@
   <div class="wrap bk" id="bkShell">
     <div class="bk-main">
 
+      <p class="err err-submit" id="errSubmit" hidden></p>
+
       <!-- step 1 -->
       <div id="step1">
         <div class="fset">
@@ -338,15 +340,18 @@
             <h2><span class="num">3</span> · <span data-ar="اختر الوقت" data-en="Choose the time"></span></h2>
             <span style="font-size:14px;color:var(--muted)" id="freeCount"></span>
           </div>
-          <div class="slots">
-            <span class="slot-lbl" data-ar="بعد الظهر" data-en="Afternoon"></span>
-            <div class="chips" id="slotsNoon"></div>
+          <div id="slotsWrap">
+            <div class="slots">
+              <span class="slot-lbl" data-ar="بعد الظهر" data-en="Afternoon"></span>
+              <div class="chips" id="slotsNoon"></div>
+            </div>
+            <div class="slots" style="margin-top:6px">
+              <span class="slot-lbl" data-ar="مساءً" data-en="Evening"></span>
+              <div class="chips" id="slotsEve"></div>
+            </div>
+            <span class="legend"><i></i><span data-ar="المواعيد الباهتة محجوزة بالفعل" data-en="Faded times are already booked"></span></span>
           </div>
-          <div class="slots" style="margin-top:6px">
-            <span class="slot-lbl" data-ar="مساءً" data-en="Evening"></span>
-            <div class="chips" id="slotsEve"></div>
-          </div>
-          <span class="legend"><i></i><span data-ar="المواعيد الباهتة محجوزة بالفعل" data-en="Faded times are already booked"></span></span>
+          <p class="slots-msg" id="slotsMsg" hidden></p>
         </div>
       </div>
 
@@ -384,10 +389,17 @@
             <span data-ar="أؤكد صحة رقم الموبايل المُدخل." data-en="I confirm the mobile number above is correct."></span>
           </label>
           <span class="err" id="errOk" hidden></span>
+
+          <!-- Spam trap. Hidden from people and from screen readers; bots fill it
+               in and the server silently drops the submission. Do not remove. -->
+          <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px" tabindex="-1">
+            <label for="bkCompany">Company</label>
+            <input id="bkCompany" name="company" type="text" tabindex="-1" autocomplete="off">
+          </div>
         </div>
 
         <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap">
-          <button type="submit" class="btn btn-pri btn-lg" data-ar="تأكيد الحجز" data-en="Confirm booking"></button>
+          <button type="submit" class="btn btn-pri btn-lg" id="bkSubmit" data-ar="تأكيد الحجز" data-en="Confirm booking"></button>
           <button type="button" class="btn btn-out btn-lg" id="backTo1" data-ar="رجوع" data-en="Back"></button>
         </div>
       </form>

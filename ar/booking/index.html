@@ -80,6 +80,7 @@
 <!-- ========== STEP 1 + 2 share the summary rail ========== -->
 <div class="wrap bk" id="bkShell">
 <div class="bk-main">
+<p class="err err-submit" hidden="" id="errSubmit"></p>
 <!-- step 1 -->
 <div id="step1">
 <div class="fset">
@@ -95,6 +96,7 @@
 <h2><span class="num">3</span> · <span>اختر الوقت</span></h2>
 <span id="freeCount" style="font-size:14px;color:var(--muted)"></span>
 </div>
+<div id="slotsWrap">
 <div class="slots">
 <span class="slot-lbl">بعد الظهر</span>
 <div class="chips" id="slotsNoon"></div>
@@ -104,6 +106,8 @@
 <div class="chips" id="slotsEve"></div>
 </div>
 <span class="legend"><i></i><span>المواعيد الباهتة محجوزة بالفعل</span></span>
+</div>
+<p class="slots-msg" hidden="" id="slotsMsg"></p>
 </div>
 </div>
 <!-- step 2 -->
@@ -133,9 +137,15 @@
 <span>أؤكد صحة رقم الموبايل المُدخل.</span>
 </label>
 <span class="err" hidden="" id="errOk"></span>
+<!-- Spam trap. Hidden from people and from screen readers; bots fill it
+               in and the server silently drops the submission. Do not remove. -->
+<div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px" tabindex="-1">
+<label for="bkCompany">Company</label>
+<input autocomplete="off" id="bkCompany" name="company" tabindex="-1" type="text"/>
+</div>
 </div>
 <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap">
-<button class="btn btn-pri btn-lg" type="submit">تأكيد الحجز</button>
+<button class="btn btn-pri btn-lg" id="bkSubmit" type="submit">تأكيد الحجز</button>
 <button class="btn btn-out btn-lg" id="backTo1" type="button">رجوع</button>
 </div>
 </form>

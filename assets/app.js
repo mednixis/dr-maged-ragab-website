@@ -7,25 +7,34 @@
   var LANG = (window.SITE && window.SITE.lang) || document.documentElement.lang || 'ar';
   var PAGE = (window.SITE && window.SITE.page) || '';
   var AR = LANG === 'ar';
-  var CLINICS = [{"id": "kfs", "ar": "عيادة كفر الشيخ", "en": "Kafr El Sheikh Clinic", "areaAr": "كفر الشيخ، مصر", "areaEn": "Kafr El Sheikh, Egypt", "daysAr": "الأحد · الثلاثاء · السبت", "daysEn": "Sun · Tue · Sat", "hoursAr": "3:00 – 9:00 مساءً", "hoursEn": "3:00 – 9:00 PM", "wd": [0, 2, 6]}, {"id": "mvd", "ar": "عيادة ميفيدا", "en": "Mivida Clinic", "areaAr": "ميفيدا، القاهرة الجديدة", "areaEn": "Mivida, New Cairo", "daysAr": "الأربعاء · الخميس", "daysEn": "Wed · Thu", "hoursAr": "3:00 – 9:00 مساءً", "hoursEn": "3:00 – 9:00 PM", "wd": [3, 4]}];
+  var CLINICS = [{"id": "kfs", "ar": "عيادة كفر الشيخ", "en": "Kafr El Sheikh Clinic", "areaAr": "كفر الشيخ، مصر", "areaEn": "Kafr El Sheikh, Egypt", "daysAr": "السبت · الأحد · الإثنين · الثلاثاء", "daysEn": "Sat · Sun · Mon · Tue", "hoursAr": "3:00 – 9:00 مساءً", "hoursEn": "3:00 – 9:00 PM", "wd": [0, 1, 2, 6]}, {"id": "mvd", "ar": "عيادة ميفيدا", "en": "Mivida Clinic", "areaAr": "ميفيدا، القاهرة الجديدة", "areaEn": "Mivida, New Cairo", "daysAr": "الأربعاء · الخميس", "daysEn": "Wed · Thu", "hoursAr": "3:00 – 9:00 مساءً", "hoursEn": "3:00 – 9:00 PM", "wd": [3, 4]}];
 
   var DOW = AR ? ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت']
                : ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   var MON = AR ? ['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر']
                : ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-  var NOON = ['3:00','3:15','3:30','3:45','4:00','4:15','4:30','4:45','5:00','5:15','5:30','5:45'];
-  var EVE  = ['6:00','6:15','6:30','6:45','7:00','7:15','7:30','7:45','8:00','8:15','8:30','8:45'];
-
   var T = AR ? {
     notSet:'لم يُحدَّد بعد', free:' موعد متاح', pm:' م',
     errName:'من فضلك اكتب اسمك الكامل.',
     errPhone:'الرقم يجب أن يبدأ بـ 01 ويتكوّن من 11 رقمًا.',
-    errOk:'من فضلك أكّد صحة الرقم.'
+    errOk:'من فضلك أكّد صحة الرقم.',
+    sending:'جارٍ الحجز…',
+    errNet:'تعذّر الاتصال. من فضلك حاول مرة أخرى أو راسلنا على واتساب.',
+    errTaken:'هذا الموعد حُجز للتو. اخترنا لك خطوة للخلف — من فضلك اختر موعدًا آخر.',
+    loading:'جارٍ تحميل المواعيد المتاحة…',
+    noSlots:'لا توجد مواعيد متاحة لهذه العيادة في الوقت الحالي. من فضلك راسلنا على واتساب أو اتصل بنا وسنحجز لك.',
+    errAvail:'تعذّر تحميل المواعيد. من فضلك راسلنا على واتساب أو اتصل بنا وسنحجز لك.'
   } : {
     notSet:'Not selected yet', free:' times available', pm:' PM',
     errName:'Please enter your full name.',
     errPhone:'The number must start with 01 and be 11 digits.',
-    errOk:'Please confirm the number is correct.'
+    errOk:'Please confirm the number is correct.',
+    sending:'Booking…',
+    errNet:'We could not reach the clinic. Please try again, or message us on WhatsApp.',
+    errTaken:'That time was just taken. We have sent you back a step — please pick another.',
+    loading:'Loading available times…',
+    noSlots:'There are no times open at this clinic right now. Message us on WhatsApp or call, and we will book you in.',
+    errAvail:'We could not load the available times. Message us on WhatsApp or call, and we will book you in.'
   };
 
   function el(id) { return document.getElementById(id); }
@@ -71,8 +80,26 @@
     if (location.hash.indexOf('#svc-') === 0) mark(location.hash.slice(5));
   }
 
+
   /* -------------------------------------------------------------- booking */
   if (PAGE !== 'booking' || !el('clinicPick')) return;
+
+  /* Which days and times exist is the database's business, not this file's.
+     /api/availability reads the same appointment_slots table the admin
+     platform writes to, so a slot the receptionist closes disappears here
+     too. The only thing hardcoded is the public window: the clinic works
+     11:00–23:00, the website offers 15:00–20:45. */
+  var GRID = [];
+  for (var gh = 15; gh < 21; gh++) {
+    for (var gi = 0; gi < 4; gi++) {
+      GRID.push(String(gh).padStart(2, '0') + ':' + String(gi * 15).padStart(2, '0'));
+    }
+  }
+  var HORIZON = 60;     // days ahead to ask about
+  var SHOW_DAYS = 5;    // day chips offered at once
+
+  var AVAIL = {};       // "2026-09-22" → ["15:00", "15:15", …]
+  var STATE = 'loading';
 
   var qs = new URLSearchParams(location.search);
   var wanted = qs.get('clinic');
@@ -84,25 +111,57 @@
   function clinic() {
     return CLINICS.filter(function (c) { return c.id === bk.clinic; })[0];
   }
-  function upcoming(count) {
-    var c = clinic(), out = [], d = new Date(), guard = 0;
-    d.setHours(0, 0, 0, 0);
-    while (out.length < count && guard < 120) {
-      if (c.wd.indexOf(d.getDay()) !== -1) out.push(new Date(d));
-      d.setDate(d.getDate() + 1); guard++;
-    }
-    return out;
+  function iso(d) {
+    return d.getFullYear() + '-' +
+      String(d.getMonth() + 1).padStart(2, '0') + '-' +
+      String(d.getDate()).padStart(2, '0');
   }
-  /* DEMO ONLY — replace with a real availability query. See README §6. */
-  function taken(dateObj, idx) {
-    var seed = dateObj.getDate() * 31 + dateObj.getMonth() * 7 + bk.clinic.charCodeAt(0);
-    return ((seed + idx * 13) % 7) === 0;
+  function parseISO(s) {
+    var p = s.split('-');
+    return new Date(+p[0], +p[1] - 1, +p[2]);
+  }
+  function openDays() {
+    return Object.keys(AVAIL)
+      .filter(function (d) { return AVAIL[d] && AVAIL[d].length; })
+      .sort()
+      .slice(0, SHOW_DAYS)
+      .map(parseISO);
+  }
+  function isOpen(dateObj, slot) {
+    var list = AVAIL[iso(dateObj)];
+    return !!list && list.indexOf(slot) !== -1;
   }
   function fmtDay(d) { return DOW[d.getDay()] + ' ' + d.getDate() + ' ' + MON[d.getMonth()]; }
-  function fmtTime(t) { return t + T.pm; }
+  function fmtTime(t) {
+    var p = t.split(':'), h = +p[0];
+    return (h > 12 ? h - 12 : h) + ':' + p[1] + T.pm;
+  }
+
+  function loadAvailability() {
+    var start = new Date(); start.setHours(0, 0, 0, 0);
+    var end = new Date(start); end.setDate(end.getDate() + HORIZON);
+    var asked = bk.clinic;
+    STATE = 'loading';
+    fetch('/api/availability?clinic=' + encodeURIComponent(bk.clinic) +
+          '&from=' + iso(start) + '&to=' + iso(end),
+          { headers: { Accept: 'application/json' } })
+      .then(function (r) { return r.ok ? r.json() : null; })
+      .then(function (j) {
+        if (asked !== bk.clinic) return;   // patient switched clinic mid-flight
+        if (!j || !j.ok) { AVAIL = {}; STATE = 'error'; render(); return; }
+        AVAIL = j.days || {};
+        STATE = Object.keys(AVAIL).length ? 'ok' : 'empty';
+        if (bk.time && bk.dates[bk.day] && !isOpen(bk.dates[bk.day], bk.time)) bk.time = '';
+        render();
+      })
+      .catch(function () {
+        if (asked !== bk.clinic) return;
+        AVAIL = {}; STATE = 'error'; render();
+      });
+  }
 
   function render() {
-    bk.dates = upcoming(5);
+    bk.dates = openDays();
     if (bk.day >= bk.dates.length) bk.day = 0;
 
     el('clinicPick').innerHTML = CLINICS.map(function (c) {
@@ -123,18 +182,37 @@
         '<small>' + MON[d.getMonth()] + '</small></button>';
     }).join('');
 
+    var msg = el('slotsMsg'), wrap = el('slotsWrap');
+    if (!bk.dates.length) {
+      // Nothing to offer. Say so plainly and point at a human, rather than
+      // showing an empty grid the patient will keep poking at.
+      wrap.hidden = true;
+      msg.hidden = false;
+      msg.textContent = STATE === 'loading' ? T.loading
+                      : STATE === 'error' ? T.errAvail : T.noSlots;
+      el('freeCount').textContent = '';
+      el('sumClinic').textContent = AR ? clinic().ar : clinic().en;
+      el('sumDay').textContent = T.notSet;
+      el('sumTime').textContent = T.notSet;
+      el('sumTime').classList.add('na');
+      el('toStep2').disabled = true;
+      return;
+    }
+    wrap.hidden = false;
+    msg.hidden = true;
+
     var date = bk.dates[bk.day], free = 0;
-    function slots(list, offset) {
-      return list.map(function (t, i) {
-        var isTaken = taken(date, i + offset);
-        if (!isTaken) free++;
+    function slots(list) {
+      return list.map(function (t) {
+        var open = isOpen(date, t);
+        if (open) free++;
         return '<button type="button" class="chip-t" data-pick-time="' + t + '"' +
-          (isTaken ? ' disabled' : '') + ' aria-pressed="' + (bk.time === t) + '">' +
+          (open ? '' : ' disabled') + ' aria-pressed="' + (bk.time === t) + '">' +
           fmtTime(t) + '</button>';
       }).join('');
     }
-    el('slotsNoon').innerHTML = slots(NOON, 0);
-    el('slotsEve').innerHTML = slots(EVE, 12);
+    el('slotsNoon').innerHTML = slots(GRID.filter(function (t) { return +t.slice(0, 2) < 18; }));
+    el('slotsEve').innerHTML  = slots(GRID.filter(function (t) { return +t.slice(0, 2) >= 18; }));
     el('freeCount').textContent = free + T.free;
 
     var c = clinic();
@@ -164,7 +242,11 @@
   document.addEventListener('click', function (ev) {
     var t;
     t = ev.target.closest('[data-pick-clinic]');
-    if (t) { bk.clinic = t.getAttribute('data-pick-clinic'); bk.day = 0; bk.time = ''; render(); return; }
+    if (t) {
+      bk.clinic = t.getAttribute('data-pick-clinic');
+      bk.day = 0; bk.time = ''; AVAIL = {};
+      render(); loadAvailability(); return;
+    }
     t = ev.target.closest('[data-pick-day]');
     if (t) { bk.day = +t.getAttribute('data-pick-day'); bk.time = ''; render(); return; }
     t = ev.target.closest('[data-pick-time]');
@@ -193,26 +275,72 @@
     else { el('errOk').hidden = true; }
     if (bad) { bad.focus(); return; }
 
-    /* TODO: POST to the booking API here, then show step 3 on success.
-       See README §6 — nothing is sent anywhere yet. */
     var c = clinic(), d = bk.dates[bk.day];
-    el('okName').textContent = name.value.trim();
-    el('okPhone').textContent = phone.value.trim();
-    el('okClinic').textContent = AR ? c.ar : c.en;
-    el('okWhen').textContent = fmtDay(d) + ' — ' + fmtTime(bk.time);
-    el('okRef').textContent = 'MR-' + String(d.getMonth() + 1).padStart(2, '0') +
-      String(d.getDate()).padStart(2, '0') + '-' +
-      String(Math.floor(Math.random() * 9000) + 1000);
-    setStep(3);
+    var btn = el('bkSubmit'), errBox = el('errSubmit');
+    var label = btn.textContent;
+
+    function done() {
+      btn.removeAttribute('aria-busy'); btn.disabled = false; btn.textContent = label;
+    }
+    function fail(msg) {
+      done();
+      errBox.textContent = msg; errBox.hidden = false;
+      errBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    errBox.hidden = true;
+    btn.setAttribute('aria-busy', 'true');
+    btn.disabled = true;
+    btn.textContent = T.sending;
+
+    fetch('/api/booking', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        clinic: bk.clinic,
+        date: iso(d),
+        time: bk.time,
+        name: name.value.trim(),
+        phone: phone.value.trim(),
+        notes: el('bkNotes').value.trim(),
+        locale: LANG,
+        company: el('bkCompany') ? el('bkCompany').value : ''
+      })
+    }).then(function (r) {
+      return r.json().then(function (j) { return { status: r.status, body: j }; });
+    }).then(function (out) {
+      if (out.status === 409 || (out.body && out.body.code === 'slot_taken')) {
+        // Someone reached it first. Drop the slot, re-read availability,
+        // and put the patient back on step 1 with the message showing.
+        bk.time = '';
+        loadAvailability();
+        fail(T.errTaken);
+        render(); setStep(1);
+        return;
+      }
+      if (!out.body || !out.body.ok) {
+        var m = out.body && out.body.message;
+        return fail(m ? (AR ? m.ar : m.en) : T.errNet);
+      }
+      done();
+      el('okName').textContent = name.value.trim();
+      el('okPhone').textContent = phone.value.trim();
+      el('okClinic').textContent = AR ? c.ar : c.en;
+      el('okWhen').textContent = fmtDay(d) + ' — ' + fmtTime(bk.time);
+      el('okRef').textContent = out.body.ref;
+      setStep(3);
+    }).catch(function () { fail(T.errNet); });
   });
 
   el('againBtn').addEventListener('click', function () {
     bk.time = ''; el('step2').reset();
-    el('errName').hidden = true; el('errPhone').hidden = true; el('errOk').hidden = true;
+    el('errName').hidden = true; el('errPhone').hidden = true;
+    el('errOk').hidden = true; el('errSubmit').hidden = true;
     el('bkName').removeAttribute('aria-invalid');
     el('bkPhone').removeAttribute('aria-invalid');
+    loadAvailability();
     render(); setStep(1);
   });
 
-  render(); setStep(1);
+  render(); setStep(1); loadAvailability();
 })();

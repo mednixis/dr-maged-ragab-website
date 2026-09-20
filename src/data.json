@@ -612,8 +612,8 @@
       "en": "Kafr El Sheikh Clinic",
       "areaAr": "كفر الشيخ، مصر",
       "areaEn": "Kafr El Sheikh, Egypt",
-      "daysAr": "الأحد · الثلاثاء · السبت",
-      "daysEn": "Sun · Tue · Sat",
+      "daysAr": "السبت · الأحد · الإثنين · الثلاثاء",
+      "daysEn": "Sat · Sun · Mon · Tue",
       "hoursAr": "3:00 – 9:00 مساءً",
       "hoursEn": "3:00 – 9:00 PM",
       "wd": [

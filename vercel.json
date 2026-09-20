@@ -6,6 +6,13 @@
   "outputDirectory": ".",
   "cleanUrls": true,
   "trailingSlash": true,
+  "functions": {
+    "api/*.js": { "memory": 1024, "maxDuration": 10 }
+  },
+  "rewrites": [
+    { "source": "/api/booking/", "destination": "/api/booking" },
+    { "source": "/api/availability/", "destination": "/api/availability" }
+  ],
   "headers": [
     {
       "source": "/assets/(.*)",
