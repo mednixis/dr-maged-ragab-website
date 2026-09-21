@@ -212,8 +212,11 @@ Supabase → SQL Editor, in order:
    on. Section 4 adds the unique index. Section 5 rebuilds the slots that
    already exist; `held`, `blocked` and `closed` ones are preserved, as is
    anything a booking or request points at, and the past is untouched.
-2. `src/migrations/002_book_website_slot.sql` — the booking function and the
-   trigger that frees a slot when a request is cancelled.
+2. `src/migrations/002_book_website_slot.sql` — the booking function.
+3. `src/migrations/003_release_slot_on_cancel.sql` — cancelling anywhere in the
+   dashboard puts the time back on the website. Covers a pending request, a
+   confirmed booking, a soft delete and a hard delete; deliberately leaves
+   `blocked` slots blocked. Nobody should need Supabase to free a slot.
 
 ### c) Set the environment variables
 
