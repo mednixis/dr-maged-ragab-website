@@ -27,7 +27,7 @@ CONTACT = {
     "kfs": {"tel": "+201039310401", "wa": "201039310401",
             "map": "https://maps.app.goo.gl/vb4a5uZf89KehnJv5"},
     "mvd": {"tel": "+201039310403", "wa": "201039310403",
-            "map": "https://maps.app.goo.gl/24PuEgYWCTMmNzBh6"},
+            "map": "https://maps.app.goo.gl/a2kXjxvaHbV1eajX7"},
 }
 
 PAGES = ["home", "about", "services", "procedures", "clinics", "faq", "booking"]
