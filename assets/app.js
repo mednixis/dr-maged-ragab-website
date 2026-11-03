@@ -8,6 +8,11 @@
   var PAGE = (window.SITE && window.SITE.page) || '';
   var AR = LANG === 'ar';
   var CLINICS = [{"id": "kfs", "ar": "عيادة كفر الشيخ", "en": "Kafr El Sheikh Clinic", "areaAr": "كفر الشيخ، مصر", "areaEn": "Kafr El Sheikh, Egypt", "daysAr": "السبت · الأحد · الإثنين · الثلاثاء", "daysEn": "Sat · Sun · Mon · Tue", "hoursAr": "3:00 – 9:00 مساءً", "hoursEn": "3:00 – 9:00 PM", "wd": [0, 1, 2, 6]}, {"id": "mvd", "ar": "عيادة ميفيدا", "en": "Mivida Clinic", "areaAr": "ميفيدا، القاهرة الجديدة", "areaEn": "Mivida, New Cairo", "daysAr": "الأربعاء · الخميس", "daysEn": "Wed · Thu", "hoursAr": "3:00 – 9:00 مساءً", "hoursEn": "3:00 – 9:00 PM", "wd": [3, 4]}];
+  /* International patients don't pick a slot: a coordinator arranges the
+     visit on WhatsApp. Stored as clinic "International / Online",
+     patient_type "international" — the same values the admin platform uses. */
+  CLINICS.push({"id": "intl", "intl": true, "ar": "مريض دولي", "en": "International patient", "areaAr": "مقيم خارج مصر", "areaEn": "Living outside Egypt", "daysAr": "نرتّب الموعد معك عبر واتساب", "daysEn": "We arrange the date with you on WhatsApp", "hoursAr": "في العيادة أو استشارة أونلاين", "hoursEn": "At the clinic or online consultation"});
+  var I_GLOBE = '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/>';
 
   var DOW = AR ? ['الأحد','الإثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت']
                : ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
@@ -15,6 +20,9 @@
                : ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   var T = AR ? {
     notSet:'لم يُحدَّد بعد', free:' موعد متاح', pm:' م',
+    visitNew:'مريض جديد', visitFu:'متابعة', modeZoom:'أونلاين عبر Zoom', modeClinic:'زيارة في العيادة', arranged:'يحدّده المنسّق معك',
+    errPhoneIntl:'اكتب رقم واتساب كاملًا مع كود الدولة، مثل ‎+971501234567.',
+    errCountry:'من فضلك اكتب بلد الإقامة.',
     errName:'من فضلك اكتب اسمك الكامل.',
     errPhone:'الرقم يجب أن يبدأ بـ 01 ويتكوّن من 11 رقمًا.',
     errOk:'من فضلك أكّد صحة الرقم.',
@@ -26,6 +34,9 @@
     errAvail:'تعذّر تحميل المواعيد. من فضلك راسلنا على واتساب أو اتصل بنا وسنحجز لك.'
   } : {
     notSet:'Not selected yet', free:' times available', pm:' PM',
+    visitNew:'New patient', visitFu:'Follow-up', modeZoom:'Online on Zoom', modeClinic:'Visit at the clinic', arranged:'Arranged with our coordinator',
+    errPhoneIntl:'Enter your full WhatsApp number with country code, e.g. +971501234567.',
+    errCountry:'Please enter your country of residence.',
     errName:'Please enter your full name.',
     errPhone:'The number must start with 01 and be 11 digits.',
     errOk:'Please confirm the number is correct.',
@@ -105,12 +116,21 @@
   var wanted = qs.get('clinic');
   var bk = {
     clinic: CLINICS.some(function (c) { return c.id === wanted; }) ? wanted : CLINICS[0].id,
-    day: 0, time: '', step: 1, dates: []
+    day: 0, time: '', visit: '', mode: '', step: 1, dates: []
   };
 
   function clinic() {
     return CLINICS.filter(function (c) { return c.id === bk.clinic; })[0];
   }
+  function isIntl() { return !!clinic().intl; }
+  function visitLabel() {
+    return bk.visit === 'new' ? T.visitNew : bk.visit === 'follow_up' ? T.visitFu : T.notSet;
+  }
+  function modeLabel() {
+    return bk.mode === 'zoom' ? T.modeZoom : bk.mode === 'clinic' ? T.modeClinic : T.notSet;
+  }
+  function intlPhone(v) { return String(v || '').replace(/[\s\-().]/g, ''); }
+
   function iso(d) {
     return d.getFullYear() + '-' +
       String(d.getMonth() + 1).padStart(2, '0') + '-' +
@@ -138,6 +158,7 @@
   }
 
   function loadAvailability() {
+    if (isIntl()) { AVAIL = {}; STATE = 'ok'; render(); return; }
     var start = new Date(); start.setHours(0, 0, 0, 0);
     var end = new Date(start); end.setDate(end.getDate() + HORIZON);
     var asked = bk.clinic;
@@ -171,10 +192,39 @@
         '<span>' + (AR ? c.areaAr : c.areaEn) + '</span></span>' +
         '<span class="tick">' + svgTick() + '</span></span>' +
         '<span class="pick-meta">' +
-        '<div>' + icon(I_CAL, 15) + '<span>' + (AR ? c.daysAr : c.daysEn) + '</span></div>' +
+        '<div>' + icon(c.intl ? I_GLOBE : I_CAL, 15) + '<span>' + (AR ? c.daysAr : c.daysEn) + '</span></div>' +
         '<div>' + icon(I_CLK, 15) + '<span>' + (AR ? c.hoursAr : c.hoursEn) + '</span></div>' +
         '</span></button>';
     }).join('');
+
+    var vb = document.querySelectorAll('[data-pick-visit]');
+    for (var vi = 0; vi < vb.length; vi++) {
+      vb[vi].setAttribute('aria-pressed', vb[vi].getAttribute('data-pick-visit') === bk.visit ? 'true' : 'false');
+    }
+    var sv = el('sumVisit');
+    sv.textContent = visitLabel();
+    sv.classList.toggle('na', !bk.visit);
+
+    var intl = isIntl();
+    var mb = document.querySelectorAll('[data-pick-mode]');
+    for (var mi = 0; mi < mb.length; mi++) {
+      mb[mi].setAttribute('aria-pressed', mb[mi].getAttribute('data-pick-mode') === bk.mode ? 'true' : 'false');
+    }
+    el('modeFset').hidden = !intl;
+    el('sumModeRow').hidden = !intl;
+    el('sumMode').textContent = modeLabel();
+    el('sumMode').classList.toggle('na', !bk.mode);
+    el('intlBox').hidden = !intl;
+    el('dayFset').hidden = intl;
+    el('timeFset').hidden = intl;
+    if (intl) {
+      el('sumClinic').textContent = AR ? clinic().ar : clinic().en;
+      el('sumDay').textContent = T.arranged;
+      el('sumTime').textContent = T.arranged;
+      el('sumTime').classList.remove('na');
+      el('toStep2').disabled = !bk.visit || !bk.mode;
+      return;
+    }
 
     el('dayPick').innerHTML = bk.dates.map(function (d, i) {
       return '<button type="button" class="day" data-pick-day="' + i + '" aria-pressed="' + (i === bk.day) + '">' +
@@ -221,7 +271,7 @@
     var tEl = el('sumTime');
     if (bk.time) { tEl.textContent = fmtTime(bk.time); tEl.classList.remove('na'); }
     else { tEl.textContent = T.notSet; tEl.classList.add('na'); }
-    el('toStep2').disabled = !bk.time;
+    el('toStep2').disabled = !bk.time || !bk.visit;
   }
 
   function setStep(n) {
@@ -230,6 +280,20 @@
     el('step2').hidden = n !== 2;
     el('bkShell').hidden = n === 3;
     el('step3').hidden = n !== 3;
+    var intl = isIntl(), ph = el('bkPhone');
+    el('countryField').hidden = !intl;
+    el('datesField').hidden = !intl;
+    el('hintPhoneLocal').hidden = intl;
+    el('hintPhoneIntl').hidden = !intl;
+    el('introLocal').hidden = intl;
+    el('introIntl').hidden = !intl;
+    if (intl) {
+      ph.setAttribute('inputmode', 'tel'); ph.setAttribute('maxlength', '20');
+      ph.removeAttribute('pattern'); ph.setAttribute('placeholder', '+971 50 123 4567');
+    } else {
+      ph.setAttribute('inputmode', 'numeric'); ph.setAttribute('maxlength', '11');
+      ph.setAttribute('pattern', '01[0-9]{9}'); ph.setAttribute('placeholder', '01xxxxxxxxx');
+    }
     var r = document.querySelectorAll('.rail-s');
     for (var i = 0; i < r.length; i++) {
       var s = +r[i].getAttribute('data-step');
@@ -244,19 +308,27 @@
     t = ev.target.closest('[data-pick-clinic]');
     if (t) {
       bk.clinic = t.getAttribute('data-pick-clinic');
-      bk.day = 0; bk.time = ''; AVAIL = {};
+      bk.day = 0; bk.time = ''; AVAIL = {}; STATE = 'loading';
       render(); loadAvailability(); return;
     }
+    t = ev.target.closest('[data-pick-visit]');
+    if (t) { bk.visit = t.getAttribute('data-pick-visit'); render(); return; }
+    t = ev.target.closest('[data-pick-mode]');
+    if (t) { bk.mode = t.getAttribute('data-pick-mode'); render(); return; }
     t = ev.target.closest('[data-pick-day]');
     if (t) { bk.day = +t.getAttribute('data-pick-day'); bk.time = ''; render(); return; }
     t = ev.target.closest('[data-pick-time]');
     if (t && !t.disabled) { bk.time = t.getAttribute('data-pick-time'); render(); return; }
   });
 
-  el('toStep2').addEventListener('click', function () { if (bk.time) setStep(2); });
+  el('toStep2').addEventListener('click', function () {
+    if (bk.visit && (bk.time || (isIntl() && bk.mode))) setStep(2);
+  });
   el('backTo1').addEventListener('click', function () { setStep(1); });
   el('bkPhone').addEventListener('input', function () {
-    this.value = this.value.replace(/[^\d]/g, '').slice(0, 11);
+    this.value = isIntl()
+      ? this.value.replace(/[^\d+\s\-]/g, '').slice(0, 20)
+      : this.value.replace(/[^\d]/g, '').slice(0, 11);
   });
 
   el('step2').addEventListener('submit', function (ev) {
@@ -270,12 +342,18 @@
       } else { input.removeAttribute('aria-invalid'); errEl.hidden = true; }
     }
     mark(name, el('errName'), name.value.trim().length < 3 ? T.errName : '');
-    mark(phone, el('errPhone'), /^01\d{9}$/.test(phone.value.trim()) ? '' : T.errPhone);
+    var intl = isIntl();
+    if (intl) {
+      mark(phone, el('errPhone'), /^\+?\d{8,15}$/.test(intlPhone(phone.value)) ? '' : T.errPhoneIntl);
+      mark(el('bkCountry'), el('errCountry'), el('bkCountry').value.trim().length < 2 ? T.errCountry : '');
+    } else {
+      mark(phone, el('errPhone'), /^01\d{9}$/.test(phone.value.trim()) ? '' : T.errPhone);
+    }
     if (!ok.checked) { el('errOk').textContent = T.errOk; el('errOk').hidden = false; if (!bad) bad = ok; }
     else { el('errOk').hidden = true; }
     if (bad) { bad.focus(); return; }
 
-    var c = clinic(), d = bk.dates[bk.day];
+    var c = clinic(), d = intl ? null : bk.dates[bk.day];
     var btn = el('bkSubmit'), errBox = el('errSubmit');
     var label = btn.textContent;
 
@@ -298,10 +376,14 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         clinic: bk.clinic,
-        date: iso(d),
-        time: bk.time,
+        date: d ? iso(d) : '',
+        time: intl ? '' : bk.time,
+        visit: bk.visit,
+        mode: intl ? bk.mode : '',
         name: name.value.trim(),
-        phone: phone.value.trim(),
+        phone: intl ? intlPhone(phone.value) : phone.value.trim(),
+        country: intl ? el('bkCountry').value.trim() : '',
+        dates: intl ? el('bkDates').value.trim() : '',
         notes: el('bkNotes').value.trim(),
         locale: LANG,
         company: el('bkCompany') ? el('bkCompany').value : ''
@@ -324,18 +406,22 @@
       }
       done();
       el('okName').textContent = name.value.trim();
-      el('okPhone').textContent = phone.value.trim();
+      el('okPhone').textContent = intl ? intlPhone(phone.value) : phone.value.trim();
       el('okClinic').textContent = AR ? c.ar : c.en;
-      el('okWhen').textContent = fmtDay(d) + ' — ' + fmtTime(bk.time);
+      el('okVisit').textContent = visitLabel();
+      el('okModeRow').hidden = !intl;
+      el('okMode').textContent = intl ? modeLabel() : '';
+      el('okWhen').textContent = intl ? T.arranged : fmtDay(d) + ' — ' + fmtTime(bk.time);
       el('okRef').textContent = out.body.ref;
       setStep(3);
     }).catch(function () { fail(T.errNet); });
   });
 
   el('againBtn').addEventListener('click', function () {
-    bk.time = ''; el('step2').reset();
+    bk.time = ''; bk.visit = ''; bk.mode = ''; el('step2').reset();
     el('errName').hidden = true; el('errPhone').hidden = true;
     el('errOk').hidden = true; el('errSubmit').hidden = true;
+    el('errCountry').hidden = true; el('bkCountry').removeAttribute('aria-invalid');
     el('bkName').removeAttribute('aria-invalid');
     el('bkPhone').removeAttribute('aria-invalid');
     loadAvailability();

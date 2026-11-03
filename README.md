@@ -217,6 +217,23 @@ Supabase → SQL Editor, in order:
    dashboard puts the time back on the website. Covers a pending request, a
    confirmed booking, a soft delete and a hard delete; deliberately leaves
    `blocked` slots blocked. Nobody should need Supabase to free a slot.
+4. `src/migrations/004_visit_type.sql` — adds `booking_requests.visit_type`
+   (`new` / `follow_up`) and makes `book_website_slot()` store it, plus
+   `patient_type = 'local'`. Until it runs, bookings still work: the API falls
+   back and puts `[New patient]` / `[Follow-up]` at the start of `concern`.
+
+### International patients and visit type
+
+Step 1 offers a third card, **International patient**, beside the two clinics,
+and every booking asks **New patient** or **Follow-up**. International
+requests take no slot: they skip day and time, ask for a WhatsApp number with
+country code, country, and optional preferred dates, and are inserted straight
+into `booking_requests` with `clinic = 'International / Online'` and
+`patient_type = 'international'` (the values the admin platform already uses).
+International patients also choose **Online consultation (Zoom)** or
+**Clinic visit**. That choice, the country and the dates go in `notes`
+(`Consultation: …`, `Country: …`, `Preferred dates: …`). A coordinator arranges the visit on WhatsApp.
+Link straight to it with `/en/booking/?clinic=intl`.
 
 ### c) Set the environment variables
 

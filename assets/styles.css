@@ -205,6 +205,9 @@ html[lang="en"] .fset h2{font-family:var(--en);font-weight:600}
 .tick{width:24px;height:24px;border-radius:50%;background:var(--bone-2);color:var(--bone-2);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .pick[aria-pressed="true"] .tick{background:var(--signal);color:#fff}
 .tick svg{width:13px;height:13px}
+.pick-sm{padding:16px 18px}
+.intl-box{background:var(--white);border:1px solid var(--rule);border-radius:var(--r);padding:20px 22px}
+.intl-list{margin:10px 0 0;padding-inline-start:20px;display:flex;flex-direction:column;gap:8px;font-size:15px;line-height:1.7;color:var(--body)}
 .pick-meta{border-top:1px solid var(--rule);padding-top:12px;display:flex;flex-direction:column;gap:7px}
 .pick-meta div{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:var(--body)}
 .pick-meta svg{width:15px;height:15px;color:var(--muted);flex-shrink:0}

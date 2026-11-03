@@ -85,15 +85,45 @@
 <div id="step1">
 <div class="fset">
 <h2><span class="num">1</span> · <span>Choose your clinic</span></h2>
-<div class="grid g2" id="clinicPick"></div>
+<div class="grid g3" id="clinicPick"></div>
 </div>
 <div class="fset" style="margin-top:28px">
-<h2><span class="num">2</span> · <span>Choose the day</span></h2>
+<h2><span class="num">2</span> · <span>Type of visit</span></h2>
+<div class="grid g2 visit-pick" id="visitPick">
+<button aria-pressed="false" class="pick pick-sm" data-pick-visit="new" type="button">
+<span class="pick-hd"><span><b>New patient</b><span>First visit with Dr. Maged</span></span><span class="tick"><svg aria-hidden="true" fill="none" height="13" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24" width="13"><path d="M20 6 9 17l-5-5"></path></svg></span></span>
+</button>
+<button aria-pressed="false" class="pick pick-sm" data-pick-visit="follow_up" type="button">
+<span class="pick-hd"><span><b>Follow-up</b><span>You've seen Dr. Maged before</span></span><span class="tick"><svg aria-hidden="true" fill="none" height="13" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24" width="13"><path d="M20 6 9 17l-5-5"></path></svg></span></span>
+</button>
+</div>
+</div>
+<div class="fset" hidden="" id="modeFset" style="margin-top:28px">
+<h2><span class="num">3</span> · <span>How would you like to be seen?</span></h2>
+<div class="grid g2" id="modePick">
+<button aria-pressed="false" class="pick pick-sm" data-pick-mode="zoom" type="button">
+<span class="pick-hd"><span><b>Online consultation on Zoom</b><span>From home — before travelling, or instead of it</span></span><span class="tick"><svg aria-hidden="true" fill="none" height="13" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24" width="13"><path d="M20 6 9 17l-5-5"></path></svg></span></span>
+</button>
+<button aria-pressed="false" class="pick pick-sm" data-pick-mode="clinic" type="button">
+<span class="pick-hd"><span><b>Visit at the clinic</b><span>In Egypt — Kafr El Sheikh or Mivida</span></span><span class="tick"><svg aria-hidden="true" fill="none" height="13" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24" width="13"><path d="M20 6 9 17l-5-5"></path></svg></span></span>
+</button>
+</div>
+</div>
+<div class="fset intl-box" hidden="" id="intlBox" style="margin-top:28px">
+<h2>How international bookings work</h2>
+<ul class="intl-list">
+<li>Send your details, country and preferred dates in the next step.</li>
+<li>Our international patient coordinator contacts you on WhatsApp to set the date — and sends your Zoom link if you chose an online consultation.</li>
+<li>You can send previous reports and test results on WhatsApp before the appointment.</li>
+</ul>
+</div>
+<div class="fset" id="dayFset" style="margin-top:28px">
+<h2><span class="num">3</span> · <span>Choose the day</span></h2>
 <div class="days" id="dayPick"></div>
 </div>
-<div class="fset" style="margin-top:28px">
+<div class="fset" id="timeFset" style="margin-top:28px">
 <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
-<h2><span class="num">3</span> · <span>Choose the time</span></h2>
+<h2><span class="num">4</span> · <span>Choose the time</span></h2>
 <span id="freeCount" style="font-size:14px;color:var(--muted)"></span>
 </div>
 <div id="slotsWrap">
@@ -114,7 +144,8 @@
 <form hidden="" id="step2" novalidate="">
 <div class="fset">
 <h2>Your details</h2>
-<p style="font-size:15px">Only two required fields. We will not ask your reason for visiting.</p>
+<p id="introLocal" style="font-size:15px">Only two required fields. We will not ask your reason for visiting.</p>
+<p hidden="" id="introIntl" style="font-size:15px">Only three required fields. Our international patient coordinator will contact you on WhatsApp to arrange the appointment.</p>
 </div>
 <div class="fset" style="margin-top:18px">
 <div class="field">
@@ -125,8 +156,18 @@
 <div class="field">
 <label for="bkPhone">Mobile number</label>
 <input autocomplete="tel" dir="ltr" id="bkPhone" inputmode="numeric" maxlength="11" name="phone" pattern="01[0-9]{9}" placeholder="01xxxxxxxxx" required="" type="tel"/>
-<span class="hint">Your confirmation arrives on this number by WhatsApp.</span>
+<span class="hint" id="hintPhoneLocal">Your confirmation arrives on this number by WhatsApp.</span>
+<span class="hint" hidden="" id="hintPhoneIntl">Your WhatsApp number with country code, e.g. +971 50 123 4567</span>
 <span class="err" hidden="" id="errPhone"></span>
+</div>
+<div class="field" hidden="" id="countryField">
+<label for="bkCountry">Country of residence</label>
+<input autocomplete="country-name" id="bkCountry" name="country" placeholder="e.g. UAE, Saudi Arabia, Germany" type="text"/>
+<span class="err" hidden="" id="errCountry"></span>
+</div>
+<div class="field" hidden="" id="datesField">
+<label for="bkDates"><span>Preferred dates</span> <span class="opt">(optional)</span></label>
+<input id="bkDates" name="dates" placeholder="e.g. I'll be in Egypt 10–20 December" type="text"/>
 </div>
 <div class="field">
 <label for="bkNotes"><span>Reason for visit</span> <span class="opt">(optional)</span></label>
@@ -158,6 +199,14 @@
 <div class="sum-row">
 <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="2.8"></circle></svg>
 <span><small>Clinic</small><b id="sumClinic"></b></span>
+</div>
+<div class="sum-row">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
+<span><small>Visit</small><b id="sumVisit"></b></span>
+</div>
+<div class="sum-row" hidden="" id="sumModeRow">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><rect height="12" rx="2" width="14" x="2" y="6"></rect><path d="m16 10 6-3v10l-6-3"></path></svg>
+<span><small>Consultation</small><b id="sumMode"></b></span>
 </div>
 <div class="sum-row">
 <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" viewbox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="5"></rect><path d="M8 3v4M16 3v4M3 11h18"></path></svg>
@@ -199,6 +248,8 @@
 <div><dt>Name</dt><dd id="okName"></dd></div>
 <div><dt>WhatsApp number</dt><dd dir="ltr" id="okPhone"></dd></div>
 <div><dt>Clinic</dt><dd id="okClinic"></dd></div>
+<div><dt>Visit</dt><dd id="okVisit"></dd></div>
+<div hidden="" id="okModeRow"><dt>Consultation</dt><dd id="okMode"></dd></div>
 <div><dt>Appointment</dt><dd id="okWhen"></dd></div>
 <div><dt>Reference</dt><dd class="num" dir="ltr" id="okRef"></dd></div>
 </dl>

@@ -85,15 +85,45 @@
 <div id="step1">
 <div class="fset">
 <h2><span class="num">1</span> · <span>اختر العيادة</span></h2>
-<div class="grid g2" id="clinicPick"></div>
+<div class="grid g3" id="clinicPick"></div>
 </div>
 <div class="fset" style="margin-top:28px">
-<h2><span class="num">2</span> · <span>اختر اليوم</span></h2>
+<h2><span class="num">2</span> · <span>نوع الزيارة</span></h2>
+<div class="grid g2 visit-pick" id="visitPick">
+<button aria-pressed="false" class="pick pick-sm" data-pick-visit="new" type="button">
+<span class="pick-hd"><span><b>مريض جديد</b><span>أول زيارة للدكتور ماجد</span></span><span class="tick"><svg aria-hidden="true" fill="none" height="13" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24" width="13"><path d="M20 6 9 17l-5-5"></path></svg></span></span>
+</button>
+<button aria-pressed="false" class="pick pick-sm" data-pick-visit="follow_up" type="button">
+<span class="pick-hd"><span><b>متابعة</b><span>زرت الدكتور من قبل</span></span><span class="tick"><svg aria-hidden="true" fill="none" height="13" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24" width="13"><path d="M20 6 9 17l-5-5"></path></svg></span></span>
+</button>
+</div>
+</div>
+<div class="fset" hidden="" id="modeFset" style="margin-top:28px">
+<h2><span class="num">3</span> · <span>طريقة الاستشارة</span></h2>
+<div class="grid g2" id="modePick">
+<button aria-pressed="false" class="pick pick-sm" data-pick-mode="zoom" type="button">
+<span class="pick-hd"><span><b>استشارة أونلاين عبر Zoom</b><span>من بلدك، قبل السفر أو بدونه</span></span><span class="tick"><svg aria-hidden="true" fill="none" height="13" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24" width="13"><path d="M20 6 9 17l-5-5"></path></svg></span></span>
+</button>
+<button aria-pressed="false" class="pick pick-sm" data-pick-mode="clinic" type="button">
+<span class="pick-hd"><span><b>زيارة في العيادة</b><span>في مصر — كفر الشيخ أو ميفيدا</span></span><span class="tick"><svg aria-hidden="true" fill="none" height="13" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="3" viewbox="0 0 24 24" width="13"><path d="M20 6 9 17l-5-5"></path></svg></span></span>
+</button>
+</div>
+</div>
+<div class="fset intl-box" hidden="" id="intlBox" style="margin-top:28px">
+<h2>كيف يتم حجز المرضى الدوليين</h2>
+<ul class="intl-list">
+<li>أرسل بياناتك وبلدك والتواريخ المناسبة لك في الخطوة التالية.</li>
+<li>يتواصل معك منسّق المرضى الدوليين عبر واتساب لتحديد الموعد — ويرسل لك رابط Zoom إن اخترت الاستشارة أونلاين.</li>
+<li>يمكنك إرسال تقاريرك وتحاليلك السابقة عبر واتساب قبل الموعد.</li>
+</ul>
+</div>
+<div class="fset" id="dayFset" style="margin-top:28px">
+<h2><span class="num">3</span> · <span>اختر اليوم</span></h2>
 <div class="days" id="dayPick"></div>
 </div>
-<div class="fset" style="margin-top:28px">
+<div class="fset" id="timeFset" style="margin-top:28px">
 <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
-<h2><span class="num">3</span> · <span>اختر الوقت</span></h2>
+<h2><span class="num">4</span> · <span>اختر الوقت</span></h2>
 <span id="freeCount" style="font-size:14px;color:var(--muted)"></span>
 </div>
 <div id="slotsWrap">
@@ -114,7 +144,8 @@
 <form hidden="" id="step2" novalidate="">
 <div class="fset">
 <h2>بياناتك</h2>
-<p style="font-size:15px">حقلان إلزاميان فقط. لن نسألك عن سبب الزيارة.</p>
+<p id="introLocal" style="font-size:15px">حقلان إلزاميان فقط. لن نسألك عن سبب الزيارة.</p>
+<p hidden="" id="introIntl" style="font-size:15px">ثلاثة حقول إلزامية فقط. سيتواصل معك منسّق المرضى الدوليين عبر واتساب لترتيب الموعد.</p>
 </div>
 <div class="fset" style="margin-top:18px">
 <div class="field">
@@ -125,8 +156,18 @@
 <div class="field">
 <label for="bkPhone">رقم الموبايل</label>
 <input autocomplete="tel" dir="ltr" id="bkPhone" inputmode="numeric" maxlength="11" name="phone" pattern="01[0-9]{9}" placeholder="01xxxxxxxxx" required="" type="tel"/>
-<span class="hint">سيصلك التأكيد على هذا الرقم عبر واتساب.</span>
+<span class="hint" id="hintPhoneLocal">سيصلك التأكيد على هذا الرقم عبر واتساب.</span>
+<span class="hint" hidden="" id="hintPhoneIntl">رقم واتساب مع كود الدولة، مثل ‎+971 50 123 4567</span>
 <span class="err" hidden="" id="errPhone"></span>
+</div>
+<div class="field" hidden="" id="countryField">
+<label for="bkCountry">بلد الإقامة</label>
+<input autocomplete="country-name" id="bkCountry" name="country" placeholder="مثال: الإمارات، السعودية، ألمانيا" type="text"/>
+<span class="err" hidden="" id="errCountry"></span>
+</div>
+<div class="field" hidden="" id="datesField">
+<label for="bkDates"><span>التواريخ المناسبة لك</span> <span class="opt">(اختياري)</span></label>
+<input id="bkDates" name="dates" placeholder="مثال: سأكون في مصر من 10 إلى 20 ديسمبر" type="text"/>
 </div>
 <div class="field">
 <label for="bkNotes"><span>سبب الزيارة</span> <span class="opt">(اختياري)</span></label>
@@ -158,6 +199,14 @@
 <div class="sum-row">
 <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"></path><circle cx="12" cy="10" r="2.8"></circle></svg>
 <span><small>العيادة</small><b id="sumClinic"></b></span>
+</div>
+<div class="sum-row">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 21a8 8 0 0 1 16 0"></path></svg>
+<span><small>نوع الزيارة</small><b id="sumVisit"></b></span>
+</div>
+<div class="sum-row" hidden="" id="sumModeRow">
+<svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" viewbox="0 0 24 24"><rect height="12" rx="2" width="14" x="2" y="6"></rect><path d="m16 10 6-3v10l-6-3"></path></svg>
+<span><small>طريقة الاستشارة</small><b id="sumMode"></b></span>
 </div>
 <div class="sum-row">
 <svg aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-width="1.8" viewbox="0 0 24 24"><rect height="16" rx="2" width="18" x="3" y="5"></rect><path d="M8 3v4M16 3v4M3 11h18"></path></svg>
@@ -199,6 +248,8 @@
 <div><dt>الاسم</dt><dd id="okName"></dd></div>
 <div><dt>رقم واتساب</dt><dd dir="ltr" id="okPhone"></dd></div>
 <div><dt>العيادة</dt><dd id="okClinic"></dd></div>
+<div><dt>نوع الزيارة</dt><dd id="okVisit"></dd></div>
+<div hidden="" id="okModeRow"><dt>طريقة الاستشارة</dt><dd id="okMode"></dd></div>
 <div><dt>الموعد</dt><dd id="okWhen"></dd></div>
 <div><dt>رقم الطلب</dt><dd class="num" dir="ltr" id="okRef"></dd></div>
 </dl>

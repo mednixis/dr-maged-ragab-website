@@ -329,15 +329,45 @@
       <div id="step1">
         <div class="fset">
           <h2><span class="num">1</span> · <span data-ar="اختر العيادة" data-en="Choose your clinic"></span></h2>
-          <div class="grid g2" id="clinicPick"></div>
+          <div class="grid g3" id="clinicPick"></div>
         </div>
         <div class="fset" style="margin-top:28px">
-          <h2><span class="num">2</span> · <span data-ar="اختر اليوم" data-en="Choose the day"></span></h2>
+          <h2><span class="num">2</span> · <span data-ar="نوع الزيارة" data-en="Type of visit"></span></h2>
+          <div class="grid g2 visit-pick" id="visitPick">
+            <button type="button" class="pick pick-sm" data-pick-visit="new" aria-pressed="false">
+              <span class="pick-hd"><span><b data-ar="مريض جديد" data-en="New patient"></b><span data-ar="أول زيارة للدكتور ماجد" data-en="First visit with Dr. Maged"></span></span><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span></span>
+            </button>
+            <button type="button" class="pick pick-sm" data-pick-visit="follow_up" aria-pressed="false">
+              <span class="pick-hd"><span><b data-ar="متابعة" data-en="Follow-up"></b><span data-ar="زرت الدكتور من قبل" data-en="You've seen Dr. Maged before"></span></span><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span></span>
+            </button>
+          </div>
+        </div>
+        <div class="fset" id="modeFset" style="margin-top:28px" hidden>
+          <h2><span class="num">3</span> · <span data-ar="طريقة الاستشارة" data-en="How would you like to be seen?"></span></h2>
+          <div class="grid g2" id="modePick">
+            <button type="button" class="pick pick-sm" data-pick-mode="zoom" aria-pressed="false">
+              <span class="pick-hd"><span><b data-ar="استشارة أونلاين عبر Zoom" data-en="Online consultation on Zoom"></b><span data-ar="من بلدك، قبل السفر أو بدونه" data-en="From home — before travelling, or instead of it"></span></span><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span></span>
+            </button>
+            <button type="button" class="pick pick-sm" data-pick-mode="clinic" aria-pressed="false">
+              <span class="pick-hd"><span><b data-ar="زيارة في العيادة" data-en="Visit at the clinic"></b><span data-ar="في مصر — كفر الشيخ أو ميفيدا" data-en="In Egypt — Kafr El Sheikh or Mivida"></span></span><span class="tick"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg></span></span>
+            </button>
+          </div>
+        </div>
+        <div class="fset intl-box" id="intlBox" style="margin-top:28px" hidden>
+          <h2 data-ar="كيف يتم حجز المرضى الدوليين" data-en="How international bookings work"></h2>
+          <ul class="intl-list">
+            <li data-ar="أرسل بياناتك وبلدك والتواريخ المناسبة لك في الخطوة التالية." data-en="Send your details, country and preferred dates in the next step."></li>
+            <li data-ar="يتواصل معك منسّق المرضى الدوليين عبر واتساب لتحديد الموعد — ويرسل لك رابط Zoom إن اخترت الاستشارة أونلاين." data-en="Our international patient coordinator contacts you on WhatsApp to set the date — and sends your Zoom link if you chose an online consultation."></li>
+            <li data-ar="يمكنك إرسال تقاريرك وتحاليلك السابقة عبر واتساب قبل الموعد." data-en="You can send previous reports and test results on WhatsApp before the appointment."></li>
+          </ul>
+        </div>
+        <div class="fset" id="dayFset" style="margin-top:28px">
+          <h2><span class="num">3</span> · <span data-ar="اختر اليوم" data-en="Choose the day"></span></h2>
           <div class="days" id="dayPick"></div>
         </div>
-        <div class="fset" style="margin-top:28px">
+        <div class="fset" id="timeFset" style="margin-top:28px">
           <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap">
-            <h2><span class="num">3</span> · <span data-ar="اختر الوقت" data-en="Choose the time"></span></h2>
+            <h2><span class="num">4</span> · <span data-ar="اختر الوقت" data-en="Choose the time"></span></h2>
             <span style="font-size:14px;color:var(--muted)" id="freeCount"></span>
           </div>
           <div id="slotsWrap">
@@ -359,7 +389,8 @@
       <form id="step2" hidden novalidate>
         <div class="fset">
           <h2 data-ar="بياناتك" data-en="Your details"></h2>
-          <p style="font-size:15px" data-ar="حقلان إلزاميان فقط. لن نسألك عن سبب الزيارة." data-en="Only two required fields. We will not ask your reason for visiting."></p>
+          <p style="font-size:15px" id="introLocal" data-ar="حقلان إلزاميان فقط. لن نسألك عن سبب الزيارة." data-en="Only two required fields. We will not ask your reason for visiting."></p>
+          <p style="font-size:15px" id="introIntl" hidden data-ar="ثلاثة حقول إلزامية فقط. سيتواصل معك منسّق المرضى الدوليين عبر واتساب لترتيب الموعد." data-en="Only three required fields. Our international patient coordinator will contact you on WhatsApp to arrange the appointment."></p>
         </div>
 
         <div class="fset" style="margin-top:18px">
@@ -374,8 +405,22 @@
             <label for="bkPhone" data-ar="رقم الموبايل" data-en="Mobile number"></label>
             <input id="bkPhone" name="phone" type="tel" inputmode="numeric" autocomplete="tel"
                    pattern="01[0-9]{9}" maxlength="11" dir="ltr" required placeholder="01xxxxxxxxx">
-            <span class="hint" data-ar="سيصلك التأكيد على هذا الرقم عبر واتساب." data-en="Your confirmation arrives on this number by WhatsApp."></span>
+            <span class="hint" id="hintPhoneLocal" data-ar="سيصلك التأكيد على هذا الرقم عبر واتساب." data-en="Your confirmation arrives on this number by WhatsApp."></span>
+            <span class="hint" id="hintPhoneIntl" hidden data-ar="رقم واتساب مع كود الدولة، مثل ‎+971 50 123 4567" data-en="Your WhatsApp number with country code, e.g. +971 50 123 4567"></span>
             <span class="err" id="errPhone" hidden></span>
+          </div>
+
+          <div class="field" id="countryField" hidden>
+            <label for="bkCountry" data-ar="بلد الإقامة" data-en="Country of residence"></label>
+            <input id="bkCountry" name="country" type="text" autocomplete="country-name"
+                   data-ar-ph="مثال: الإمارات، السعودية، ألمانيا" data-en-ph="e.g. UAE, Saudi Arabia, Germany">
+            <span class="err" id="errCountry" hidden></span>
+          </div>
+
+          <div class="field" id="datesField" hidden>
+            <label for="bkDates"><span data-ar="التواريخ المناسبة لك" data-en="Preferred dates"></span> <span class="opt" data-ar="(اختياري)" data-en="(optional)"></span></label>
+            <input id="bkDates" name="dates" type="text"
+                   data-ar-ph="مثال: سأكون في مصر من 10 إلى 20 ديسمبر" data-en-ph="e.g. I'll be in Egypt 10–20 December">
           </div>
 
           <div class="field">
@@ -413,6 +458,14 @@
           <div class="sum-row">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="2.8"/></svg>
             <span><small data-ar="العيادة" data-en="Clinic"></small><b id="sumClinic"></b></span>
+          </div>
+          <div class="sum-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></svg>
+            <span><small data-ar="نوع الزيارة" data-en="Visit"></small><b id="sumVisit"></b></span>
+          </div>
+          <div class="sum-row" id="sumModeRow" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="6" width="14" height="12" rx="2"/><path d="m16 10 6-3v10l-6-3"/></svg>
+            <span><small data-ar="طريقة الاستشارة" data-en="Consultation"></small><b id="sumMode"></b></span>
           </div>
           <div class="sum-row">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 11h18"/></svg>
@@ -458,6 +511,8 @@
         <div><dt data-ar="الاسم" data-en="Name"></dt><dd id="okName"></dd></div>
         <div><dt data-ar="رقم واتساب" data-en="WhatsApp number"></dt><dd id="okPhone" dir="ltr"></dd></div>
         <div><dt data-ar="العيادة" data-en="Clinic"></dt><dd id="okClinic"></dd></div>
+        <div><dt data-ar="نوع الزيارة" data-en="Visit"></dt><dd id="okVisit"></dd></div>
+        <div id="okModeRow" hidden><dt data-ar="طريقة الاستشارة" data-en="Consultation"></dt><dd id="okMode"></dd></div>
         <div><dt data-ar="الموعد" data-en="Appointment"></dt><dd id="okWhen"></dd></div>
         <div><dt data-ar="رقم الطلب" data-en="Reference"></dt><dd id="okRef" class="num" dir="ltr"></dd></div>
       </dl>

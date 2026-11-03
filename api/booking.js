@@ -29,6 +29,21 @@ const CLINICS = {
          ar: 'عيادة كفر الشيخ', en: 'Kafr El Sheikh Clinic' },
   mvd: { id: process.env.CLINIC_MVD_ID, name: 'Mivida Clinic',
          ar: 'عيادة ميفيدا', en: 'Mivida Clinic' },
+  // No slot: a coordinator arranges the visit on WhatsApp. The name and
+  // patient_type match what the admin platform already stores for these.
+  intl: { intl: true, name: 'International / Online',
+          ar: 'مريض دولي', en: 'International patient' },
+};
+
+const VISITS = {
+  new:       { ar: 'مريض جديد', en: 'New patient' },
+  follow_up: { ar: 'متابعة',    en: 'Follow-up' },
+};
+
+// International patients choose how they want to be seen.
+const MODES = {
+  zoom:   { ar: 'استشارة أونلاين عبر Zoom', en: 'Online consultation (Zoom)' },
+  clinic: { ar: 'زيارة في العيادة',          en: 'Clinic visit' },
 };
 
 const OPEN_FROM = 15 * 60;        // 15:00, in minutes
@@ -69,7 +84,7 @@ module.exports = async function handler(req, res) {
   }
 
   const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
-  const { clinic, date, time, name, phone, notes, locale, company } = body;
+  const { clinic, date, time, visit, mode, name, phone, notes, locale, company, country, dates } = body;
 
   // Honeypot — a real patient never fills this; bots usually do. Accept the
   // request, save nothing, hand back a plausible reference.
@@ -79,6 +94,19 @@ module.exports = async function handler(req, res) {
 
   const c = CLINICS[clinic];
   if (!c) return bad(res, 400, 'bad_clinic', 'العيادة غير صحيحة.', 'Unknown clinic.');
+  const v = VISITS[visit];
+  if (!v) {
+    return bad(res, 400, 'bad_visit', 'من فضلك اختر نوع الزيارة.', 'Please choose new patient or follow-up.');
+  }
+  if (c.intl) {
+    const md = MODES[mode];
+    if (!md) {
+      return bad(res, 400, 'bad_mode',
+        'من فضلك اختر الاستشارة أونلاين أو الزيارة في العيادة.',
+        'Please choose an online consultation or a clinic visit.');
+    }
+    return international(req, res, { c, v, md, visit, name, phone, notes, country, dates });
+  }
   if (!/^\d{4}-\d{2}-\d{2}$/.test(String(date))) {
     return bad(res, 400, 'bad_date', 'التاريخ غير صحيح.', 'Invalid date.');
   }
@@ -127,7 +155,7 @@ module.exports = async function handler(req, res) {
   let saved;
 
   try {
-    const r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/book_website_slot`, {
+    let r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/book_website_slot`, {
       method: 'POST',
       headers: {
         apikey: SERVICE_KEY,
@@ -142,10 +170,31 @@ module.exports = async function handler(req, res) {
         p_name: patientName,
         p_phone: patientPhone,
         p_concern: String(notes || '').trim() || null,
+        p_visit_type: visit,
       }),
     });
 
-    const text = await r.text();
+    let text = await r.text();
+
+    if (!r.ok && /PGRST202|p_visit_type/.test(text)) {
+      // Migration 004 not run yet — the function has no p_visit_type. Book
+      // anyway, and carry the visit type in the concern so staff still see it.
+      console.warn('booking: book_website_slot has no p_visit_type — run migration 004');
+      const concern = [`[${v.en}]`, String(notes || '').trim()].filter(Boolean).join(' ');
+      r = await fetch(`${SUPABASE_URL}/rest/v1/rpc/book_website_slot`, {
+        method: 'POST',
+        headers: {
+          apikey: SERVICE_KEY,
+          Authorization: `Bearer ${SERVICE_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          p_clinic_id: c.id, p_clinic: c.name, p_slot_date: date, p_start_time: time,
+          p_name: patientName, p_phone: patientPhone, p_concern: concern,
+        }),
+      });
+      text = await r.text();
+    }
 
     if (!r.ok) {
       // The function raises slot_unavailable when the slot is gone — either
@@ -195,6 +244,8 @@ module.exports = async function handler(req, res) {
   <table style="width:100%;border-collapse:collapse;font-size:15px">
     <tr><td style="padding:8px 0;color:#5E6670;width:150px">العيادة / Clinic</td>
         <td style="padding:8px 0;font-weight:700">${esc(c.ar)} — ${esc(c.en)}</td></tr>
+    <tr><td style="padding:8px 0;color:#5E6670">نوع الزيارة / Visit</td>
+        <td style="padding:8px 0;font-weight:700">${esc(v.ar)} — ${esc(v.en)}</td></tr>
     <tr><td style="padding:8px 0;color:#5E6670">الموعد / When</td>
         <td style="padding:8px 0;font-weight:700">${esc(pretty)} — ${esc(saved.booking_slot || time)}</td></tr>
     <tr><td style="padding:8px 0;color:#5E6670">الموبايل / Phone</td>
@@ -216,7 +267,7 @@ module.exports = async function handler(req, res) {
         headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           from, to: [to],
-          subject: `حجز من الموقع — ${patientName} — ${date} ${saved.booking_slot || time} (${c.en})`,
+          subject: `حجز من الموقع — ${v.ar} — ${patientName} — ${date} ${saved.booking_slot || time} (${c.en})`,
           html,
         }),
       });
@@ -231,3 +282,151 @@ module.exports = async function handler(req, res) {
   void locale;
   return res.status(201).json({ ok: true, ref: reference, id: saved.request_id });
 };
+
+
+/* ---------------------------------------------------------------------------
+   International patients. No slot is taken: the request lands in
+   booking_requests (Pending Confirmations) with clinic "International /
+   Online" and patient_type "international", and a coordinator arranges the
+   date on WhatsApp. */
+async function international(req, res, { c, v, md, visit, name, phone, notes, country, dates }) {
+  const patientName = String(name || '').trim();
+  const patientPhone = String(phone || '').replace(/[\s\-().]/g, '');
+  const patientCountry = String(country || '').trim().slice(0, 80);
+  const preferred = String(dates || '').trim().slice(0, 200);
+  const concern = String(notes || '').trim().slice(0, 2000);
+
+  if (patientName.length < 3) {
+    return bad(res, 400, 'bad_name', 'من فضلك اكتب اسمك الكامل.', 'Please enter your full name.');
+  }
+  if (!/^\+?\d{8,15}$/.test(patientPhone)) {
+    return bad(res, 400, 'bad_phone',
+      'اكتب رقم واتساب كاملًا مع كود الدولة.',
+      'Enter your full WhatsApp number with country code.');
+  }
+  if (patientCountry.length < 2) {
+    return bad(res, 400, 'bad_country', 'من فضلك اكتب بلد الإقامة.', 'Please enter your country of residence.');
+  }
+  const intlNumber = patientPhone.startsWith('+') ? patientPhone : '+' + patientPhone;
+
+  const SUPABASE_URL = process.env.SUPABASE_URL;
+  const SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY ||
+                      process.env.SUPABASE_SERVICE_KEY;
+  if (!SUPABASE_URL || !SERVICE_KEY) {
+    console.error('booking: Supabase environment variables are missing');
+    return bad(res, 500, 'not_configured',
+      'الحجز الإلكتروني غير متاح حاليًا. من فضلك راسلنا على واتساب.',
+      'Online booking is unavailable right now. Please message us on WhatsApp.');
+  }
+
+  const today = cairoNow().date;
+  const staffNotes = [
+    `International patient — ${v.en}`,
+    `Consultation: ${md.en}`,
+    `Country: ${patientCountry}`,
+    preferred ? `Preferred dates: ${preferred}` : '',
+  ].filter(Boolean).join('\n');
+
+  const row = {
+    patient_name: patientName,
+    phone: intlNumber,
+    whatsapp: intlNumber,
+    clinic: c.name,
+    patient_type: 'international',
+    visit_type: visit,
+    concern: concern || null,
+    notes: staffNotes,
+    booking_type: 'standard',
+    referral_source: 'website',
+  };
+
+  async function insert(r0) {
+    const r = await fetch(`${SUPABASE_URL}/rest/v1/booking_requests`, {
+      method: 'POST',
+      headers: {
+        apikey: SERVICE_KEY,
+        Authorization: `Bearer ${SERVICE_KEY}`,
+        'Content-Type': 'application/json',
+        Prefer: 'return=representation',
+      },
+      body: JSON.stringify(r0),
+    });
+    return { r, text: await r.text() };
+  }
+
+  let saved;
+  try {
+    let { r, text } = await insert(row);
+    if (!r.ok && /visit_type/.test(text)) {
+      // Migration 004 not run yet — save without the column.
+      console.warn('booking: booking_requests has no visit_type — run migration 004');
+      const { visit_type, ...rest } = row;
+      ({ r, text } = await insert(rest));
+    }
+    if (!r.ok) {
+      console.error('booking: international insert failed', r.status, text);
+      return bad(res, 502, 'save_failed',
+        'تعذّر حفظ الطلب. من فضلك راسلنا على واتساب.',
+        'We could not save your request. Please message us on WhatsApp.');
+    }
+    const rows = JSON.parse(text);
+    saved = Array.isArray(rows) ? rows[0] : rows;
+    if (!saved || !saved.id) throw new Error('insert returned nothing usable: ' + text);
+  } catch (err) {
+    console.error('booking: international insert threw', err);
+    return bad(res, 502, 'save_failed',
+      'تعذّر حفظ الطلب. من فضلك راسلنا على واتساب.',
+      'We could not save your request. Please message us on WhatsApp.');
+  }
+
+  const reference = ref(today, saved.id).replace(/^MR-/, 'MR-INT-');
+
+  try {
+    const key = process.env.RESEND_API_KEY;
+    const to = process.env.BOOKING_TO;
+    const from = process.env.BOOKING_FROM;
+    if (key && to && from) {
+      const wa = 'https://wa.me/' + intlNumber.replace(/^\+/, '');
+      const html = `
+<div style="font-family:system-ui,-apple-system,Segoe UI,sans-serif;max-width:560px;color:#17181A">
+  <p style="font-size:12px;letter-spacing:2px;color:#5E6670;margin:0 0 6px">مريض دولي · INTERNATIONAL PATIENT REQUEST</p>
+  <h2 style="margin:0 0 18px;font-size:22px">${esc(patientName)}</h2>
+  <table style="width:100%;border-collapse:collapse;font-size:15px">
+    <tr><td style="padding:8px 0;color:#5E6670;width:150px">نوع الزيارة / Visit</td>
+        <td style="padding:8px 0;font-weight:700">${esc(v.ar)} — ${esc(v.en)}</td></tr>
+    <tr><td style="padding:8px 0;color:#5E6670">الاستشارة / Consultation</td>
+        <td style="padding:8px 0;font-weight:700">${esc(md.ar)} — ${esc(md.en)}</td></tr>
+    <tr><td style="padding:8px 0;color:#5E6670">البلد / Country</td>
+        <td style="padding:8px 0;font-weight:700">${esc(patientCountry)}</td></tr>
+    <tr><td style="padding:8px 0;color:#5E6670">التواريخ / Dates</td>
+        <td style="padding:8px 0">${esc(preferred || '—')}</td></tr>
+    <tr><td style="padding:8px 0;color:#5E6670">واتساب / WhatsApp</td>
+        <td style="padding:8px 0;font-weight:700"><a href="${esc(wa)}" style="color:#1B5FD9">${esc(intlNumber)}</a></td></tr>
+    <tr><td style="padding:8px 0;color:#5E6670">رقم الطلب / Ref</td>
+        <td style="padding:8px 0;font-weight:700">${esc(reference)}</td></tr>
+    <tr><td style="padding:8px 0;color:#5E6670;vertical-align:top">سبب الزيارة / Concern</td>
+        <td style="padding:8px 0">${esc(concern || '—')}</td></tr>
+  </table>
+  <p style="margin:22px 0 0;padding:14px 16px;background:#EEF2FB;border-radius:4px;font-size:14px;line-height:1.7">
+    لا يوجد موعد محجوز — تواصل مع المريض عبر واتساب لترتيب الزيارة.<br>
+    No slot is held — contact the patient on WhatsApp to arrange the visit${md === MODES.zoom ? ' and send the Zoom link' : ''}.
+    The request is in Pending Confirmations.
+  </p>
+</div>`;
+      const mail = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from, to: [to],
+          subject: `مريض دولي — ${md.en} — ${v.ar} — ${patientName} — ${patientCountry}`,
+          html,
+        }),
+      });
+      if (!mail.ok) console.error('booking: email failed', mail.status, await mail.text());
+    }
+  } catch (err) {
+    console.error('booking: email threw', err);
+  }
+
+  return res.status(201).json({ ok: true, ref: reference, id: saved.id });
+}
